@@ -1,0 +1,512 @@
+/* ============================================================
+   LOGIN PAGE — Split layout
+   Izquierda: imagen ilustrativa con gradiente
+   Derecha: formulario limpio con fondo blanco/claro
+   ============================================================ */
+
+/* ── Reset base solo para el login ── */
+.login-page *,
+.login-page *::before,
+.login-page *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Variables de la página de login ── */
+.login-page {
+  --lp-left-bg:    #4f46e5;           /* indigo principal */
+  --lp-left-bg2:   #7c3aed;           /* púrpura acento */
+  --lp-left-bg3:   #3b82f6;           /* azul claro */
+  --lp-right-bg:   #f8fafc;           /* gris muy claro */
+  --lp-card-bg:    #ffffff;
+  --lp-text:       #0f172a;
+  --lp-text-sec:   #64748b;
+  --lp-text-muted: #94a3b8;
+  --lp-border:     #e2e8f0;
+  --lp-accent:     #4f46e5;
+  --lp-accent-h:   #4338ca;
+  --lp-success:    #10b981;
+  --lp-error:      #ef4444;
+  --lp-error-bg:   #fef2f2;
+  --lp-radius:     12px;
+  --lp-font:       'Plus Jakarta Sans', sans-serif;
+  --lp-mono:       'DM Mono', monospace;
+  --lp-shadow:     0 20px 60px rgba(15, 23, 42, 0.12);
+  --lp-transition: 0.2s ease;
+
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  font-family: var(--lp-font);
+  background: var(--lp-right-bg);
+}
+
+/* ============================================================
+   PANEL IZQUIERDO — Imagen + gradiente
+   ============================================================ */
+.login-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--lp-left-bg) 0%, var(--lp-left-bg2) 55%, var(--lp-left-bg3) 100%);
+  padding: 48px 40px;
+
+  /* Ocultar en móvil */
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/* Círculos decorativos de fondo */
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: -80px;
+  width: 320px; height: 320px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+}
+
+.login-left::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; right: -60px;
+  width: 400px; height: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+/* Círculo extra */
+.login-left-circle {
+  position: absolute;
+  bottom: 100px; left: -60px;
+  width: 200px; height: 200px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+
+/* Imagen ilustrativa */
+.login-illustration {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+  animation: floatUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.login-illustration img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.25));
+}
+
+/* Texto de bienvenida sobre la imagen */
+.login-left-text {
+  text-align: center;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  margin-top: 32px;
+}
+
+.login-left-text h2 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.login-left-text p {
+  font-size: 14px;
+  opacity: 0.75;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* Puntos indicadores estilo carrusel */
+.login-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.login-dot.active {
+  width: 20px;
+  border-radius: 3px;
+  background: #fff;
+}
+
+/* ============================================================
+   PANEL DERECHO — Formulario
+   ============================================================ */
+.login-right {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 48px;
+  background: var(--lp-card-bg);
+  position: relative;
+  box-shadow: -4px 0 40px rgba(15, 23, 42, 0.06);
+  animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* En móvil ocupa todo el ancho */
+@media (max-width: 768px) {
+  .login-right {
+    width: 100%;
+    padding: 40px 28px;
+    box-shadow: none;
+  }
+}
+
+/* ── Logo institucional ── */
+.login-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.login-logo-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--lp-accent), var(--lp-left-bg2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #fff;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+  flex-shrink: 0;
+}
+
+.login-logo-text h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lp-text);
+  line-height: 1.2;
+}
+
+.login-logo-text span {
+  font-size: 11px;
+  color: var(--lp-text-muted);
+  font-family: var(--lp-mono);
+}
+
+/* ── Título del form ── */
+.login-title {
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.login-title h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--lp-text);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.login-title p {
+  font-size: 14px;
+  color: var(--lp-text-sec);
+}
+
+/* ── Formulario ── */
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── Alerta de error ── */
+.lp-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--lp-error-bg);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--lp-radius);
+  font-size: 13px;
+  color: var(--lp-error);
+  animation: fadeIn 0.2s ease;
+}
+
+.lp-alert i { font-size: 14px; flex-shrink: 0; }
+
+/* ── Grupos de campo ── */
+.lp-field { display: flex; flex-direction: column; gap: 6px; }
+
+.lp-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lp-text-sec);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.lp-input-wrap { position: relative; }
+
+.lp-input {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--lp-right-bg);
+  border: 1.5px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  font-size: 14px;
+  font-family: var(--lp-font);
+  color: var(--lp-text);
+  outline: none;
+  transition: border-color var(--lp-transition), box-shadow var(--lp-transition), background var(--lp-transition);
+}
+
+.lp-input::placeholder { color: var(--lp-text-muted); }
+
+.lp-input:focus {
+  border-color: var(--lp-accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.lp-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Con ícono a la derecha (contraseña) */
+.lp-input.has-icon-right { padding-right: 44px; }
+
+.lp-input-icon-right {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--lp-text-muted);
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color var(--lp-transition);
+  display: flex; align-items: center;
+}
+
+.lp-input-icon-right:hover { color: var(--lp-text); }
+
+/* ── Fila: recordar + olvidé ── */
+.lp-row-opts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -4px;
+}
+
+.lp-check-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lp-check-wrap input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: var(--lp-accent);
+  cursor: pointer;
+}
+
+.lp-check-label {
+  font-size: 13px;
+  color: var(--lp-text-sec);
+  cursor: pointer;
+}
+
+.lp-forgot {
+  font-size: 13px;
+  color: var(--lp-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--lp-transition);
+}
+
+.lp-forgot:hover { color: var(--lp-accent-h); }
+
+/* ── Botón principal ── */
+.lp-btn-submit {
+  width: 100%;
+  padding: 13px;
+  background: var(--lp-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--lp-radius);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--lp-font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background var(--lp-transition), transform var(--lp-transition), box-shadow var(--lp-transition);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  margin-top: 4px;
+}
+
+.lp-btn-submit:hover:not(:disabled) {
+  background: var(--lp-accent-h);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+}
+
+.lp-btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.lp-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Separador ── */
+.lp-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--lp-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.lp-divider::before,
+.lp-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--lp-border);
+}
+
+/* ── Botones sociales (estilo imagen) ── */
+.lp-social-row {
+  display: flex;
+  gap: 10px;
+}
+
+.lp-social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1.5px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  background: var(--lp-card-bg);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--lp-font);
+  color: var(--lp-text-sec);
+  cursor: pointer;
+  transition: all var(--lp-transition);
+}
+
+.lp-social-btn:hover {
+  border-color: var(--lp-accent);
+  color: var(--lp-accent);
+  background: rgba(79, 70, 229, 0.04);
+}
+
+/* ── Footer del login ── */
+.login-right-footer {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.login-right-footer p {
+  font-size: 11px;
+  color: var(--lp-text-muted);
+  font-family: var(--lp-mono);
+}
+
+/* ============================================================
+   ANIMACIONES
+   ============================================================ */
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   OVERLAY DE CARGA
+   ============================================================ */
+.lp-loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.lp-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--lp-border);
+  border-top-color: var(--lp-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.lp-loading-overlay p {
+  font-size: 13px;
+  color: var(--lp-text-sec);
+  font-family: var(--lp-font);
+}
+
+/* ============================================================
+   RESPONSIVE COMPLETO
+   ============================================================ */
+@media (max-width: 1024px) {
+  .login-right { width: 420px; padding: 40px 36px; }
+}
+
+@media (max-width: 768px) {
+  .login-left  { display: none; }
+  .login-right {
+    width: 100%;
+    min-height: 100vh;
+    padding: 48px 24px;
+    justify-content: center;
+  }
+}

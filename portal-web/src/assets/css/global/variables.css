@@ -1,0 +1,98 @@
+/* ==================== VARIABLES GLOBALES ==================== */
+:root {
+  /* Colores Primarios */
+  --primary-dark: #010e1b;
+  --primary-darker: #000814;
+  --primary-blue: #0d6efd;
+  --primary-blue-hover: #0a58ca;
+  --primary-yellow: #ffc107;
+  
+  /* Colores de Texto */
+  --text-white: #ffffff;
+  --text-light: #f8f9fa;
+  --text-muted: #adb5bd;
+  --text-dark: #212529;
+  
+  /* Colores de Estado */
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #0dcaf0;
+  
+  /* Colores de Fondo */
+  --bg-dark: #010e1b;
+  --bg-darker: #000814;
+  --bg-light: #f8f9fa;
+  --bg-secondary: #343a40;
+  
+  /* Bordes */
+  --border-color: #343a40;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 15px;
+  --border-radius-round: 50px;
+  
+  /* Sombras */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.4);
+  
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  
+  /* Fuentes */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  --font-monospace: 'Courier New', Courier, monospace;
+  
+  /* Tamaños de Fuente */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  
+  /* Pesos de Fuente */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Z-index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  
+  /* Breakpoints (para referencia en JS) */
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+}
+
+/* Dark Mode (opcional para futuro) */
+[data-theme="dark"] {
+  --text-dark: #f8f9fa;
+  --text-light: #212529;
+  --bg-light: #212529;
+  --bg-dark: #f8f9fa;
+}

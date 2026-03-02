@@ -1,0 +1,139 @@
+/* Loader.css — Ruta: src/assets/css/ui/Loader.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #0a1940 0%, #0f2348 55%, #1a3a6e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Partículas decorativas de fondo */
+.loader-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(200,149,42,.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(26,58,110,.3) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.loader-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1;
+}
+
+/* Logo + escudo animado */
+.loader-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .5rem;
+  animation: fadeInDown .6s cubic-bezier(.4,0,.2,1) both;
+}
+
+.loader-brand-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .02em;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.loader-brand-sub {
+  font-size: .7rem;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Icono spinner principal */
+.loader-icon {
+  color: #c8952a;
+  animation: spin 1.4s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(200,149,42,.5));
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Texto rotativo */
+.loader-text {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: .95rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.75);
+  margin: 0;
+  letter-spacing: .02em;
+  min-width: 220px;
+  text-align: center;
+  animation: textPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: .7; }
+  50%       { opacity: 1;  }
+}
+
+/* Barra de progreso */
+.loader-progress-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loader-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c8952a, #e8b84b, #c8952a);
+  background-size: 200% 100%;
+  border-radius: 2px;
+  animation: progressAnim 1.8s ease-in-out infinite;
+}
+
+@keyframes progressAnim {
+  0%   { width: 10%; background-position: 200% 0; }
+  50%  { width: 75%; }
+  100% { width: 10%; background-position: -200% 0; }
+}
+
+/* Puntos decorativos */
+.loader-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.loader-dots span {
+  width: 6px;
+  height: 6px;
+  background: rgba(200,149,42,.7);
+  border-radius: 50%;
+  animation: dotBounce .9s ease-in-out infinite;
+}
+
+.loader-dots span:nth-child(2) { animation-delay: .15s; }
+.loader-dots span:nth-child(3) { animation-delay: .30s; }
+
+@keyframes dotBounce {
+  0%, 100% { transform: translateY(0);  opacity: .5; }
+  50%       { transform: translateY(-6px); opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from { transform: translateY(-16px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}

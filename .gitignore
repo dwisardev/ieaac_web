@@ -1,0 +1,41 @@
+# =====================================================
+# .GITIGNORE - I.E. Andrés Avelino Cáceres
+# =====================================================
+
+# Credenciales y configuración sensible
+.env
+.env.local
+.env.*.local
+
+# Dependencias
+node_modules/
+vendor/
+
+# Builds de producción (se generan con npm run build)
+portal-web/dist/
+admin-panel/dist/
+
+# Logs
+*.log
+api/logs/*.log
+api/logs/api_log
+
+# Uploads de usuarios (no versionar archivos subidos)
+uploads/
+!uploads/.gitkeep
+
+# Archivos temporales y de sistema
+*.zip
+nul
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# PHP
+*.cache

@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # No redirigir si la peticion va a /api/ o /admin-panel/
+    RewriteCond %{REQUEST_URI} ^/api/ [OR]
+    RewriteCond %{REQUEST_URI} ^/admin-panel/
+    RewriteRule ^ - [L]
+
+    # SPA: redirigir a index.html si no es archivo/directorio real
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+AddDefaultCharset UTF-8

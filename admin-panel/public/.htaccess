@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /admin-panel/
+
+    # Si es archivo o directorio real, servir directamente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # SPA: cualquier ruta que no exista fisicamente sirve index.html
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+Options -Indexes
+AddDefaultCharset UTF-8
