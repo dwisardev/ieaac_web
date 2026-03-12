@@ -5,12 +5,17 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://ieandresavelinocaceres.
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: { 'Content-Type': 'application/json' },
 });
 
 /* ── Request: adjuntar token y CSRF ── */
 api.interceptors.request.use(
   (config) => {
+    // Solo poner Content-Type: application/json cuando NO es FormData
+    // (para FormData el browser lo setea automáticamente con el boundary correcto)
+    if (!(config.data instanceof FormData)) {
+      config.headers['Content-Type'] = 'application/json';
+    }
+
     // Agregar JWT token
     const token =
       localStorage.getItem('access_token') ||

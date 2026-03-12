@@ -1,0 +1,23 @@
+/* Contacto.css */
+.contact-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(26,58,110,.08);
+  box-shadow: 0 4px 20px rgba(26,58,110,.07);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(26,58,110,.12);
+}
+
+/* Form styling helpers */
+.contact-card .form-control:focus,
+.contact-card .form-select:focus {
+  border-color: #1a3a6e;
+  box-shadow: 0 0 0 .2rem rgba(26,58,110,.15);
+}
+
+@media (max-width: 768px) {
+  .contact-card { margin-bottom: 1.5rem; }
+}

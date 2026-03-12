@@ -1,0 +1,76 @@
+/* Directorio.css */
+.directorio-section {
+  background: #f8f6f1;
+  padding: 3rem 0;
+}
+
+.directorio-bg-pattern {
+  background-image: radial-gradient(circle at 10% 20%, rgba(26,58,110,.04) 0%, transparent 50%),
+                    radial-gradient(circle at 90% 80%, rgba(200,149,42,.04) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.school-logo {
+  width: 80px; height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 3px solid rgba(26,58,110,.15);
+  padding: 4px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(26,58,110,.12);
+}
+
+.directorio-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: #1a3a6e;
+}
+
+.directorio-subtitle {
+  font-size: 1rem;
+  color: #616161;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* Table */
+.custom-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(26,58,110,.08);
+  border: none !important;
+}
+.custom-table thead th {
+  background: #1a3a6e;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: .85rem 1rem;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.custom-table tbody td {
+  padding: .8rem 1rem;
+  border-color: rgba(26,58,110,.06);
+  vertical-align: middle;
+  font-size: .9rem;
+}
+.custom-table tbody tr:hover {
+  background: rgba(26,58,110,.03);
+}
+
+.bg-light-blue { background: rgba(13,110,253,.05) !important; }
+.bg-gray-50    { background: #fafafa !important; }
+
+.name-cell { white-space: nowrap; }
+.last-name  { font-weight: 600; color: #1a3a6e; }
+.first-name { color: #444; }
+
+@media (max-width: 768px) {
+  .directorio-section { padding: 2rem 0; }
+  .custom-table { font-size: .82rem; }
+  .custom-table thead th,
+  .custom-table tbody td { padding: .6rem .75rem; }
+}

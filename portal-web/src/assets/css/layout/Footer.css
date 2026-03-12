@@ -68,3 +68,13 @@
   .footer-description { max-width:100%; }
   .footer-bottom-inner { flex-direction:column; text-align:center; gap:.75rem; }
 }
+
+@media (max-width:576px) {
+  .ie-footer-top { padding:2rem 0 1.5rem; }
+  .footer-brand-name { font-size:.9rem; }
+  .footer-heading { font-size:.68rem; }
+  .footer-links a, .footer-links button,
+  .footer-schedule li,
+  .footer-contact-list li { font-size:.8rem; }
+  .footer-copy { font-size:.7rem; }
+}

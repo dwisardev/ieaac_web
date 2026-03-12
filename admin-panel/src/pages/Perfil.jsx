@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -64,6 +64,26 @@ export default function Perfil() {
   });
   const [infoSaving, setInfoSaving] = useState(false);
   const [infoMsg,    setInfoMsg]    = useState(null);
+
+  /* Obtener datos completos del usuario desde la API (nombre, email pueden no estar en el token) */
+  useEffect(() => {
+    if (!user?.id) return;
+    api.get(`/admin/usuarios/${user.id}`)
+      .then(res => {
+        const u = res.data?.data || res.data || {};
+        setInfoForm({
+          nombre: u.nombre || user.nombre || '',
+          email:  u.email  || user.email  || '',
+        });
+      })
+      .catch(() => {
+        // Fallback al usuario del contexto si falla la API
+        setInfoForm({
+          nombre: user.nombre || '',
+          email:  user.email  || '',
+        });
+      });
+  }, [user?.id]);
 
   /* Tab Seguridad */
   const [pwdForm, setPwdForm]   = useState({ actual:'', nueva:'', confirmar:'' });

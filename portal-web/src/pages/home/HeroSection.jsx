@@ -1,16 +1,7 @@
 // HeroSection.jsx — src/pages/home/HeroSection.jsx
 import { useState, useEffect, useCallback, useRef } from "react";
 import "../../assets/css/pages/HeroSection.css";
-//import { bannersService } from "../../services/bannersService";
-
-const FALLBACK = {
-  id:         "default",
-  imagen:     "/img/Banners/BannerHome.jpg",
-  imagen_url: "/img/Banners/BannerHome.jpg",
-  titulo:     "I.E. Andrés Avelino Cáceres",
-  subtitulo:  "Formando líderes del mañana con disciplina, estudio y deporte.",
-  enlace:     null,
-};
+import { bannersService } from "../../services/bannersService";
 
 const PILARES = [
   { key: "disciplina", icon: "bi-award-fill",    label: "Disciplina", cls: "disciplina" },
@@ -19,7 +10,7 @@ const PILARES = [
 ];
 
 export default function HeroSection() {
-  const [banners, setBanners] = useState([FALLBACK]);
+  const [banners, setBanners] = useState([]);
   const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(true);
   const timerRef = useRef(null);
@@ -28,9 +19,9 @@ export default function HeroSection() {
     (async () => {
       try {
         const data = await bannersService.getActivos();
-        setBanners(data.length > 0 ? data : [FALLBACK]);
+        setBanners(data);
       } catch {
-        setBanners([FALLBACK]);
+        setBanners([]);
       } finally {
         setLoading(false);
       }
@@ -62,9 +53,9 @@ export default function HeroSection() {
   };
 
   const imgSrc = (b) => {
-    if (!b)                          return FALLBACK.imagen;
+    if (!b)                          return null;
     if (b.imagen_url)                return b.imagen_url;
-    if (!b.imagen)                   return FALLBACK.imagen;
+    if (!b.imagen)                   return null;
     if (b.imagen.startsWith("http")) return b.imagen;
     return `${import.meta.env.VITE_UPLOAD_URL || ""}/banners/${b.imagen}`;
   };
@@ -73,74 +64,71 @@ export default function HeroSection() {
     <section className="hero-section">
 
       {/* ── Carrusel ── */}
-      <div className="hero-carousel-wrap">
-        {loading ? (
-          <div className="hero-loading"><div className="hero-spinner" /></div>
-        ) : (
-          <>
-            {banners.map((banner, idx) =>
-              idx === current ? (
-                <div
-                  key={banner.id}
-                  className={`hero-slide active${banner.enlace ? " clickable" : ""}`}
-                  onClick={() => handleClick(banner.enlace)}
-                  role={banner.enlace ? "button" : undefined}
-                  aria-label={banner.enlace ? `Ver más: ${banner.titulo}` : undefined}
-                  tabIndex={banner.enlace ? 0 : undefined}
-                  onKeyDown={banner.enlace
-                    ? (e) => e.key === "Enter" && handleClick(banner.enlace)
-                    : undefined}
-                >
-                  <img
-                    src={imgSrc(banner)}
-                    alt={banner.titulo || "Banner institucional"}
-                    onError={e => {
-                      if (!e.target.dataset.err) {
-                        e.target.dataset.err = "1";
-                        e.target.src = FALLBACK.imagen;
-                      }
-                    }}
-                  />
-                  <div className="hero-slide-overlay" aria-hidden="true" />
-                  {(banner.titulo || banner.subtitulo) && (
-                    <div className="hero-slide-content">
-                      {banner.titulo    && <h1 className="hero-slide-titulo">{banner.titulo}</h1>}
-                      {banner.subtitulo && <p  className="hero-slide-subtitulo">{banner.subtitulo}</p>}
-                      {banner.enlace    && (
-                        <span className="hero-slide-badge">
-                          <i className="bi bi-arrow-right-circle" />Ver más información
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ) : null
-            )}
-
-            {banners.length > 1 && (
-              <>
-                <button className="hero-ctrl prev" onClick={prev} aria-label="Banner anterior">
-                  <i className="bi bi-chevron-left" />
-                </button>
-                <button className="hero-ctrl next" onClick={next} aria-label="Siguiente banner">
-                  <i className="bi bi-chevron-right" />
-                </button>
-                <div className="hero-indicators" role="tablist" aria-label="Navegación de banners">
-                  {banners.map((_, idx) => (
-                    <button
-                      key={idx} role="tab"
-                      className={`hero-dot${idx === current ? " active" : ""}`}
-                      onClick={() => goTo(idx)}
-                      aria-label={`Banner ${idx + 1}`}
-                      aria-selected={idx === current}
+      {(loading || banners.length > 0) && (
+        <div className="hero-carousel-wrap">
+          {loading ? (
+            <div className="hero-loading"><div className="hero-spinner" /></div>
+          ) : (
+            <>
+              {banners.map((banner, idx) =>
+                idx === current ? (
+                  <div
+                    key={banner.id}
+                    className={`hero-slide active${banner.enlace ? " clickable" : ""}`}
+                    onClick={() => handleClick(banner.enlace)}
+                    role={banner.enlace ? "button" : undefined}
+                    aria-label={banner.enlace ? `Ver más: ${banner.titulo}` : undefined}
+                    tabIndex={banner.enlace ? 0 : undefined}
+                    onKeyDown={banner.enlace
+                      ? (e) => e.key === "Enter" && handleClick(banner.enlace)
+                      : undefined}
+                  >
+                    <img
+                      src={imgSrc(banner)}
+                      alt={banner.titulo || "Banner institucional"}
+                      onError={e => { e.target.style.display = "none"; }}
                     />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        )}
-      </div>
+                    <div className="hero-slide-overlay" aria-hidden="true" />
+                    {(banner.titulo || banner.subtitulo) && (
+                      <div className="hero-slide-content">
+                        {banner.titulo    && <h1 className="hero-slide-titulo">{banner.titulo}</h1>}
+                        {banner.subtitulo && <p  className="hero-slide-subtitulo">{banner.subtitulo}</p>}
+                        {banner.enlace    && (
+                          <span className="hero-slide-badge">
+                            <i className="bi bi-arrow-right-circle" />Ver más información
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : null
+              )}
+
+              {banners.length > 1 && (
+                <>
+                  <button className="hero-ctrl prev" onClick={prev} aria-label="Banner anterior">
+                    <i className="bi bi-chevron-left" />
+                  </button>
+                  <button className="hero-ctrl next" onClick={next} aria-label="Siguiente banner">
+                    <i className="bi bi-chevron-right" />
+                  </button>
+                  <div className="hero-indicators" role="tablist" aria-label="Navegación de banners">
+                    {banners.map((_, idx) => (
+                      <button
+                        key={idx} role="tab"
+                        className={`hero-dot${idx === current ? " active" : ""}`}
+                        onClick={() => goTo(idx)}
+                        aria-label={`Banner ${idx + 1}`}
+                        aria-selected={idx === current}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
+      )}
 
       {/* ── Pilares ── */}
       <div className="pilares-section">
@@ -149,6 +137,9 @@ export default function HeroSection() {
 
             <div className="col-lg-6 pilares-left">
               <h2>Formando Futuro con <span>Excelencia</span></h2>
+              <p className="pilares-subtitle">
+                Tres pilares fundamentales que guían nuestra formación integral en Sirenachayocc.
+              </p>
               <div className="pilares-btns">
                 {PILARES.map(p => (
                   <div key={p.key} className={`pilar-btn ${p.cls}`}>
@@ -157,6 +148,7 @@ export default function HeroSection() {
                   </div>
                 ))}
               </div>
+              <div className="pilares-divider"><span>Nuestra filosofía</span></div>
               <div className="pilares-quote">
                 <blockquote>
                   <p>"La educación es el arma más poderosa que puedes usar para cambiar el mundo."</p>
@@ -178,10 +170,11 @@ export default function HeroSection() {
                   onError={e => { e.target.style.display = "none"; }}
                 />
                 <div className="pilares-card-body">
-                  <h5>Educación 360°</h5>
+                  <h5>Educación 360<sup>°</sup></h5>
                   <p>
                     Con nuestra Educación 360°, tu hijo podrá desarrollar su máximo potencial —
-                    desde la ciencia hasta el deporte, con disciplina como fundamento y valores como brújula.
+                    desde la ciencia hasta el deporte, con <strong>disciplina</strong> como
+                    fundamento y valores como brújula.
                   </p>
                 </div>
               </div>

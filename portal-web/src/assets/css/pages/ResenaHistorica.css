@@ -1,0 +1,305 @@
+/* ══════════════════════════════════════════════
+   ResenaHistorica.css
+   ══════════════════════════════════════════════ */
+
+/* ── Page ── */
+.rh-page {
+  background: #f8f6f1;
+}
+
+/* ── Hero ── */
+.rh-hero {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6e 60%, #1f4a8a 100%);
+  overflow: hidden;
+  padding: 4rem 0 3.5rem;
+}
+
+.rh-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 60px,
+      rgba(200,149,42,.04) 60px,
+      rgba(200,149,42,.04) 61px
+    );
+}
+
+/* Decos geométricas (círculos muy sutiles, solo outlines) */
+.rh-hero__deco {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200,149,42,.12);
+  pointer-events: none;
+}
+.rh-hero__deco--tl {
+  width: 320px; height: 320px;
+  top: -100px; left: -80px;
+}
+.rh-hero__deco--br {
+  width: 220px; height: 220px;
+  bottom: -70px; right: -50px;
+  border-color: rgba(255,255,255,.06);
+}
+
+.rh-hero__tag {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #c8952a;
+  background: rgba(200,149,42,.12);
+  border: 1px solid rgba(200,149,42,.25);
+  padding: .3rem .9rem;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+}
+
+.rh-hero__title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: .75rem;
+}
+
+.rh-hero__sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,.72);
+  line-height: 1.6;
+  margin-bottom: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+/* ── Photo ── */
+.rh-photo-wrap {
+  background: #fff;
+  padding: 3rem 0;
+}
+
+.rh-photo {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(26,58,110,.15);
+}
+
+.rh-photo__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+.rh-photo:hover .rh-photo__img {
+  transform: scale(1.02);
+}
+
+.rh-photo__caption {
+  background: linear-gradient(to right, #1a3a6e, #0d1f3c);
+  color: rgba(255,255,255,.88);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: .9rem;
+  padding: .75rem 1.25rem;
+  margin: 0;
+}
+
+/* ── Section Head ── */
+.rh-timeline-wrap {
+  padding: 4rem 0 5rem;
+}
+
+.rh-section-head {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.rh-section-head__label {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #c8952a;
+  margin-bottom: .5rem;
+}
+
+.rh-section-head__title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: #1a3a6e;
+  margin-bottom: .75rem;
+}
+.rh-section-head__title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(to right, #c8952a, #e8b84b);
+  border-radius: 2px;
+  margin: .6rem auto 0;
+}
+
+.rh-section-head__desc {
+  color: #616161;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Timeline ── */
+.rh-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* Línea vertical central */
+.rh-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #1a3a6e 0%, #c8952a 100%);
+  transform: translateX(-50%);
+}
+
+.rh-timeline__item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Items alternados */
+.rh-timeline__item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+.rh-timeline__item:nth-child(even) .rh-timeline__card {
+  text-align: right;
+}
+
+/* Dot central */
+.rh-timeline__dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .25rem;
+}
+
+.rh-timeline__dot::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #c8952a;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px #c8952a, 0 4px 12px rgba(200,149,42,.35);
+}
+
+.rh-timeline__year {
+  display: inline-block;
+  margin-top: .4rem;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #fff;
+  background: #1a3a6e;
+  padding: .15rem .5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* Card */
+.rh-timeline__card {
+  width: calc(50% - 2.5rem);
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 4px 20px rgba(26,58,110,.08);
+  border: 1px solid rgba(26,58,110,.06);
+  transition: transform .25s, box-shadow .25s;
+}
+.rh-timeline__card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(26,58,110,.14);
+}
+
+.rh-timeline__card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a3a6e;
+  margin-bottom: .6rem;
+}
+.rh-timeline__card-title::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: #c8952a;
+  border-radius: 2px;
+  margin-top: .35rem;
+}
+.rh-timeline__item:nth-child(even) .rh-timeline__card-title::after {
+  margin-left: auto;
+}
+
+.rh-timeline__card-text {
+  color: #555;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: .92rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Responsive (mobile: apilado) ── */
+@media (max-width: 768px) {
+  .rh-hero {
+    min-height: 260px;
+    padding: 3rem 0 2.5rem;
+  }
+
+  .rh-timeline::before {
+    left: 1rem;
+  }
+
+  .rh-timeline__item,
+  .rh-timeline__item:nth-child(even) {
+    flex-direction: column;
+    padding-left: 3rem;
+  }
+
+  .rh-timeline__item:nth-child(even) .rh-timeline__card {
+    text-align: left;
+  }
+  .rh-timeline__item:nth-child(even) .rh-timeline__card-title::after {
+    margin-left: 0;
+  }
+
+  .rh-timeline__dot {
+    left: 1rem;
+  }
+
+  .rh-timeline__card {
+    width: 100%;
+  }
+}

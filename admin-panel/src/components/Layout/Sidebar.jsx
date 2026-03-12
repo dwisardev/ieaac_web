@@ -10,20 +10,36 @@ const AVATAR_COLORS = {
 
 const menuItems = [
   { section: 'Principal' },
-  { id: 'dashboard',     path: '/',             icon: 'fa-home',               label: 'Dashboard',     roles: ['admin','editor','docente'] },
+  { id: 'dashboard',     path: '/',             icon: 'fa-home',               label: 'Dashboard',          roles: ['admin','editor','docente'] },
+
   { section: 'Contenido' },
-  { id: 'noticias',      path: '/noticias',      icon: 'fa-newspaper',          label: 'Noticias',      roles: ['admin','editor'], badge: 3 },
-  { id: 'comunicados',   path: '/comunicados',   icon: 'fa-bullhorn',           label: 'Comunicados',   roles: ['admin','editor'] },
-  { id: 'eventos',       path: '/eventos',       icon: 'fa-calendar-alt',       label: 'Eventos',       roles: ['admin','editor'] },
+  { id: 'noticias',      path: '/noticias',      icon: 'fa-newspaper',          label: 'Noticias',           roles: ['admin','editor'] },
+  { id: 'comunicados',   path: '/comunicados',   icon: 'fa-bullhorn',           label: 'Comunicados',        roles: ['admin','editor'] },
+  { id: 'eventos',       path: '/eventos',       icon: 'fa-calendar-alt',       label: 'Eventos',            roles: ['admin','editor'] },
+  { id: 'banners',       path: '/banners',       icon: 'fa-images',             label: 'Banners',            roles: ['admin','editor'] },
+
   { section: 'Académico' },
-  { id: 'docentes',      path: '/docentes',      icon: 'fa-chalkboard-teacher', label: 'Docentes',      roles: ['admin','editor'] },
-  { id: 'horarios',      path: '/horarios',      icon: 'fa-clock',              label: 'Horarios',      roles: ['admin','editor'] },
-  { id: 'biblioteca',    path: '/biblioteca',    icon: 'fa-book',               label: 'Biblioteca',    roles: ['admin','editor'] },
+  { id: 'docentes',      path: '/docentes',      icon: 'fa-chalkboard-teacher', label: 'Docentes',           roles: ['admin','editor'] },
+  { id: 'directorio',    path: '/directorio',    icon: 'fa-address-book',       label: 'Directorio',         roles: ['admin','editor'] },
+  { id: 'horarios',      path: '/horarios',      icon: 'fa-clock',              label: 'Horarios',           roles: ['admin','editor'] },
+  { id: 'biblioteca',    path: '/biblioteca',    icon: 'fa-book',               label: 'Biblioteca',         roles: ['admin','editor'] },
+  { id: 'documentos',    path: '/documentos-gestion', icon: 'fa-folder-open',   label: 'Documentos',         roles: ['admin','editor'] },
+  { id: 'plan-lector',   path: '/plan-lector',   icon: 'fa-book-open',          label: 'Plan Lector',        roles: ['admin','editor'] },
+  { id: 'logros',        path: '/logros',        icon: 'fa-trophy',             label: 'Logros',             roles: ['admin','editor'] },
+
+  { section: 'Proyecto FONDEP' },
+  { id: 'portafolio',    path: '/portafolio-actividades', icon: 'fa-briefcase', label: 'Portafolio',         roles: ['admin','editor'] },
+  { id: 'monitoreo',     path: '/sistema-monitoreo',      icon: 'fa-chart-line', label: 'Monitoreo',         roles: ['admin','editor'] },
+  { id: 'informe',       path: '/informe-final',          icon: 'fa-file-alt',   label: 'Informe Final',     roles: ['admin','editor'] },
+
+  { section: 'Comunidad' },
+  { id: 'familia',       path: '/familia-educativa', icon: 'fa-users',          label: 'Familia Educativa',  roles: ['admin','editor'] },
+
   { section: 'Administración', requiresAdmin: true },
-  { id: 'usuarios',      path: '/usuarios',      icon: 'fa-users',              label: 'Usuarios',      roles: ['admin'] },
-  { id: 'configuracion', path: '/configuracion', icon: 'fa-cog',                label: 'Configuración', roles: ['admin'] },
+  { id: 'usuarios',      path: '/usuarios',      icon: 'fa-user-shield',        label: 'Usuarios',           roles: ['admin'] },
+
   { section: 'Cuenta' },
-  { id: 'perfil',        path: '/perfil',        icon: 'fa-user-circle',        label: 'Mi Perfil',     roles: ['admin','editor','docente'] },
+  { id: 'perfil',        path: '/perfil',        icon: 'fa-user-circle',        label: 'Mi Perfil',          roles: ['admin','editor','docente'] },
 ];
 
 const Sidebar = ({ collapsed, setCollapsed }) => {

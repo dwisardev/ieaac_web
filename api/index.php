@@ -112,8 +112,13 @@ try {
     }
 
     // ── RUTAS PÚBLICAS sin prefijo ──────────────────────────
-    // Ej: /api/noticias  /api/noticias/5
-    $publicResources = ['noticias', 'eventos', 'comunicados', 'docentes', 'informacion', 'banners'];
+    // Ej: /api/noticias  /api/noticias/5  /api/banners  /api/comunicados
+    $publicResources = [
+        'noticias', 'eventos', 'comunicados', 'docentes', 'informacion',
+        'banners', 'directorio', 'biblioteca', 'documentos', 'horarios',
+        'logros', 'miembros', 'informe', 'plan-lector', 'portafolio', 'monitoreo',
+        'cronograma', 'estrategias', 'pedidos', 'contacto',
+    ];
     if (in_array($seg0, $publicResources)) {
         // noticias usa el controller propio
         if ($seg0 === 'noticias') {
@@ -187,7 +192,133 @@ try {
             exit();
         }
 
-        // admin/comunicados, admin/docentes, etc → buscar en /admin/
+        // admin/banners — usa controller propio
+        if ($resource === 'banners') {
+            require_once __DIR__ . '/controllers/BannersController.php';
+            (new BannersController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/comunicados — usa controller propio
+        if ($resource === 'comunicados') {
+            require_once __DIR__ . '/controllers/ComunicadosController.php';
+            (new ComunicadosController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/directorio — usa controller propio
+        if ($resource === 'directorio') {
+            require_once __DIR__ . '/controllers/DirectorioController.php';
+            (new DirectorioController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/biblioteca — usa controller propio
+        if ($resource === 'biblioteca') {
+            require_once __DIR__ . '/controllers/BibliotecaController.php';
+            (new BibliotecaController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/documentos — usa controller propio
+        if ($resource === 'documentos') {
+            require_once __DIR__ . '/controllers/DocumentosController.php';
+            (new DocumentosController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/eventos — usa controller propio
+        if ($resource === 'eventos') {
+            require_once __DIR__ . '/controllers/EventosController.php';
+            (new EventosController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/docentes — usa controller propio
+        if ($resource === 'docentes') {
+            require_once __DIR__ . '/controllers/DocentesController.php';
+            (new DocentesController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/horarios — usa controller propio
+        if ($resource === 'horarios') {
+            require_once __DIR__ . '/controllers/HorariosController.php';
+            (new HorariosController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/logros — usa controller propio
+        if ($resource === 'logros') {
+            require_once __DIR__ . '/controllers/LogrosController.php';
+            (new LogrosController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/miembros — usa controller propio
+        if ($resource === 'miembros') {
+            require_once __DIR__ . '/controllers/MiembrosController.php';
+            (new MiembrosController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/informe — usa controller propio
+        if ($resource === 'informe') {
+            require_once __DIR__ . '/controllers/InformeController.php';
+            (new InformeController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/plan-lector — usa controller propio
+        if ($resource === 'plan-lector') {
+            require_once __DIR__ . '/controllers/PlanLectorController.php';
+            (new PlanLectorController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/portafolio — usa controller propio
+        if ($resource === 'portafolio') {
+            require_once __DIR__ . '/controllers/PortafolioController.php';
+            (new PortafolioController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/monitoreo — usa controller propio
+        if ($resource === 'monitoreo') {
+            require_once __DIR__ . '/controllers/MonitoreoController.php';
+            (new MonitoreoController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/cronograma — usa controller propio
+        if ($resource === 'cronograma') {
+            require_once __DIR__ . '/controllers/CronogramaController.php';
+            (new CronogramaController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/estrategias — usa controller propio
+        if ($resource === 'estrategias') {
+            require_once __DIR__ . '/controllers/EstrategiasController.php';
+            (new EstrategiasController())->handle(array_slice($segments, 2), $auth['data']);
+            exit();
+        }
+
+        // admin/pedidos — pedidos de libros del portal
+        if ($resource === 'pedidos') {
+            require_once __DIR__ . '/controllers/PedidosController.php';
+            (new PedidosController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/contacto — mensajes del formulario de contacto
+        if ($resource === 'contacto') {
+            require_once __DIR__ . '/controllers/ContactoController.php';
+            (new ContactoController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // demás recursos admin → buscar en /admin/
         $adminFile = __DIR__ . '/admin/' . $resource . '.php';
         if (file_exists($adminFile)) {
             require_once $adminFile;

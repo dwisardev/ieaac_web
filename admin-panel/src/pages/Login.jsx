@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import authService from '../services/auth';
 import '../assets/css/Login.css'
 
@@ -10,6 +11,7 @@ import welcomeImg from '../assets/img/welcome.png'
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     username:   '',
     password:   '',
@@ -45,7 +47,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const result = await authService.login(
+      const result = await login(
         formData.username.trim(),
         formData.password,
         formData.rememberMe,

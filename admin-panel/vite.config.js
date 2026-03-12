@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/admin-panel/',  // ← AGREGAR ESTA LÍNEA
+  envDir: '../',
+  base: '/admin-panel/',
   server: {
     port: 3000,
     open: true
@@ -15,6 +16,9 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor':    ['react-bootstrap'],
+          'icons-vendor': ['react-bootstrap-icons'],
+          'utils-vendor': ['axios', 'aos'],
         }
       }
     }

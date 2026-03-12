@@ -1,0 +1,72 @@
+/* PortafolioActividades.css */
+.fondep-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.fondep-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(26,58,110,.08);
+  box-shadow: 0 4px 16px rgba(26,58,110,.06);
+  overflow: hidden;
+  transition: box-shadow .3s ease;
+}
+.fondep-card:hover {
+  box-shadow: 0 12px 32px rgba(26,58,110,.12);
+}
+
+/* Gallery */
+.fondep-gallery-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 4/3;
+}
+.fondep-gallery-item img,
+.fondep-gallery-item video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+.fondep-gallery-item:hover img,
+.fondep-gallery-item:hover video { transform: scale(1.06); }
+
+.fondep-gallery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,58,110,.7) 0%, transparent 60%);
+  opacity: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .3s ease;
+  color: #fff; font-size: 1.5rem;
+}
+.fondep-gallery-item:hover .fondep-gallery-overlay { opacity: 1; }
+
+/* Modal */
+.fondep-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.9);
+  z-index: 1100;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.fondep-modal img,
+.fondep-modal video {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+/* Rotate icon for accordion */
+.rotate-180 { transform: rotate(180deg); }
+.transition-transform { transition: transform .3s ease; }
+
+@media (max-width: 768px) {
+  .fondep-container { padding: 1rem .5rem; }
+}

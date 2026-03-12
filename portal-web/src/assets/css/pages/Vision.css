@@ -1,0 +1,65 @@
+/* Vision.css */
+.vision-section {
+  background: linear-gradient(135deg, #f0fff4 0%, #e6f9f0 100%);
+}
+
+.vision-bg-pattern {
+  background-image: radial-gradient(circle at 20% 50%, rgba(25,135,84,.06) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(200,149,42,.05) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.vision-emblem {
+  width: 80px; height: 80px;
+  font-size: 2rem;
+  box-shadow: 0 8px 24px rgba(25,135,84,.25);
+}
+
+.vision-title {
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.vision-card {
+  background: #fff;
+  border: 1px solid rgba(25,135,84,.1);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.vision-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(25,135,84,.12) !important;
+}
+
+.vision-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.goal-card {
+  background: #fff;
+  border: 1px solid rgba(25,135,84,.1);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.goal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(25,135,84,.1) !important;
+}
+.goal-icon { font-size: 2rem; }
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+}
+
+.icon-spin {
+  animation: iconSpin 8s linear infinite;
+  color: #198754;
+}
+@keyframes iconSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .vision-section { padding: 2.5rem 0; }
+}

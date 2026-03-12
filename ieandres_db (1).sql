@@ -1075,7 +1075,8 @@ INSERT INTO `usuarios` (`id`, `username`, `email`, `password`, `rol`, `activo`, 
 (1, 'admin', 'admin@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
 (2, 'gerardo.florez', 'gfc.jma@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
 (3, 'editor', 'editor@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'editor', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
-(4, 'docente', 'docente@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'docente', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43');
+(4, 'docente', 'docente@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'docente', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
+(5, 'margarita.saravia', 'margarita.saravia@iecaceres.edu.pe', '$2y$10$sN.TZwp/r120N8smgVKHpOZaf2fASO5ihmzv9eERMdTV3djqKzM5O', 'admin', 1, NOW(), NOW());
 
 --
 -- Índices para tablas volcadas

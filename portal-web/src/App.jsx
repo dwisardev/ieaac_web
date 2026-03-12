@@ -23,30 +23,37 @@ import Loader        from "./components/ui/Loader";
 // ── Páginas activas ──
 import Home from "./pages/home/Home";
 
-/*
- * Páginas pendientes — descomentar cuando existan:
- *
- * import ResenaHistorica         from "./pages/Nosotros/ResenaHistorica";
- * import NormasConvivencia       from "./pages/Nosotros/NormasConvivencia";
- * import Mision                  from "./pages/Nosotros/Mision";
- * import Vision                  from "./pages/Nosotros/Vision";
- * import Directorio              from "./pages/Nosotros/Directorio";
- * import NuestrosLogros          from "./pages/Nosotros/NuestrosLogros";
- * import NuestraFamilia          from "./pages/Comunidad/NuestraFamilia";
- * import PortafoliodeActividades from "./pages/Fondep/PortafolioActividades";
- * import CronogramaProyecto      from "./pages/Fondep/CronogramaProyecto";
- * import EstrategiasProyecto     from "./pages/Fondep/EstrategiasProyecto";
- * import SistemaMonitoreo        from "./pages/Fondep/SistemaMonitoreo";
- * import InformeFinal            from "./pages/Fondep/InformeFinal";
- * import PlanLector              from "./pages/Recursos/PlanLector";
- * import DocumentosGestion       from "./pages/Recursos/DocumentosGestion";
- * import HorariosEscolares       from "./pages/Recursos/HorariosEscolares";
- * import BibliotecaVirtual       from "./pages/Recursos/BibliotecaVirtual";
- * import Pedidos                 from "./pages/Recursos/Biblioteca/PedidoLibro";
- * import Categoria               from "./pages/Recursos/Biblioteca/Categoria";
- * import Contacto                from "./pages/contacto/Contacto";
- * import Comunicados             from "./pages/comunicados/Comunicados";
- */
+// ── Nosotros ──
+import ResenaHistorica   from "./pages/Nosotros/ResenaHistorica";
+import NormasConvivencia from "./pages/Nosotros/NormasConvivencia";
+import Mision            from "./pages/Nosotros/Mision";
+import Vision            from "./pages/Nosotros/Vision";
+import Directorio        from "./pages/Nosotros/Directorio";
+import NuestrosLogros    from "./pages/Nosotros/NuestrosLogros";
+
+// ── Comunidad ──
+import NuestraFamilia from "./pages/Comunidad/NuestraFamilia";
+
+// ── FONDEP ──
+import PortafolioActividades from "./pages/Fondep/PortafolioActividades";
+import CronogramaProyecto    from "./pages/Fondep/CronogramaProyecto";
+import EstrategiasProyecto   from "./pages/Fondep/EstrategiasProyecto";
+import SistemaMonitoreo      from "./pages/Fondep/SistemaMonitoreo";
+import InformeFinal          from "./pages/Fondep/InformeFinal";
+
+// ── Recursos ──
+import PlanLector        from "./pages/Recursos/PlanLector";
+import DocumentosGestion from "./pages/Recursos/DocumentosGestion";
+import HorariosEscolares from "./pages/Recursos/HorariosEscolares";
+import BibliotecaVirtual from "./pages/Recursos/BibliotecaVirtual";
+import PedidoLibro      from "./pages/Recursos/Biblioteca/PedidoLibro";
+import Categorias       from "./pages/Recursos/Biblioteca/Categoria";
+
+// ── Comunicados ──
+import Comunicados from "./pages/Comunicados/Comunicados";
+
+// ── Contacto ──
+import Contacto from "./pages/home/Contacto/Contacto";
 
 /* ── 404 ── */
 function NotFound() {
@@ -99,35 +106,53 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
 
-          {/* Nosotros — descomentar cuando existan:
-          <Route path="/ResenaHistorica"   element={<ResenaHistorica />} />
-          <Route path="/NormasConvivencia" element={<NormasConvivencia />} />
-          <Route path="/Mision"            element={<Mision />} />
-          <Route path="/Vision"            element={<Vision />} />
+          {/* ── Nosotros ── */}
+          <Route path="/nosotros/resena-historica"   element={<ResenaHistorica />} />
+          <Route path="/nosotros/normas-convivencia" element={<NormasConvivencia />} />
+          <Route path="/nosotros/mision"             element={<Mision />} />
+          <Route path="/nosotros/vision"             element={<Vision />} />
+          <Route path="/nosotros/directorio"         element={<Directorio />} />
+          <Route path="/nosotros/logros"             element={<NuestrosLogros />} />
+
+          {/* ── Comunidad ── */}
+          <Route path="/comunidad/familia-educativa" element={<NuestraFamilia />} />
+
+          {/* ── FONDEP ── */}
+          <Route path="/fondep/portafolio-actividades" element={<PortafolioActividades />} />
+          <Route path="/fondep/cronograma"             element={<CronogramaProyecto />} />
+          <Route path="/fondep/estrategias"            element={<EstrategiasProyecto />} />
+          <Route path="/fondep/sistema-monitoreo"      element={<SistemaMonitoreo />} />
+          <Route path="/fondep/informe-final"          element={<InformeFinal />} />
+
+          {/* ── Recursos ── */}
+          <Route path="/recursos/horarios"              element={<HorariosEscolares />} />
+          <Route path="/recursos/documentos-gestion"    element={<DocumentosGestion />} />
+          <Route path="/recursos/biblioteca-virtual"    element={<BibliotecaVirtual />} />
+          <Route path="/recursos/plan-lector"           element={<PlanLector />} />
+          <Route path="/recursos/pedidos-libros"        element={<PedidoLibro />} />
+          <Route path="/recursos/biblioteca-virtual/categorias" element={<Categorias />} />
+          <Route path="/Pedidos"                        element={<PedidoLibro />} />
+
+          {/* ── Comunicados ── */}
+          <Route path="/comunicados" element={<Comunicados />} />
+
+          {/* ── Contacto ── */}
+          <Route path="/contacto" element={<Contacto />} />
+
+          {/* ── Aliases legacy (sin prefijo, compatibilidad con links existentes) ── */}
           <Route path="/Directorio"        element={<Directorio />} />
-          <Route path="/NuestrosLogros"    element={<NuestrosLogros />} /> */}
-
-          {/* Comunidad:
-          <Route path="/NuestraFamilia" element={<NuestraFamilia />} /> */}
-
-          {/* FONDEP:
-          <Route path="/PortafoliodeActividades" element={<PortafoliodeActividades />} />
-          <Route path="/CronogramaProyecto"      element={<CronogramaProyecto />} />
-          <Route path="/EstrategiasProyecto"     element={<EstrategiasProyecto />} />
-          <Route path="/SistemaManitoreo"        element={<SistemaMonitoreo />} />
-          <Route path="/InformeFinal"            element={<InformeFinal />} /> */}
-
-          {/* Recursos:
+          <Route path="/NuestrosLogros"    element={<NuestrosLogros />} />
+          <Route path="/NuestraFamilia"    element={<NuestraFamilia />} />
           <Route path="/HorariosEscolares" element={<HorariosEscolares />} />
           <Route path="/DocumentosGestion" element={<DocumentosGestion />} />
           <Route path="/BibliotecaVirtual" element={<BibliotecaVirtual />} />
           <Route path="/PlanLector"        element={<PlanLector />} />
-          <Route path="/Pedidos"           element={<Pedidos />} />
-          <Route path="/Categoria"         element={<Categoria />} /> */}
-
-          {/* Comunicación:
-          <Route path="/Contacto"    element={<Contacto />} />
-          <Route path="/Comunicados" element={<Comunicados />} /> */}
+          <Route path="/InformeFinal"      element={<InformeFinal />} />
+          <Route path="/SistemaMonitoreo"  element={<SistemaMonitoreo />} />
+          <Route path="/CronogramaProyecto" element={<CronogramaProyecto />} />
+          <Route path="/EstrategiasProyecto" element={<EstrategiasProyecto />} />
+          <Route path="/PortafolioActividades" element={<PortafolioActividades />} />
+          <Route path="/Comunicados"       element={<Comunicados />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

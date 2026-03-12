@@ -29,7 +29,7 @@ export default function Loader() {
         {/* Marca */}
         <div className="loader-brand">
           <span className="loader-brand-name">I.E. Andrés Avelino Cáceres</span>
-          <span className="loader-brand-sub">Sirenachayocc · Ayacucho</span>
+          <span className="loader-brand-sub">Sirenachayocc · Cusco</span>
         </div>
 
         {/* Icono giratorio */}

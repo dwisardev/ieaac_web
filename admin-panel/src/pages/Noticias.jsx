@@ -7,10 +7,11 @@ import { useAuth } from '../context/AuthContext';
 
 /* ── Helpers ── */
 const UPLOAD_URL = import.meta.env.VITE_UPLOAD_URL || '';
-const imgUrl = (imagen) => {
-  if (!imagen) return null;
-  if (imagen.startsWith('http')) return imagen;
-  return `${UPLOAD_URL}/noticias/${imagen}`;
+const imgUrl = (noticia) => {
+  if (!noticia?.imagen)                  return null;
+  if (noticia.imagen_url)                return noticia.imagen_url;
+  if (noticia.imagen.startsWith('http')) return noticia.imagen;
+  return `${UPLOAD_URL}/noticias/${noticia.imagen}`;
 };
 const fmtFecha = (f) =>
   f ? new Date(f).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
@@ -59,7 +60,7 @@ function NoticiaModal({ onClose, onSaved, editando }) {
     destacada:   editando?.destacada   || false,
     imagen:      null,
   });
-  const [preview, setPreview] = useState(editando ? imgUrl(editando.imagen) : null);
+  const [preview, setPreview] = useState(editando ? imgUrl(editando) : null);
   const [saving,  setSaving]  = useState(false);
   const [errors,  setErrors]  = useState({});
 
@@ -540,8 +541,8 @@ export default function Noticias() {
                         border:'1px solid var(--border)',
                         display:'flex', alignItems:'center', justifyContent:'center',
                       }}>
-                        {imgUrl(n.imagen)
-                          ? <img src={imgUrl(n.imagen)} alt=""
+                        {imgUrl(n)
+                          ? <img src={imgUrl(n)} alt=""
                               style={{ width:'100%', height:'100%', objectFit:'cover' }}
                               onError={e => e.target.style.display='none'} />
                           : <i className="bi bi-image" style={{ color:'var(--text-muted)', fontSize:16 }} />

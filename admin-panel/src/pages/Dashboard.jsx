@@ -74,18 +74,27 @@ export default function Dashboard() {
     const load = async () => {
       setLoading(true);
       try {
+        const norm = (r) => {
+          if (r.status !== 'fulfilled') return [];
+          const body = r.value?.data;
+          return Array.isArray(body) ? body : Array.isArray(body?.data) ? body.data : [];
+        };
         const [rN, rC, rD] = await Promise.allSettled([
           api.get('/admin/noticias'),
           api.get('/admin/comunicados'),
           api.get('/public/docentes'),
         ]);
-        const noticias    = rN.status === 'fulfilled' ? (rN.value?.data    || rN.value    || []) : [];
-        const comunicados = rC.status === 'fulfilled' ? (rC.value?.data    || rC.value    || []) : [];
-        const docentes    = rD.status === 'fulfilled' ? (rD.value?.data    || rD.value    || []) : [];
+        const noticias    = norm(rN);
+        const comunicados = norm(rC);
+        const docentes    = norm(rD);
 
         let usuarios = 0;
         if (user?.rol === 'admin') {
-          try { const rU = await api.get('/admin/usuarios'); usuarios = (rU?.data || rU || []).length; } catch {}
+          try {
+            const rU = await api.get('/admin/usuarios');
+            const body = rU?.data;
+            usuarios = (Array.isArray(body) ? body : Array.isArray(body?.data) ? body.data : []).length;
+          } catch {}
         }
 
         setStats({ noticias: noticias.length, comunicados: comunicados.length, docentes: docentes.length, usuarios });

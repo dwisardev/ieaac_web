@@ -1,0 +1,35 @@
+/* SistemaMonitoreo.css */
+.monitoreo-sistema-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.monitoreo-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(26,58,110,.08);
+  box-shadow: 0 4px 16px rgba(26,58,110,.06);
+  transition: transform .3s ease, box-shadow .3s ease;
+  overflow: hidden;
+  height: 100%;
+}
+.monitoreo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 36px rgba(26,58,110,.12) !important;
+}
+
+/* Progress bar enhancements */
+.monitoreo-card .progress {
+  height: 10px;
+  border-radius: 10px;
+  background: #e9ecef;
+}
+.monitoreo-card .progress-bar {
+  border-radius: 10px;
+  transition: width 1s ease;
+}
+
+@media (max-width: 768px) {
+  .monitoreo-sistema-container { padding: 1rem .5rem; }
+}

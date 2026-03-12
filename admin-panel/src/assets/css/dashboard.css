@@ -270,7 +270,7 @@ input, select, textarea { font-family: var(--font); }
 
 .topbar-title {
   font-size: 15px; font-weight: 700;
-  color: var(--text-primary);       /* ✓ VISIBLE */
+  color: var(--accent);
   flex: 1;
 }
 
@@ -339,7 +339,7 @@ input, select, textarea { font-family: var(--font); }
 
 .section-title {
   font-size: 20px; font-weight: 800;
-  color: var(--text-primary);       /* ✓ VISIBLE */
+  color: var(--accent);
   letter-spacing: -.3px;
 }
 
@@ -711,7 +711,8 @@ tr:hover td { background: rgba(255,255,255,.02); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.modal {
+/* Scoped to .modal-overlay so Bootstrap's own .modal class is not affected */
+.modal-overlay > .modal {
   background: var(--bg-surface); border: 1px solid var(--border);
   border-radius: var(--radius-xl); width: 480px; max-width: 95vw;
   max-height: 90vh; overflow-y: auto;
@@ -724,12 +725,12 @@ tr:hover td { background: rgba(255,255,255,.02); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.modal-header {
+.modal-overlay > .modal > .modal-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
 }
 
-.modal-header h3 {
+.modal-overlay > .modal > .modal-header h3 {
   font-size: 16px; font-weight: 700;
   color: var(--text-primary);       /* ✓ VISIBLE */
   display: flex; align-items: center; gap: 8px;
@@ -743,8 +744,8 @@ tr:hover td { background: rgba(255,255,255,.02); }
 }
 
 .modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
-.modal-body   { padding: 20px 24px; }
-.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+.modal-overlay > .modal > .modal-body   { padding: 20px 24px; }
+.modal-overlay > .modal > .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
 
 /* ============================================================
    FORMULARIOS
@@ -872,4 +873,181 @@ tr:hover td { background: rgba(255,255,255,.02); }
   .topbar-search { display: none; }
   .form-row      { grid-template-columns: 1fr; }
   .page-content  { padding: 16px; }
+}
+
+/* ============================================================
+   BOOTSTRAP OVERRIDES — dark theme compatibility
+   ============================================================ */
+
+/* Textos */
+.text-muted        { color: var(--text-secondary) !important; }
+.text-dark         { color: var(--text-primary) !important; }
+
+/* Cards Bootstrap */
+.card              { background: var(--bg-surface) !important; border-color: var(--border) !important; color: var(--text-primary) !important; }
+.card-title        { color: var(--text-primary) !important; }
+.card-text         { color: var(--text-secondary) !important; }
+.card-body         { background: transparent !important; }
+
+/* Modal */
+.modal-content     { background: var(--bg-surface) !important; border-color: var(--border) !important; color: var(--text-primary) !important; }
+.modal-header      { border-color: var(--border) !important; }
+.modal-footer      { border-color: var(--border) !important; }
+.modal-title       { color: var(--text-primary) !important; }
+.btn-close         { filter: invert(1) grayscale(1) brightness(2); }
+
+/* Formularios */
+.form-control, .form-select {
+  background: var(--bg-elevated) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+.form-control:focus, .form-select:focus {
+  background: var(--bg-hover) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft) !important;
+  color: var(--text-primary) !important;
+}
+.form-control::placeholder { color: var(--text-muted) !important; }
+.form-label        { color: var(--text-secondary) !important; font-size: 12px; font-weight: 600; }
+.form-check-label  { color: var(--text-secondary) !important; }
+.form-check-input  { background-color: var(--bg-elevated); border-color: var(--border); }
+.form-check-input:checked { background-color: var(--accent); border-color: var(--accent); }
+.input-group-text  { background: var(--bg-elevated) !important; border-color: var(--border) !important; color: var(--text-secondary) !important; }
+
+/* Alerts */
+.alert-danger      { background: rgba(248,81,73,.12) !important; border-color: rgba(248,81,73,.3) !important; color: #ff7b72 !important; }
+.alert-success     { background: rgba(63,185,80,.12) !important; border-color: rgba(63,185,80,.3) !important; color: #56d364 !important; }
+.alert-warning     { background: rgba(210,153,34,.12) !important; border-color: rgba(210,153,34,.3) !important; color: #e3b341 !important; }
+.alert-info        { background: rgba(47,129,247,.12) !important; border-color: rgba(47,129,247,.3) !important; color: #79c0ff !important; }
+
+/* Spinner */
+.spinner-border.text-primary { color: var(--accent) !important; }
+
+/* Thumbnail */
+.img-thumbnail     { background: var(--bg-elevated) !important; border-color: var(--border) !important; }
+
+/* ============================================================
+   PER-PAGE COLOR THEMES
+   data-page se aplica en .app-layout → cubre sidebar + main
+   Cada página sobreescribe --accent, --accent-hover, --accent-soft
+   ============================================================ */
+
+/* Noticias — Esmeralda */
+[data-page="noticias"] {
+  --accent:      #10b981;
+  --accent-hover:#059669;
+  --accent-soft: rgba(16,185,129,.15);
+}
+
+/* Comunicados — Ámbar */
+[data-page="comunicados"] {
+  --accent:      #f59e0b;
+  --accent-hover:#d97706;
+  --accent-soft: rgba(245,158,11,.15);
+}
+
+/* Eventos — Rosa */
+[data-page="eventos"] {
+  --accent:      #f43f5e;
+  --accent-hover:#e11d48;
+  --accent-soft: rgba(244,63,94,.15);
+}
+
+/* Banners — Violeta */
+[data-page="banners"] {
+  --accent:      #8b5cf6;
+  --accent-hover:#7c3aed;
+  --accent-soft: rgba(139,92,246,.15);
+}
+
+/* Docentes — Cian */
+[data-page="docentes"] {
+  --accent:      #06b6d4;
+  --accent-hover:#0891b2;
+  --accent-soft: rgba(6,182,212,.15);
+}
+
+/* Directorio — Lima */
+[data-page="directorio"] {
+  --accent:      #84cc16;
+  --accent-hover:#65a30d;
+  --accent-soft: rgba(132,204,22,.15);
+}
+
+/* Horarios — Cielo */
+[data-page="horarios"] {
+  --accent:      #38bdf8;
+  --accent-hover:#0ea5e9;
+  --accent-soft: rgba(56,189,248,.15);
+}
+
+/* Biblioteca — Naranja */
+[data-page="biblioteca"] {
+  --accent:      #fb923c;
+  --accent-hover:#f97316;
+  --accent-soft: rgba(251,146,60,.15);
+}
+
+/* Documentos — Teal */
+[data-page="documentos"] {
+  --accent:      #2dd4bf;
+  --accent-hover:#14b8a6;
+  --accent-soft: rgba(45,212,191,.15);
+}
+
+/* Plan Lector — Índigo */
+[data-page="plan-lector"] {
+  --accent:      #818cf8;
+  --accent-hover:#6366f1;
+  --accent-soft: rgba(129,140,248,.15);
+}
+
+/* Logros — Dorado */
+[data-page="logros"] {
+  --accent:      #fbbf24;
+  --accent-hover:#f59e0b;
+  --accent-soft: rgba(251,191,36,.15);
+}
+
+/* Portafolio — Púrpura */
+[data-page="portafolio"] {
+  --accent:      #c084fc;
+  --accent-hover:#a855f7;
+  --accent-soft: rgba(192,132,252,.15);
+}
+
+/* Monitoreo — Verde */
+[data-page="monitoreo"] {
+  --accent:      #4ade80;
+  --accent-hover:#22c55e;
+  --accent-soft: rgba(74,222,128,.15);
+}
+
+/* Informe Final — Salmón */
+[data-page="informe"] {
+  --accent:      #f87171;
+  --accent-hover:#ef4444;
+  --accent-soft: rgba(248,113,113,.15);
+}
+
+/* Familia Educativa — Rosa */
+[data-page="familia"] {
+  --accent:      #f472b6;
+  --accent-hover:#ec4899;
+  --accent-soft: rgba(244,114,182,.15);
+}
+
+/* Usuarios — Rosa-Rojo */
+[data-page="usuarios"] {
+  --accent:      #fb7185;
+  --accent-hover:#f43f5e;
+  --accent-soft: rgba(251,113,133,.15);
+}
+
+/* Perfil — Slate */
+[data-page="perfil"] {
+  --accent:      #94a3b8;
+  --accent-hover:#64748b;
+  --accent-soft: rgba(148,163,184,.15);
 }

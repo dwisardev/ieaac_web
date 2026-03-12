@@ -40,7 +40,7 @@ function ImagenModal({ src, titulo, onClose }) {
         <img
           src={src}
           alt={titulo || 'Noticia'}
-          onError={e => { e.target.src = '/img/Noticias/default.jpg'; }}
+          onError={e => { e.target.style.display = 'none'; }}
         />
         {titulo && <p className="modal-img-caption">{titulo}</p>}
       </div>
@@ -58,29 +58,31 @@ function NoticiaCard({ noticia, onVerImagen }) {
 
   return (
     <article className="noticia-card">
-      <div
-        className="noticia-card-img-wrap"
-        onClick={() => onVerImagen(imgSrc, noticia.titulo)}
-        title="Ver imagen completa"
-      >
-        <img
-          src={imgSrc}
-          alt={noticia.titulo}
-          loading="lazy"
-          onError={e => { if (!e.target.dataset.err) { e.target.dataset.err='1'; e.target.src='/img/Noticias/default.jpg'; } }}
-        />
-        <div className="noticia-card-img-overlay">
-          <span className="noticia-img-icon"><i className="bi bi-zoom-in" /></span>
+      {imgSrc && (
+        <div
+          className="noticia-card-img-wrap"
+          onClick={() => onVerImagen(imgSrc, noticia.titulo)}
+          title="Ver imagen completa"
+        >
+          <img
+            src={imgSrc}
+            alt={noticia.titulo}
+            loading="lazy"
+            onError={e => { e.target.parentElement.style.display = 'none'; }}
+          />
+          <div className="noticia-card-img-overlay">
+            <span className="noticia-img-icon"><i className="bi bi-zoom-in" /></span>
+          </div>
+          {noticia.categoria && (
+            <span className={`noticia-badge${noticia.destacada ? ' destacada' : ''}`}>{noticia.categoria}</span>
+          )}
+          {!noticia.categoria && noticia.destacada && (
+            <span className="noticia-badge destacada">
+              <i className="bi bi-star-fill me-1" style={{ fontSize:'.6rem' }} />Destacada
+            </span>
+          )}
         </div>
-        {noticia.categoria && (
-          <span className={`noticia-badge${noticia.destacada ? ' destacada' : ''}`}>{noticia.categoria}</span>
-        )}
-        {!noticia.categoria && noticia.destacada && (
-          <span className="noticia-badge destacada">
-            <i className="bi bi-star-fill me-1" style={{ fontSize:'.6rem' }} />Destacada
-          </span>
-        )}
-      </div>
+      )}
 
       <div className="noticia-card-body">
         <div className="noticia-card-meta">
@@ -103,9 +105,11 @@ function NoticiaCard({ noticia, onVerImagen }) {
           <span className="noticia-autor">
             <i className="bi bi-newspaper" />{noticia.categoria || 'General'}
           </span>
-          <button className="noticia-ver-btn" onClick={() => onVerImagen(imgSrc, noticia.titulo)}>
-            Ver imagen<i className="bi bi-arrow-right" />
-          </button>
+          {imgSrc && (
+            <button className="noticia-ver-btn" onClick={() => onVerImagen(imgSrc, noticia.titulo)}>
+              Ver imagen<i className="bi bi-arrow-right" />
+            </button>
+          )}
         </div>
       </div>
     </article>
@@ -160,7 +164,7 @@ export default function Noticias() {
         ) : (
           <div className="noticias-grid">
             {noticias.map(n => (
-              <NoticiaCard key={n.id} noticia={n} onVerImagen={(src, titulo) => setModalImg({ src, titulo })} />
+              <NoticiaCard key={n.id} noticia={n} onVerImagen={(src, titulo) => { if (src) setModalImg({ src, titulo }); }} />
             ))}
           </div>
         )}

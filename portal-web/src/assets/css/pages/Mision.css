@@ -1,0 +1,70 @@
+/* Mision.css */
+.mission-section {
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+}
+
+.mission-bg-pattern {
+  background-image: radial-gradient(circle at 20% 50%, rgba(26,58,110,.06) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(200,149,42,.05) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.mission-emblem {
+  width: 80px; height: 80px;
+  font-size: 2rem;
+  box-shadow: 0 8px 24px rgba(26,58,110,.25);
+}
+
+.mission-title {
+  font-family: 'Segoe UI', sans-serif;
+  color: #1a3a6e;
+  letter-spacing: -0.02em;
+}
+
+.mission-card {
+  background: #fff;
+  border: 1px solid rgba(26,58,110,.08);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.mission-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(26,58,110,.12) !important;
+}
+
+.mission-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid rgba(26,58,110,.08);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(26,58,110,.1) !important;
+}
+
+.stat-icon { font-size: 2rem; }
+.stat-value { font-size: 2.2rem; font-weight: 700; color: #1a3a6e; }
+.stat-label { font-size: .85rem; color: #616161; margin-top: .25rem; }
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #1a3a6e 0%, #0d6efd 100%);
+}
+
+.icon-float {
+  animation: iconFloat 3s ease-in-out infinite;
+  color: #1a3a6e;
+}
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+  .mission-section { padding: 2.5rem 0; }
+  .stat-value { font-size: 1.8rem; }
+}

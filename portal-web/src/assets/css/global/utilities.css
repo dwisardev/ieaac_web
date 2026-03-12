@@ -223,7 +223,10 @@
 
 /* Espaciado entre el navbar y el contenido */
 .content-spacing {
-  margin-top: 80px; /* Altura del navbar fixed */
+  margin-top: 70px; /* Altura del navbar fixed */
+}
+@media (max-width: 991px) {
+  .content-spacing { margin-top: 70px; }
 }
 
 /* Responsive utilities */

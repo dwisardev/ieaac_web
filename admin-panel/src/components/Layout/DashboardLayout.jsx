@@ -28,42 +28,101 @@ const NAV = [
   {
     section: 'Principal',
     items: [
-      { to:'/',             icon:'fa-gauge-high',       label:'Dashboard',  exact:true },
+      { to:'/',                        icon:'fa-gauge-high',        label:'Dashboard',          exact:true },
     ],
   },
   {
     section: 'Contenido',
     items: [
-      { to:'/noticias',     icon:'fa-newspaper',        label:'Noticias'    },
-      { to:'/comunicados',  icon:'fa-bullhorn',         label:'Comunicados' },
-      { to:'/eventos',      icon:'fa-calendar-days',    label:'Eventos',    soon:true },
+      { to:'/noticias',                icon:'fa-newspaper',         label:'Noticias'            },
+      { to:'/comunicados',             icon:'fa-bullhorn',          label:'Comunicados'         },
+      { to:'/eventos',                 icon:'fa-calendar-days',     label:'Eventos'             },
+      { to:'/banners',                 icon:'fa-images',            label:'Banners'             },
     ],
   },
   {
     section: 'Académico',
     items: [
-      { to:'/docentes',     icon:'fa-chalkboard-user',  label:'Docentes'    },
+      { to:'/docentes',                icon:'fa-chalkboard-user',   label:'Docentes'            },
+      { to:'/directorio',              icon:'fa-address-book',      label:'Directorio'          },
+      { to:'/horarios',                icon:'fa-clock',             label:'Horarios'            },
+      { to:'/biblioteca',              icon:'fa-book',              label:'Biblioteca'          },
+      { to:'/documentos-gestion',      icon:'fa-folder-open',       label:'Documentos'          },
+      { to:'/plan-lector',             icon:'fa-book-open',         label:'Plan Lector'         },
+      { to:'/logros',                  icon:'fa-trophy',            label:'Logros'              },
     ],
   },
   {
-    section: 'Sistema',
+    section: 'Proyecto FONDEP',
     items: [
-      /* adminOnly → solo aparece si user.rol === 'admin' */
-      { to:'/usuarios',     icon:'fa-user-gear',        label:'Usuarios',   adminOnly:true },
-      { to:'/perfil',       icon:'fa-circle-user',      label:'Mi Perfil'   },
+      { to:'/portafolio-actividades',  icon:'fa-briefcase',         label:'Portafolio'          },
+      { to:'/sistema-monitoreo',       icon:'fa-chart-line',        label:'Monitoreo'           },
+      { to:'/informe-final',           icon:'fa-file-alt',          label:'Informe Final'       },
+    ],
+  },
+  {
+    section: 'Comunidad',
+    items: [
+      { to:'/familia-educativa',       icon:'fa-users',             label:'Familia Educativa'   },
+    ],
+  },
+  {
+    section: 'Administración',
+    items: [
+      { to:'/mensajes',                icon:'fa-inbox',             label:'Mensajes'            },
+      { to:'/usuarios',                icon:'fa-user-gear',         label:'Usuarios',           adminOnly:true },
+      { to:'/perfil',                  icon:'fa-circle-user',       label:'Mi Perfil'           },
     ],
   },
 ];
 
+/* Clave de página para data-page (theming por color) */
+const getPageKey = (pathname) => {
+  const map = {
+    '/':                       'dashboard',
+    '/noticias':               'noticias',
+    '/comunicados':            'comunicados',
+    '/eventos':                'eventos',
+    '/banners':                'banners',
+    '/docentes':               'docentes',
+    '/directorio':             'directorio',
+    '/horarios':               'horarios',
+    '/biblioteca':             'biblioteca',
+    '/documentos-gestion':     'documentos',
+    '/plan-lector':            'plan-lector',
+    '/logros':                 'logros',
+    '/portafolio-actividades': 'portafolio',
+    '/sistema-monitoreo':      'monitoreo',
+    '/informe-final':          'informe',
+    '/familia-educativa':      'familia',
+    '/mensajes':               'mensajes',
+    '/usuarios':               'usuarios',
+    '/perfil':                 'perfil',
+  };
+  return map[pathname] || 'dashboard';
+};
+
 /* Títulos del topbar */
 const PAGE_TITLES = {
-  '/':             'Dashboard',
-  '/noticias':     'Noticias',
-  '/comunicados':  'Comunicados',
-  '/eventos':      'Eventos',
-  '/docentes':     'Docentes',
-  '/usuarios':     'Usuarios',
-  '/perfil':       'Mi Perfil',
+  '/':                       'Dashboard',
+  '/noticias':               'Noticias',
+  '/comunicados':            'Comunicados',
+  '/eventos':                'Eventos',
+  '/banners':                'Banners',
+  '/docentes':               'Docentes',
+  '/directorio':             'Directorio',
+  '/horarios':               'Horarios',
+  '/biblioteca':             'Biblioteca',
+  '/documentos-gestion':     'Documentos de Gestión',
+  '/plan-lector':            'Plan Lector',
+  '/logros':                 'Logros',
+  '/portafolio-actividades': 'Portafolio de Actividades',
+  '/sistema-monitoreo':      'Sistema de Monitoreo',
+  '/informe-final':          'Informe Final',
+  '/familia-educativa':      'Familia Educativa',
+  '/mensajes':               'Mensajes',
+  '/usuarios':               'Usuarios',
+  '/perfil':                 'Mi Perfil',
 };
 
 /* ── NavItem ── */
@@ -289,7 +348,7 @@ export default function DashboardLayout() {
     .split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
 
   return (
-    <div className="app-layout">
+    <div className="app-layout" data-page={getPageKey(location.pathname)}>
 
       <Sidebar
         collapsed={collapsed}

@@ -21,9 +21,9 @@ export const noticiasService = {
   },
 
   getImagenUrl: (noticia) => {
-    if (!noticia) return '/img/Noticias/default.jpg';
+    if (!noticia) return null;
     if (noticia.imagen_url) return noticia.imagen_url;
-    if (!noticia.imagen)    return '/img/Noticias/default.jpg';
+    if (!noticia.imagen)    return null;
     if (noticia.imagen.startsWith('http')) return noticia.imagen;
     const base = import.meta.env.VITE_UPLOAD_URL || '';
     return `${base}/noticias/${noticia.imagen}`;

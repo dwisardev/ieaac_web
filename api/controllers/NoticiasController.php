@@ -31,12 +31,12 @@ class NoticiasController
         $this->db = (new Database())->getConnection();
 
         // Ajusta la ruta física según tu estructura en cPanel
-        // Normalmente: /home/usuario/public_html/uploads/noticias/
+        // Normalmente: /home/usuario/public_html/public/uploads/noticias/
         $this->uploadDir = __DIR__ . '/../../public/uploads/noticias/';
 
         $proto           = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host            = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        $this->uploadUrl = "{$proto}://{$host}/uploads/noticias/";
+        $this->uploadUrl = "{$proto}://{$host}/public/uploads/noticias/";
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -150,7 +150,9 @@ class NoticiasController
             $params[':dest'] = (int)$_GET['destacada'];
         }
 
-        $where = $conditions ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        // Siempre filtrar por activa = 1 (no mostrar soft-deleted en admin)
+        $conditions[] = 'n.activa = 1';
+        $where = 'WHERE ' . implode(' AND ', $conditions);
 
         $stmt = $this->db->prepare("
             SELECT n.id, n.titulo, n.descripcion, n.contenido, n.imagen,

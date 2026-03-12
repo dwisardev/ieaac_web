@@ -8,27 +8,28 @@ import "../../assets/css/layout/Navbar.css";
 const MENU = [
   { path:"/", label:"Inicio", icon:"bi-house-door-fill" },
   { label:"Nosotros", icon:"bi-people-fill", key:"nosotros", items:[
-    { path:"/ResenaHistorica",   label:"Reseña Histórica" },
-    { path:"/NormasConvivencia", label:"Normas de Convivencia" },
-    { path:"/Mision",            label:"Misión" },
-    { path:"/Vision",            label:"Visión" },
-    { path:"/Directorio",        label:"Directorio" },
-    { path:"/NuestrosLogros",    label:"Nuestros Logros" },
+    { path:"/nosotros/resena-historica",   label:"Reseña Histórica" },
+    { path:"/nosotros/normas-convivencia", label:"Normas de Convivencia" },
+    { path:"/nosotros/mision",             label:"Misión" },
+    { path:"/nosotros/vision",             label:"Visión" },
+    { path:"/nosotros/directorio",         label:"Directorio" },
+    { path:"/nosotros/logros",             label:"Nuestros Logros" },
   ]},
-  { path:"/NuestraFamilia", label:"Comunidad", icon:"bi-people" },
+  { path:"/comunidad/familia-educativa", label:"Comunidad", icon:"bi-people" },
   { label:"FONDEP", icon:"bi-journal-text", key:"fondep", items:[
-    { path:"/PortafoliodeActividades", label:"Portafolio de Actividades" },
-    { path:"/CronogramaProyecto",      label:"Cronograma" },
-    { path:"/EstrategiasProyecto",     label:"Estrategias" },
-    { path:"/SistemaManitoreo",        label:"Monitoreo" },
-    { path:"/InformeFinal",            label:"Informe Final" },
+    { path:"/fondep/portafolio-actividades", label:"Portafolio de Actividades" },
+    { path:"/fondep/cronograma",             label:"Cronograma" },
+    { path:"/fondep/estrategias",            label:"Estrategias" },
+    { path:"/fondep/sistema-monitoreo",      label:"Monitoreo" },
+    { path:"/fondep/informe-final",          label:"Informe Final" },
   ]},
   { label:"Recursos", icon:"bi-book-half", key:"recursos", items:[
-    { path:"/PlanLector",        label:"Plan Lector" },
-    { path:"/DocumentosGestion", label:"Documentos de Gestión" },
-    { path:"/HorariosEscolares", label:"Horario de Clases" },
-    { path:"/BibliotecaVirtual", label:"Biblioteca Virtual" },
+    { path:"/recursos/plan-lector",           label:"Plan Lector" },
+    { path:"/recursos/documentos-gestion",    label:"Documentos de Gestión" },
+    { path:"/recursos/horarios",              label:"Horario de Clases" },
+    { path:"/recursos/biblioteca-virtual",    label:"Biblioteca Virtual" },
   ]},
+  { path:"/comunicados", label:"Comunicados", icon:"bi-megaphone-fill" },
 ];
 
 function IEModal({ title, icon, onClose, children }) {
@@ -93,7 +94,7 @@ export default function Navbar() {
               <span className="ie-brand-name" onClick={e=>{e.preventDefault();setShowInsignia(true);}} title="Ver insignia">
                 I.E. Andrés Avelino Cáceres
               </span>
-              <span className="ie-brand-sub">Sirenachayocc · Cuzco</span>
+              <span className="ie-brand-sub">Sirenachayocc · Cusco</span>
             </div>
             <i className="bi bi-geo-alt-fill ie-brand-location" onClick={e=>{e.preventDefault();setShowMap(true);}} title="Ver ubicación" tabIndex={0} aria-label="Ver ubicación" />
           </NavLink>
@@ -129,7 +130,7 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <button className="ie-contact-btn" onClick={()=>go('/Contacto')}>
+          <button className="ie-contact-btn" onClick={()=>go('/contacto')}>
             <i className="bi bi-envelope-fill" />Contactar
           </button>
 
@@ -173,7 +174,7 @@ export default function Navbar() {
           ))}
         </div>
         <div className="ie-offcanvas-footer">
-          <button className="ie-mobile-contact" onClick={()=>go('/Contacto')}>
+          <button className="ie-mobile-contact" onClick={()=>go('/contacto')}>
             <i className="bi bi-envelope-fill" />Contactar
           </button>
         </div>

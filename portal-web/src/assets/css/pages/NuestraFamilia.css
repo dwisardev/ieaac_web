@@ -1,0 +1,13 @@
+/* NuestraFamilia.css */
+.mb-6 { margin-bottom: 4rem !important; }
+
+.familia-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .mb-6 { margin-bottom: 2.5rem !important; }
+}
