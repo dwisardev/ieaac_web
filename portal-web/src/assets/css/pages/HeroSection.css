@@ -204,7 +204,8 @@
   height: 100%; display: flex; flex-direction: column;
 }
 .pilares-card img {
-  width: 100%; height: 260px; object-fit: cover; display: block;
+  width: 100%; height: 260px; object-fit: cover; object-position: center top; display: block;
+  border-radius: 16px 16px 0 0;
 }
 .pilares-card-body { padding: 1.5rem 1.75rem; flex: 1; }
 .pilares-card-body h5 {

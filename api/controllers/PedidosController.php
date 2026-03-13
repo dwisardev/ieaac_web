@@ -28,6 +28,32 @@ class PedidosController
     public function __construct()
     {
         $this->db = (new Database())->getConnection();
+        $this->migrar();
+    }
+
+    /* Asegura que la columna `codigo` existe y es NOT NULL con índice UNIQUE */
+    private function migrar(): void
+    {
+        try {
+            $cols = $this->db->query("SHOW COLUMNS FROM pedidos_libros LIKE 'codigo'")->fetchAll(PDO::FETCH_ASSOC);
+
+            if (empty($cols)) {
+                // La columna no existe → crear completa
+                $this->db->exec("ALTER TABLE pedidos_libros ADD COLUMN codigo VARCHAR(20) NULL AFTER id");
+                $this->db->exec("UPDATE pedidos_libros SET codigo = CONCAT('PED-', DATE_FORMAT(created_at,'%y%m%d'), '-', UPPER(SUBSTR(MD5(id),1,4))) WHERE codigo IS NULL");
+                $this->db->exec("ALTER TABLE pedidos_libros MODIFY COLUMN codigo VARCHAR(20) NOT NULL");
+                $this->db->exec("ALTER TABLE pedidos_libros ADD UNIQUE KEY idx_codigo (codigo)");
+            } else {
+                // La columna existe → verificar si es nullable y corregirla
+                $nullable = strtoupper($cols[0]['Null'] ?? 'YES') === 'YES';
+                if ($nullable) {
+                    $this->db->exec("UPDATE pedidos_libros SET codigo = CONCAT('PED-', DATE_FORMAT(created_at,'%y%m%d'), '-', UPPER(SUBSTR(MD5(id),1,4))) WHERE codigo IS NULL OR codigo = ''");
+                    $this->db->exec("ALTER TABLE pedidos_libros MODIFY COLUMN codigo VARCHAR(20) NOT NULL");
+                }
+            }
+        } catch (\Throwable $e) {
+            // Si la tabla no existe todavía, ignorar
+        }
     }
 
     /* ══════════════════════════════════════════════════
@@ -97,17 +123,24 @@ class PedidosController
             $codigo = $this->generarCodigo();
         }
 
+        $ip        = $_SERVER['REMOTE_ADDR']     ?? null;
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+
         $stmt = $this->db->prepare("
-            INSERT INTO pedidos_libros (codigo, nombre, email, libro, detalles, estado, created_at, updated_at)
-            VALUES (:codigo, :nombre, :email, :libro, :detalles, 'pendiente', NOW(), NOW())
+            INSERT INTO pedidos_libros (codigo, nombre, email, libro, detalles, estado, ip_address, user_agent, created_at, updated_at)
+            VALUES (:codigo, :nombre, :email, :libro, :detalles, 'pendiente', :ip, :ua, NOW(), NOW())
         ");
-        $stmt->execute([
+        $ok = $stmt->execute([
             ':codigo'   => $codigo,
             ':nombre'   => $this->clean($nombre),
             ':email'    => strtolower($email),
             ':libro'    => $this->clean($libro),
             ':detalles' => $this->clean($detalles),
+            ':ip'       => $ip,
+            ':ua'       => $userAgent,
         ]);
+
+        if (!$ok) { $this->error('Error al registrar el pedido. Intente nuevamente.', 500); return; }
 
         $this->success(['message' => 'Pedido registrado correctamente', 'codigo' => $codigo], 201);
     }
@@ -205,7 +238,7 @@ class PedidosController
         if (!$codigo) { $this->error('Código inválido', 422); return; }
 
         $stmt = $this->db->prepare(
-            'SELECT codigo, libro, estado, created_at FROM pedidos_libros WHERE codigo = :c LIMIT 1'
+            'SELECT codigo, libro, estado, respuesta, created_at FROM pedidos_libros WHERE codigo = :c LIMIT 1'
         );
         $stmt->execute([':c' => $codigo]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -215,7 +248,7 @@ class PedidosController
         $labels = [
             'pendiente'  => 'Pendiente de revisión',
             'leido'      => 'En revisión',
-            'respondido' => 'Respondido — revisa tu correo',
+            'respondido' => 'Respondido',
         ];
 
         $this->success(['data' => [
@@ -223,6 +256,7 @@ class PedidosController
             'libro'        => $row['libro'],
             'estado'       => $row['estado'],
             'estado_label' => $labels[$row['estado']] ?? $row['estado'],
+            'respuesta'    => $row['estado'] === 'respondido' ? ($row['respuesta'] ?? null) : null,
             'fecha'        => date('d/m/Y', strtotime($row['created_at'])),
         ]]);
     }

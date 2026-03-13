@@ -29,17 +29,19 @@ class PlanLectorController {
         $id       = isset($seg[1]) && is_numeric($seg[1]) ? (int)$seg[1] : null;
 
         match(true) {
-            $method === 'GET'                                         => $this->obtenerCompleto(),
-            $method === 'POST' && $resource === 'config'              => $this->upsertConfig($user),
-            $method === 'POST' && $resource === 'metas'               => $this->crearMeta($user),
-            $method === 'PUT'  && $resource === 'metas' && $id        => $this->actualizarMeta($id, $user),
-            $method === 'DELETE' && $resource === 'metas' && $id      => $this->eliminarMeta($id),
-            $method === 'POST' && $resource === 'cronograma'          => $this->crearCronograma($user),
-            $method === 'PUT'  && $resource === 'cronograma' && $id   => $this->actualizarCronograma($id, $user),
-            $method === 'DELETE' && $resource === 'cronograma' && $id => $this->eliminarCronograma($id),
-            $method === 'POST' && $resource === 'libros'              => $this->crearLibro($user),
-            $method === 'PUT'  && $resource === 'libros' && $id       => $this->actualizarLibro($id, $user),
-            $method === 'DELETE' && $resource === 'libros' && $id     => $this->eliminarLibro($id),
+            $method === 'GET'                                          => $this->obtenerCompleto(),
+            $method === 'POST'   && $resource === 'config'             => $this->upsertConfig($user),
+            $method === 'DELETE' && $resource === 'config'             => $this->eliminarConfig(),
+            $method === 'PATCH'  && $resource === 'config'             => $this->desactivarConfig(),
+            $method === 'POST'   && $resource === 'metas'              => $this->crearMeta($user),
+            $method === 'PUT'    && $resource === 'metas' && $id       => $this->actualizarMeta($id, $user),
+            $method === 'DELETE' && $resource === 'metas' && $id       => $this->eliminarMeta($id),
+            $method === 'POST'   && $resource === 'cronograma'         => $this->crearCronograma($user),
+            $method === 'PUT'    && $resource === 'cronograma' && $id  => $this->actualizarCronograma($id, $user),
+            $method === 'DELETE' && $resource === 'cronograma' && $id  => $this->eliminarCronograma($id),
+            $method === 'POST'   && $resource === 'libros'             => $this->crearLibro($user),
+            $method === 'PUT'    && $resource === 'libros' && $id      => $this->actualizarLibro($id, $user),
+            $method === 'DELETE' && $resource === 'libros' && $id      => $this->eliminarLibro($id),
             default => $this->json(['error' => 'Ruta no válida'], 404),
         };
     }
@@ -141,6 +143,18 @@ class PlanLectorController {
                 'desc' => $data['descripcion'] ?? null,
             ]);
         }
+        $this->json(['ok' => true]);
+    }
+
+    private function eliminarConfig(): void {
+        $anio = (int)($_GET['anio'] ?? date('Y'));
+        $this->db->prepare('DELETE FROM plan_lector_config WHERE anio_escolar=?')->execute([$anio]);
+        $this->json(['ok' => true]);
+    }
+
+    private function desactivarConfig(): void {
+        $anio = (int)($_GET['anio'] ?? date('Y'));
+        $this->db->prepare('UPDATE plan_lector_config SET activo=0 WHERE anio_escolar=?')->execute([$anio]);
         $this->json(['ok' => true]);
     }
 

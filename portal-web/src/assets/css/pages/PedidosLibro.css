@@ -299,6 +299,29 @@
 .pl-resultado-label  { font-weight: 600; color: #374151; min-width: 130px; }
 .pl-resultado-valor  { color: #4b5563; }
 
+.pl-resultado-respuesta {
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+.pl-resultado-respuesta-titulo {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #166534;
+  margin-bottom: .35rem;
+}
+.pl-resultado-respuesta-texto {
+  font-size: .9rem;
+  color: #1e3a2a;
+  background: rgba(255,255,255,.6);
+  border-radius: 8px;
+  padding: .6rem .85rem;
+  margin: 0;
+  line-height: 1.55;
+}
+
 /* ── Spinner ── */
 @keyframes pl-spin { to { transform: rotate(360deg); } }
 .pl-spin { display: inline-block; animation: pl-spin .75s linear infinite; }

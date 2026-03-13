@@ -18,6 +18,16 @@ export const actualizarConfiguracion = async (data) => {
   return res.data;
 };
 
+export const eliminarConfiguracion = async (anio) => {
+  const res = await api.delete(`${BASE}/config`, { params: { anio } });
+  return res.data;
+};
+
+export const desactivarConfiguracion = async (anio) => {
+  const res = await api.patch(`${BASE}/config`, { anio });
+  return res.data;
+};
+
 /* ── Metas ── */
 export const crearMeta = async (data) => {
   const res = await api.post(`${BASE}/metas`, data);

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manual de Usuario — I.E. Andrés Avelino Cáceres</title>
+<style>
+  /* ── Reset y tipografía ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --navy:   #1a3a6e;
+    --gold:   #c8952a;
+    --light:  #f8f6f1;
+    --text:   #1e293b;
+    --muted:  #64748b;
+    --border: #e2e8f0;
+    --green:  #166534;
+    --green-bg: #dcfce7;
+    --blue-bg:  #eff6ff;
+    --gold-bg:  #fffbeb;
+    --red-bg:   #fef2f2;
+    --red:      #991b1b;
+  }
+
+  html { font-size: 14px; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+    line-height: 1.6;
+  }
+
+  /* ── Portada ── */
+  .portada {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--navy) 0%, #2d5a9e 60%, #1a3a6e 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .portada::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .portada-escudo {
+    width: 100px; height: 100px;
+    background: rgba(255,255,255,.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2rem;
+    border: 3px solid rgba(255,255,255,.3);
+    font-size: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  .portada h1 {
+    color: #fff;
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+    position: relative; z-index: 1;
+  }
+  .portada h1 span { color: var(--gold); }
+  .portada .portada-sub {
+    color: rgba(255,255,255,.8);
+    font-size: 1rem;
+    margin-bottom: 3rem;
+    position: relative; z-index: 1;
+  }
+  .portada-meta {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 16px;
+    padding: 1.5rem 2.5rem;
+    color: rgba(255,255,255,.9);
+    font-size: .9rem;
+    line-height: 2;
+    position: relative; z-index: 1;
+  }
+  .portada-meta strong { color: var(--gold); }
+  .portada-footer {
+    position: absolute; bottom: 2rem; left: 0; right: 0;
+    text-align: center;
+    color: rgba(255,255,255,.4);
+    font-size: .75rem;
+    z-index: 1;
+  }
+
+  /* ── Índice ── */
+  .indice {
+    padding: 3rem 4rem;
+    page-break-after: always;
+    min-height: 100vh;
+  }
+  .indice h2 { font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 1.5rem; border-bottom: 3px solid var(--gold); padding-bottom: .5rem; }
+  .indice ol { list-style: none; counter-reset: item; }
+  .indice > ol > li { counter-increment: item; margin-bottom: .4rem; }
+  .indice > ol > li > a {
+    color: var(--navy); text-decoration: none; font-weight: 600;
+    font-size: .95rem; display: flex; align-items: baseline; gap: .4rem;
+  }
+  .indice > ol > li > a::before { content: counter(item) ". "; color: var(--gold); font-weight: 700; min-width: 1.5rem; }
+  .indice > ol > li > a::after { content: ''; flex: 1; border-bottom: 1px dotted var(--border); margin: 0 .5rem; }
+  .indice > ol > li > a .pg { color: var(--muted); font-size: .85rem; font-weight: 400; }
+  .indice-sub { list-style: none; padding-left: 2rem; margin-top: .2rem; }
+  .indice-sub li { margin-bottom: .15rem; }
+  .indice-sub a { color: var(--muted); text-decoration: none; font-size: .85rem; }
+
+  /* ── Secciones ── */
+  .seccion {
+    padding: 3rem 4rem;
+    page-break-before: always;
+  }
+  .seccion:first-of-type { page-break-before: auto; }
+
+  .sec-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2rem; padding-bottom: 1rem;
+    border-bottom: 3px solid var(--navy);
+  }
+  .sec-icono {
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: 700;
+  }
+  .ic-navy { background: var(--navy); color: #fff; }
+  .ic-gold  { background: var(--gold);  color: #fff; }
+  .ic-green { background: #15803d; color: #fff; }
+
+  .sec-header h2 { font-size: 1.6rem; font-weight: 800; color: var(--navy); margin: 0; }
+  .sec-header p  { font-size: .85rem; color: var(--muted); margin: .1rem 0 0; }
+
+  h3 {
+    font-size: 1.1rem; font-weight: 700; color: var(--navy);
+    margin: 2rem 0 .75rem; display: flex; align-items: center; gap: .5rem;
+  }
+  h3::before { content: '▸'; color: var(--gold); font-size: .9rem; }
+
+  h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin: 1rem 0 .5rem; }
+
+  p { margin-bottom: .75rem; color: var(--text); }
+
+  /* ── Cards ── */
+  .card-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem; margin: 1rem 0;
+  }
+  .card {
+    background: var(--light); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.1rem 1.25rem;
+    border-left: 4px solid var(--navy);
+  }
+  .card.gold  { border-left-color: var(--gold); }
+  .card.green { border-left-color: #16a34a; }
+  .card.red   { border-left-color: #dc2626; }
+  .card-icon  { font-size: 1.5rem; margin-bottom: .4rem; }
+  .card h4    { margin: 0 0 .3rem; font-size: .9rem; font-weight: 700; color: var(--navy); }
+  .card p     { margin: 0; font-size: .82rem; color: var(--muted); }
+
+  /* ── Steps ── */
+  .steps { counter-reset: step; list-style: none; margin: .75rem 0; }
+  .steps li {
+    counter-increment: step;
+    display: flex; align-items: flex-start; gap: .75rem;
+    margin-bottom: .75rem; padding: .75rem 1rem;
+    background: #f8fafc; border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .steps li::before {
+    content: counter(step);
+    min-width: 26px; height: 26px;
+    background: var(--navy); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700; flex-shrink: 0; margin-top: .05rem;
+  }
+  .steps li strong { display: block; font-size: .88rem; color: var(--navy); margin-bottom: .15rem; }
+  .steps li span   { font-size: .82rem; color: var(--muted); }
+
+  /* ── Alertas ── */
+  .alerta {
+    display: flex; align-items: flex-start; gap: .75rem;
+    padding: .85rem 1.1rem; border-radius: 10px; margin: 1rem 0; font-size: .85rem;
+  }
+  .alerta-icono { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+  .alerta.info  { background: var(--blue-bg); border: 1px solid #bfdbfe; color: #1e3a8a; }
+  .alerta.ok    { background: var(--green-bg); border: 1px solid #bbf7d0; color: var(--green); }
+  .alerta.warn  { background: var(--gold-bg); border: 1px solid #fde68a; color: #78350f; }
+  .alerta.danger{ background: var(--red-bg); border: 1px solid #fecaca; color: var(--red); }
+
+  /* ── Tabla ── */
+  .tabla-wrap { overflow: auto; margin: 1rem 0; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  thead th { background: var(--navy); color: #fff; padding: .6rem .9rem; text-align: left; font-weight: 600; font-size: .8rem; }
+  tbody td { padding: .55rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  td code { background: var(--light); padding: .15rem .4rem; border-radius: 4px; font-size: .78rem; font-family: monospace; color: var(--navy); }
+
+  /* ── Código / Badge ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .2rem .65rem; border-radius: 20px; font-size: .75rem; font-weight: 600;
+  }
+  .badge-navy  { background: var(--navy); color: #fff; }
+  .badge-gold  { background: var(--gold); color: #fff; }
+  .badge-green { background: #16a34a; color: #fff; }
+  .badge-gray  { background: #e2e8f0; color: #475569; }
+
+  code {
+    background: #f1f5f9; padding: .1rem .4rem; border-radius: 4px;
+    font-family: 'Courier New', monospace; font-size: .82rem; color: var(--navy);
+  }
+
+  /* ── Separador ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  /* ── Firma del desarrollador ── */
+  .dev-footer {
+    background: linear-gradient(135deg, #0f172a, #1e3a5f);
+    color: #fff; padding: 3rem 4rem;
+    page-break-before: always; min-height: 50vh;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .dev-footer h2 { font-size: 1.4rem; font-weight: 800; color: var(--gold); margin-bottom: 1.5rem; }
+  .dev-card {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px; padding: 1.75rem 2rem;
+    display: flex; align-items: center; gap: 2rem; max-width: 600px;
+  }
+  .dev-avatar {
+    width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--gold), #e8a830);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-weight: 800; color: #fff;
+  }
+  .dev-info h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin: 0 0 .2rem; }
+  .dev-info p  { font-size: .85rem; color: rgba(255,255,255,.65); margin: .1rem 0; }
+  .dev-info .empresa { color: var(--gold); font-weight: 600; font-size: .9rem; margin-top: .5rem; display: block; }
+  .dev-copy {
+    margin-top: 2rem; font-size: .75rem; color: rgba(255,255,255,.35);
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 1rem;
+  }
+
+  /* ── Encabezado de página (imprimir) ── */
+  .page-header-print {
+    display: none;
+  }
+
+  /* ── Imprimir ── */
+  @media print {
+    @page { size: A4; margin: 1.5cm 1.8cm; }
+    body { font-size: 11pt; }
+    .portada { min-height: auto; padding: 5cm 3cm; }
+    .portada h1 { font-size: 28pt; }
+    .seccion, .indice { padding: 0; }
+    .portada { page-break-after: always; }
+    .indice  { page-break-after: always; }
+    .page-break { page-break-before: always; }
+    a { text-decoration: none; color: inherit; }
+    .page-header-print {
+      display: block;
+      position: running(header);
+      font-size: 8pt; color: #aaa;
+      border-bottom: 1px solid #eee; padding-bottom: 4pt;
+      text-align: right;
+    }
+    @page { @top-right { content: element(header); } }
+  }
+
+  /* ── No imprimir ── */
+  .no-print { }
+  @media print { .no-print { display: none !important; } }
+
+  /* ── Botón imprimir ── */
+  .btn-print {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--navy); color: #fff;
+    border: none; border-radius: 50px;
+    padding: .9rem 1.75rem; font-size: .95rem; font-weight: 700;
+    cursor: pointer; box-shadow: 0 8px 24px rgba(26,58,110,.4);
+    display: flex; align-items: center; gap: .5rem;
+    transition: background .2s, transform .2s;
+    z-index: 999;
+  }
+  .btn-print:hover { background: var(--gold); transform: translateY(-2px); }
+</style>
+</head>
+<body>
+
+<!-- Botón imprimir (no aparece al imprimir) -->
+<button class="btn-print no-print" onclick="window.print()">
+  🖨️ Guardar como PDF
+</button>
+
+<!-- ══════════════════════════════════════
+     PORTADA
+══════════════════════════════════════ -->
+<div class="portada">
+  <div class="portada-escudo">🎓</div>
+  <h1>Manual de <span>Usuario</span></h1>
+  <p class="portada-sub">Sistema Web Institucional — I.E. Andrés Avelino Cáceres</p>
+
+  <div class="portada-meta">
+    <strong>Institución:</strong> I.E. Secundaria Andrés Avelino Cáceres<br>
+    <strong>Ubicación:</strong> Sirenachayocc, Kimbiri, La Convención, Cusco<br>
+    <strong>Nivel:</strong> Secundaria &nbsp;|&nbsp; <strong>Gestión:</strong> Pública<br>
+    <strong>Versión del sistema:</strong> 2.0 &nbsp;|&nbsp; <strong>Fecha:</strong> Marzo 2026<br>
+    <strong>Proyecto:</strong> FONDEP — Estrategias Creativas e Interculturales
+  </div>
+  <div class="portada-footer">Documento generado automáticamente · Todos los derechos reservados</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ÍNDICE
+══════════════════════════════════════ -->
+<div class="indice">
+  <h2>📋 Tabla de Contenidos</h2>
+  <ol>
+    <li>
+      <a href="#intro">Introducción al Sistema <span class="pg">· 3</span></a>
+      <ul class="indice-sub">
+        <li><a href="#intro-que">¿Qué es el sistema?</a></li>
+        <li><a href="#intro-quien">¿Para quién es?</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#portal">Portal Web Público <span class="pg">· 4</span></a>
+      <ul class="indice-sub">
+        <li><a href="#portal-inicio">Página de inicio</a></li>
+        <li><a href="#portal-noticias">Noticias y comunicados</a></li>
+        <li><a href="#portal-contacto">Formulario de contacto</a></li>
+        <li><a href="#portal-pedidos">Pedir un libro</a></li>
+        <li><a href="#portal-seguimiento">Consultar seguimiento</a></li>
+        <li><a href="#portal-recursos">Recursos educativos</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#admin">Panel Administrativo <span class="pg">· 7</span></a>
+      <ul class="indice-sub">
+        <li><a href="#admin-acceso">Acceso y roles</a></li>
+        <li><a href="#admin-dashboard">Dashboard</a></li>
+        <li><a href="#admin-contenido">Gestión de contenido</a></li>
+        <li><a href="#admin-academico">Sección Académica</a></li>
+        <li><a href="#admin-fondep">Proyecto FONDEP</a></li>
+        <li><a href="#admin-mensajes">Mensajes del portal</a></li>
+        <li><a href="#admin-config">Configuración</a></li>
+        <li><a href="#admin-usuarios">Usuarios del sistema</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#seguridad">Seguridad y buenas prácticas <span class="pg">· 14</span></a>
+    </li>
+    <li>
+      <a href="#faq">Preguntas frecuentes <span class="pg">· 15</span></a>
+    </li>
+    <li>
+      <a href="#dev">Desarrollador <span class="pg">· 16</span></a>
+    </li>
+  </ol>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 1 — INTRODUCCIÓN
+══════════════════════════════════════ -->
+<div class="seccion" id="intro">
+  <div class="sec-header">
+    <div class="sec-icono ic-navy">📘</div>
+    <div>
+      <h2>1. Introducción al Sistema</h2>
+      <p>¿Qué es y para qué sirve?</p>
+    </div>
+  </div>
+
+  <h3 id="intro-que">¿Qué es el sistema?</h3>
+  <p>El <strong>Sistema Web de la I.E. Andrés Avelino Cáceres</strong> es una plataforma digital compuesta por dos partes:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h4>Portal Web Público</h4>
+      <p>Sitio visible para todos: estudiantes, padres, docentes y comunidad. Contiene noticias, comunicados, recursos y formularios de contacto.</p>
+    </div>
+    <div class="card gold">
+      <div class="card-icon">⚙️</div>
+      <h4>Panel Administrativo</h4>
+      <p>Área restringida para directivos y editores. Permite gestionar todo el contenido del portal: noticias, documentos, mensajes, etc.</p>
+    </div>
+  </div>
+
+  <h3 id="intro-quien">¿Para quién es este manual?</h3>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo de usuario</th>
+          <th>Acceso</th>
+          <th>Qué puede hacer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>👨‍👩‍👧 Comunidad (sin cuenta)</strong></td>
+          <td><span class="badge badge-green">Portal público</span></td>
+          <td>Ver noticias, descargar documentos, contactar, pedir libros</td>
+        </tr>
+        <tr>
+          <td><strong>✏️ Editor</strong></td>
+          <td><span class="badge badge-gold">Panel Admin</span></td>
+          <td>Crear y editar contenido (noticias, eventos, comunicados, etc.)</td>
+        </tr>
+        <tr>
+          <td><strong>👑 Administrador</strong></td>
+          <td><span class="badge badge-navy">Panel Admin</span></td>
+          <td>Todo lo del editor + gestionar usuarios y configuración del sistema</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alerta info">
+    <span class="alerta-icono">ℹ️</span>
+    <div><strong>Nota:</strong> Para acceder al panel administrativo necesitas una cuenta creada por el administrador del sistema. El portal público no requiere cuenta.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 2 — PORTAL WEB
+══════════════════════════════════════ -->
+<div class="seccion" id="portal">
+  <div class="sec-header">
+    <div class="sec-icono ic-gold">🌐</div>
+    <div>
+      <h2>2. Portal Web Público</h2>
+      <p>Guía para estudiantes, padres y comunidad</p>
+    </div>
+  </div>
+
+  <h3 id="portal-inicio">Página de inicio</h3>
+  <p>Al ingresar al portal verás la página principal con las siguientes secciones:</p>
+
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">🖼️</div><h4>Banner principal</h4><p>Noticias o anuncios destacados en rotación automática.</p></div>
+    <div class="card gold"><div class="card-icon">📰</div><h4>Últimas noticias</h4><p>Publicaciones recientes de la institución.</p></div>
+    <div class="card green"><div class="card-icon">📢</div><h4>Comunicados</h4><p>Avisos oficiales de la dirección. Puede aparecer un globo flotante con el último comunicado.</p></div>
+    <div class="card"><div class="card-icon">🔗</div><h4>Accesos rápidos</h4><p>Botones directos a las secciones más usadas: biblioteca, horarios, contacto, etc.</p></div>
+  </div>
+
+  <h3 id="portal-noticias">Noticias y Comunicados</h3>
+  <ol class="steps">
+    <li><strong>Ingresa a "Noticias" desde el menú superior</strong><span>Verás una lista de todas las publicaciones ordenadas por fecha.</span></li>
+    <li><strong>Haz clic en una noticia</strong><span>Se abre el contenido completo. Si tiene archivo adjunto, aparecerá un botón para descargarlo.</span></li>
+    <li><strong>Comunicados flotantes</strong><span>Si hay comunicados urgentes, aparece un botón flotante (📢) en la esquina inferior. Haz clic para ver el último.</span></li>
+  </ol>
+
+  <h3 id="portal-contacto">Formulario de Contacto</h3>
+  <p>Desde <strong>Menú → Contáctanos</strong> puedes enviar una consulta. El sistema genera automáticamente un <strong>código de seguimiento</strong>.</p>
+
+  <div class="alerta warn">
+    <span class="alerta-icono">⚠️</span>
+    <div><strong>Importante:</strong> Copia tu código de seguimiento <em>antes</em> de enviar el formulario. Lo necesitarás para consultar el estado de tu mensaje.</div>
+  </div>
+
+  <ol class="steps">
+    <li><strong>Copia el código de seguimiento</strong><span>Aparece en un recuadro azul en la parte superior del formulario (ej: <code>CON-260312-A3B7</code>). Haz clic en "Copiar".</span></li>
+    <li><strong>Completa el formulario</strong><span>Nombre, correo electrónico, rol (estudiante, docente, padre/madre, etc.) y tu mensaje.</span></li>
+    <li><strong>Haz clic en "Enviar Mensaje"</strong><span>El botón se activa solo si todos los campos son válidos.</span></li>
+    <li><strong>Confirma el envío</strong><span>Aparecerá un banner verde con el código confirmado. Guárdalo.</span></li>
+  </ol>
+
+  <h3 id="portal-pedidos">Pedir un Libro (Biblioteca Virtual)</h3>
+  <p>Desde <strong>Recursos → Biblioteca Virtual → Pedir libro</strong> puedes solicitar un libro de la colección.</p>
+
+  <ol class="steps">
+    <li><strong>Copia tu código de pedido</strong><span>Se genera automáticamente al abrir la página (ej: <code>PED-260312-X7KM</code>). Haz clic en "Copiar".</span></li>
+    <li><strong>Completa el formulario</strong><span>Nombre, correo, título del libro y detalles adicionales opcionales (edición, autor, motivo).</span></li>
+    <li><strong>Envía la solicitud</strong><span>Haz clic en "Enviar Solicitud".</span></li>
+    <li><strong>Guarda el código</strong><span>El banner de confirmación muestra el código final. Anótalo para dar seguimiento.</span></li>
+  </ol>
+
+  <h3 id="portal-seguimiento">Consultar Estado de Seguimiento</h3>
+  <p>Tanto en la página de Contacto como en la de Pedidos, hay una sección <strong>"Consultar estado"</strong> al final.</p>
+
+  <ol class="steps">
+    <li><strong>Escribe tu código</strong><span>Ingresa el código de seguimiento (<code>CON-...</code> o <code>PED-...</code>) en el campo de búsqueda.</span></li>
+    <li><strong>Haz clic en "Consultar"</strong><span>O presiona Enter en el teclado.</span></li>
+    <li><strong>Lee el resultado</strong><span>Verás el estado actual de tu consulta o pedido.</span></li>
+  </ol>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Estado</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td>⏳ <strong>Pendiente de revisión</strong></td><td>El mensaje llegó y está esperando ser atendido por el equipo.</td></tr>
+        <tr><td>👁️ <strong>En revisión</strong></td><td>El equipo ya leyó tu mensaje y está procesando la respuesta.</td></tr>
+        <tr><td>✅ <strong>Respondido</strong></td><td>Se emitió una respuesta. Revisa tu correo electrónico.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="portal-recursos">Recursos Educativos</h3>
+  <p>El portal ofrece acceso público a los siguientes recursos sin necesidad de cuenta:</p>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Recurso</th><th>Dónde encontrarlo</th><th>Qué contiene</th></tr></thead>
+      <tbody>
+        <tr><td>📚 Biblioteca Virtual</td><td>Recursos → Biblioteca Virtual</td><td>Libros digitales descargables por categoría</td></tr>
+        <tr><td>📄 Documentos de Gestión</td><td>Recursos → Documentos</td><td>PEI, PAT, PCI, Reglamento Interno</td></tr>
+        <tr><td>🕐 Horarios Escolares</td><td>Recursos → Horarios</td><td>Horario por grado o por docente</td></tr>
+        <tr><td>📖 Plan Lector</td><td>Recursos → Plan Lector</td><td>Lista de libros del año y cronograma</td></tr>
+        <tr><td>🏆 Logros</td><td>Nosotros → Logros</td><td>Reconocimientos y méritos institucionales</td></tr>
+        <tr><td>🗂️ Proyecto FONDEP</td><td>Menú → Fondep</td><td>Portafolio, monitoreo, informe final</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 3 — PANEL ADMINISTRATIVO
+══════════════════════════════════════ -->
+<div class="seccion" id="admin">
+  <div class="sec-header">
+    <div class="sec-icono ic-navy">⚙️</div>
+    <div>
+      <h2>3. Panel Administrativo</h2>
+      <p>Guía para editores y administradores</p>
+    </div>
+  </div>
+
+  <h3 id="admin-acceso">Acceso y Roles</h3>
+  <p>El panel administrativo se accede desde <code>/admin</code> (URL del panel). Necesitas usuario y contraseña.</p>
+
+  <ol class="steps">
+    <li><strong>Ingresa a la URL del panel</strong><span>Escribe la dirección del panel en tu navegador.</span></li>
+    <li><strong>Escribe tu usuario y contraseña</strong><span>Datos proporcionados por el administrador del sistema.</span></li>
+    <li><strong>Haz clic en "Iniciar sesión"</strong><span>Si los datos son correctos serás redirigido al Dashboard.</span></li>
+  </ol>
+
+  <div class="alerta danger">
+    <span class="alerta-icono">🔒</span>
+    <div><strong>Seguridad:</strong> Nunca compartas tu contraseña. El sistema bloquea la cuenta tras varios intentos fallidos. Si olvidaste tu contraseña, contacta al administrador.</div>
+  </div>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Rol</th><th>Permisos</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-gold">Editor</span></td>
+          <td>Crear, editar y eliminar: noticias, comunicados, eventos, banners, docentes, directorio, biblioteca, documentos, horarios, logros, plan lector, portafolio, monitoreo, informe, familia educativa. Ver mensajes y responder.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-navy">Administrador</span></td>
+          <td>Todo lo del editor + gestionar usuarios del sistema + configuración institucional y metadatos del proyecto FONDEP.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="admin-dashboard">Dashboard — Resumen General</h3>
+  <p>Al iniciar sesión verás el <strong>Dashboard</strong> con estadísticas del sistema:</p>
+  <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+    <li>Total de noticias, docentes, comunicados y libros publicados.</li>
+    <li>Mensajes y pedidos pendientes de respuesta.</li>
+    <li>Actividad reciente del sistema.</li>
+  </ul>
+
+  <div class="alerta ok">
+    <span class="alerta-icono">✅</span>
+    <div>Los números en <strong>naranja/rojo</strong> en el menú lateral indican elementos pendientes de atención (ej: mensajes sin responder).</div>
+  </div>
+
+  <h3 id="admin-contenido">Gestión de Contenido</h3>
+
+  <h4>📰 Noticias</h4>
+  <ol class="steps">
+    <li><strong>Ve a Contenido → Noticias</strong><span>Verás la lista de todas las noticias publicadas.</span></li>
+    <li><strong>Haz clic en "Nueva noticia"</strong><span>Se abrirá un formulario con los campos: título, contenido, imagen, categoría, fecha.</span></li>
+    <li><strong>Completa los campos y guarda</strong><span>El campo "Contenido" es un editor de texto enriquecido. Puedes agregar negritas, listas, etc.</span></li>
+    <li><strong>Para editar o eliminar</strong><span>Usa los botones ✏️ o 🗑️ en la fila de cada noticia.</span></li>
+  </ol>
+
+  <h4>📢 Comunicados</h4>
+  <p>Funciona igual que noticias. Puedes marcar comunicados como <strong>Destacados</strong> para que aparezcan en el globo flotante del portal.</p>
+
+  <h4>📅 Eventos</h4>
+  <p>Requiere: título, descripción, fecha del evento, hora de inicio y fin, ubicación. Los eventos pasados se archivan automáticamente.</p>
+
+  <h4>🖼️ Banners</h4>
+  <p>Los banners aparecen en el carrusel de la página principal. Recomendamos imágenes en proporción <strong>16:9</strong> (ej: 1280×720 px) para mejor visualización.</p>
+
+  <div class="alerta info">
+    <span class="alerta-icono">ℹ️</span>
+    <div><strong>Imágenes:</strong> El sistema acepta JPG, PNG y WEBP. El tamaño máximo recomendado es <strong>2 MB</strong> por imagen. Las imágenes se redimensionan automáticamente para el portal.</div>
+  </div>
+
+  <h3 id="admin-academico">Sección Académica</h3>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Módulo</th><th>Qué gestiona</th><th>Campos principales</th></tr></thead>
+      <tbody>
+        <tr><td>👩‍🏫 <strong>Docentes</strong></td><td>Ficha de cada docente</td><td>Nombre, especialidad, email, teléfono, foto</td></tr>
+        <tr><td>📋 <strong>Directorio</strong></td><td>Personal administrativo</td><td>Nombre, cargo, área, contacto, foto</td></tr>
+        <tr><td>🕐 <strong>Horarios</strong></td><td>Horario escolar por grado/docente</td><td>Bloque horario, día, asignatura, grado</td></tr>
+        <tr><td>📚 <strong>Biblioteca</strong></td><td>Catálogo de libros</td><td>Título, autor, categoría, archivo PDF, miniatura</td></tr>
+        <tr><td>📄 <strong>Documentos</strong></td><td>Documentos de gestión</td><td>Nombre, tipo (PEI/PAT/PCI/RI), año vigencia, PDF</td></tr>
+        <tr><td>📖 <strong>Plan Lector</strong></td><td>Libros del año y cronograma</td><td>Libro, grado, bimestre, fechas</td></tr>
+        <tr><td>🏆 <strong>Logros</strong></td><td>Reconocimientos institucionales</td><td>Título, descripción, fecha, destacado</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Cómo subir un archivo PDF (Biblioteca / Documentos)</h4>
+  <ol class="steps">
+    <li><strong>Abre el formulario de nuevo registro</strong><span>Botón "Nuevo" o "Agregar" en la parte superior de la sección.</span></li>
+    <li><strong>Completa los datos del documento</strong><span>Nombre, descripción, año de vigencia, etc.</span></li>
+    <li><strong>Haz clic en el campo de archivo</strong><span>Selecciona el PDF desde tu computadora. Máximo recomendado: <strong>10 MB</strong>.</span></li>
+    <li><strong>Guarda el registro</strong><span>El archivo se sube automáticamente. No cierres la ventana mientras carga.</span></li>
+  </ol>
+
+  <h3 id="admin-fondep">Proyecto FONDEP</h3>
+  <p>Esta sección gestiona la información del proyecto de investigación educativa:</p>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Módulo</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>🗂️ <strong>Portafolio de Actividades</strong></td><td>Registro de actividades con galería de imágenes, participantes y evidencias</td></tr>
+        <tr><td>📊 <strong>Sistema de Monitoreo</strong></td><td>Indicadores de avance por dimensiones del proyecto</td></tr>
+        <tr><td>📑 <strong>Informe Final</strong></td><td>Fases del proyecto, logros cuantitativos y resultados por competencia</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alerta warn">
+    <span class="alerta-icono">⚠️</span>
+    <div>Los campos de <strong>Evidencias</strong> y <strong>Galería</strong> en Portafolio y Monitoreo son listas de URLs de imágenes o archivos. Sube primero las imágenes a la sección de Biblioteca y luego copia el enlace.</div>
+  </div>
+
+  <h3 id="admin-mensajes">Mensajes del Portal</h3>
+  <p>Desde <strong>Mensajes</strong> en el menú lateral gestionas dos tipos de comunicaciones:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <h4>Pedidos de Libros</h4>
+      <p>Solicitudes de la Biblioteca Virtual. Incluyen código de seguimiento <code>PED-...</code></p>
+    </div>
+    <div class="card gold">
+      <div class="card-icon">✉️</div>
+      <h4>Mensajes de Contacto</h4>
+      <p>Consultas del formulario de Contáctanos. Incluyen código <code>CON-...</code></p>
+    </div>
+  </div>
+
+  <h4>Flujo de atención de un mensaje</h4>
+  <ol class="steps">
+    <li><strong>Abre la pestaña correspondiente</strong><span>"Pedidos de Libros" o "Mensajes de Contacto".</span></li>
+    <li><strong>Identifica los pendientes</strong><span>Los mensajes con estado <span class="badge badge-gray">⏳ Pendiente</span> necesitan atención urgente.</span></li>
+    <li><strong>Haz clic en la fila del mensaje</strong><span>Se abrirá el detalle completo: remitente, código de seguimiento, mensaje original.</span></li>
+    <li><strong>Marca como Leído</strong><span>Haz clic en el ícono 👁️ para cambiar el estado a "En revisión".</span></li>
+    <li><strong>Escribe la respuesta</strong><span>En el campo de texto, escribe la respuesta. Sé claro y cordial.</span></li>
+    <li><strong>Haz clic en "Enviar Respuesta"</strong><span>El estado cambia a "Respondido" y la persona puede ver el estado con su código.</span></li>
+  </ol>
+
+  <div class="alerta info">
+    <span class="alerta-icono">💡</span>
+    <div>El <strong>código de seguimiento</strong> visible en la tabla permite al usuario consultar el estado desde el portal sin necesidad de cuenta. Nunca elimines un mensaje antes de responderlo.</div>
+  </div>
+
+  <h4>Filtros y búsqueda</h4>
+  <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+    <li>Usa la <strong>barra de búsqueda</strong> para filtrar por nombre, email o contenido.</li>
+    <li>Usa el <strong>selector de estado</strong> para ver solo Pendientes, Leídos o Respondidos.</li>
+    <li>Haz clic en <strong>"Limpiar"</strong> para quitar todos los filtros.</li>
+  </ul>
+
+  <h3 id="admin-config">Configuración del Sistema</h3>
+  <p>Solo accesible para <span class="badge badge-navy">Administradores</span>. Desde <strong>Administración → Configuración</strong>.</p>
+
+  <h4>Información Institucional</h4>
+  <p>Actualiza los datos oficiales de la institución que se muestran en el portal:</p>
+  <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+    <li>Nombre de la institución, código modular</li>
+    <li>Director/a actual</li>
+    <li>Ubicación, teléfono, correo institucional</li>
+    <li>Año de vigencia, nivel educativo, tipo de gestión</li>
+  </ul>
+
+  <ol class="steps">
+    <li><strong>Ve a Administración → Configuración</strong><span>Pestaña "Información Institucional".</span></li>
+    <li><strong>Edita los campos necesarios</strong><span>Todos los campos son editables. El año de vigencia debe actualizarse cada año.</span></li>
+    <li><strong>Haz clic en "Guardar cambios"</strong><span>Los cambios se reflejan inmediatamente en el portal.</span></li>
+  </ol>
+
+  <h4>Metadatos FONDEP</h4>
+  <p>Son valores clave del proyecto (nombre, año, objetivo, etc.) que se usan en varias partes del portal. Para editar uno:</p>
+  <ol class="steps">
+    <li><strong>Pestaña "Metadatos FONDEP"</strong><span>Verás la tabla con todas las claves y sus valores actuales.</span></li>
+    <li><strong>Haz clic en el ícono ✏️</strong><span>La celda de valor se vuelve editable.</span></li>
+    <li><strong>Escribe el nuevo valor y confirma ✔️</strong><span>O cancela ✗ si no quieres guardar.</span></li>
+  </ol>
+
+  <h3 id="admin-usuarios">Gestión de Usuarios</h3>
+  <p>Solo accesible para <span class="badge badge-navy">Administradores</span>. Desde <strong>Administración → Usuarios</strong>.</p>
+
+  <h4>Crear un nuevo usuario</h4>
+  <ol class="steps">
+    <li><strong>Haz clic en "Nuevo usuario"</strong><span>Se abre el formulario de creación.</span></li>
+    <li><strong>Completa los datos</strong><span>Nombre completo, nombre de usuario (único), email, contraseña y rol (admin o editor).</span></li>
+    <li><strong>Guarda el usuario</strong><span>El usuario podrá iniciar sesión inmediatamente.</span></li>
+  </ol>
+
+  <div class="alerta danger">
+    <span class="alerta-icono">🔒</span>
+    <div><strong>Contraseñas:</strong> Las contraseñas se almacenan encriptadas. Si un usuario olvida su contraseña, el administrador debe establecer una nueva desde este módulo. Nunca es posible recuperar la contraseña original.</div>
+  </div>
+
+  <h4>Desactivar un usuario</h4>
+  <p>En lugar de eliminar, puedes <strong>desactivar</strong> un usuario para que no pueda iniciar sesión sin perder su historial. Usa el botón de estado (activo/inactivo) en la tabla.</p>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 4 — SEGURIDAD
+══════════════════════════════════════ -->
+<div class="seccion" id="seguridad">
+  <div class="sec-header">
+    <div class="sec-icono ic-green">🔒</div>
+    <div>
+      <h2>4. Seguridad y Buenas Prácticas</h2>
+      <p>Para todos los usuarios del panel administrativo</p>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card green">
+      <div class="card-icon">🔑</div>
+      <h4>Contraseñas seguras</h4>
+      <p>Usa al menos 8 caracteres, combinando mayúsculas, minúsculas, números y símbolos.</p>
+    </div>
+    <div class="card gold">
+      <div class="card-icon">🚪</div>
+      <h4>Cerrar sesión siempre</h4>
+      <p>Usa el botón "Cerrar sesión" al terminar, especialmente en computadoras compartidas.</p>
+    </div>
+    <div class="card red">
+      <div class="card-icon">🛡️</div>
+      <h4>No compartas credenciales</h4>
+      <p>Cada usuario debe tener su propia cuenta. Compartir credenciales viola la seguridad del sistema.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📎</div>
+      <h4>Archivos seguros</h4>
+      <p>Solo sube archivos que conoces. El sistema valida que sean PDF, JPG, PNG o WEBP.</p>
+    </div>
+  </div>
+
+  <h3>Protecciones del sistema</h3>
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Protección</th><th>Qué hace</th></tr></thead>
+      <tbody>
+        <tr><td>🔐 <strong>JWT + Refresh Token</strong></td><td>La sesión se gestiona con tokens seguros. Expiran automáticamente.</td></tr>
+        <tr><td>🛡️ <strong>CSRF Token</strong></td><td>Previene ataques de formularios falsos. Se valida en cada operación de escritura.</td></tr>
+        <tr><td>⏱️ <strong>Rate Limiting</strong></td><td>El sistema bloquea IPs que realicen demasiadas solicitudes en poco tiempo.</td></tr>
+        <tr><td>📋 <strong>Registro de actividad</strong></td><td>Todas las acciones importantes quedan registradas con usuario, IP y fecha.</td></tr>
+        <tr><td>🔒 <strong>Contraseñas encriptadas</strong></td><td>Se usa bcrypt. Nadie puede ver tu contraseña, ni el administrador.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 5 — FAQ
+══════════════════════════════════════ -->
+<div class="seccion" id="faq">
+  <div class="sec-header">
+    <div class="sec-icono ic-gold">❓</div>
+    <div>
+      <h2>5. Preguntas Frecuentes</h2>
+      <p>Problemas comunes y sus soluciones</p>
+    </div>
+  </div>
+
+  <h3>Para usuarios del portal público</h3>
+
+  <div class="alerta info" style="margin-bottom:.5rem">
+    <span class="alerta-icono">🔍</span>
+    <div><strong>Perdí mi código de seguimiento ¿qué hago?</strong><br>Desafortunadamente no es posible recuperarlo sin el código. Te recomendamos enviar un nuevo mensaje o pedido indicando que es un reenvío.</div>
+  </div>
+
+  <div class="alerta info" style="margin-bottom:.5rem">
+    <span class="alerta-icono">📧</span>
+    <div><strong>Envié el formulario pero no recibí respuesta por correo.</strong><br>Revisa la carpeta de spam. La respuesta la emite el equipo administrativo desde el panel; puede tardar 1–3 días hábiles.</div>
+  </div>
+
+  <div class="alerta info" style="margin-bottom:.5rem">
+    <span class="alerta-icono">📄</span>
+    <div><strong>No puedo descargar un documento PDF.</strong><br>Asegúrate de tener un lector de PDF instalado (Adobe Acrobat, el lector de tu navegador, etc.). Intenta hacer clic derecho → "Guardar enlace como".</div>
+  </div>
+
+  <h3>Para usuarios del panel administrativo</h3>
+
+  <div class="alerta warn" style="margin-bottom:.5rem">
+    <span class="alerta-icono">🔐</span>
+    <div><strong>No puedo iniciar sesión.</strong><br>1) Verifica que Bloq Mayús no esté activado. 2) Si fallaron varios intentos, la cuenta puede estar bloqueada temporalmente (30 min). 3) Contacta al administrador para restablecer la contraseña.</div>
+  </div>
+
+  <div class="alerta warn" style="margin-bottom:.5rem">
+    <span class="alerta-icono">🖼️</span>
+    <div><strong>La imagen que subí no aparece en el portal.</strong><br>Verifica que el formato sea JPG, PNG o WEBP y que el tamaño sea menor a 2 MB. Si el problema persiste, intenta con otro navegador.</div>
+  </div>
+
+  <div class="alerta warn" style="margin-bottom:.5rem">
+    <span class="alerta-icono">💾</span>
+    <div><strong>Perdí los cambios que estaba haciendo.</strong><br>El sistema no guarda automáticamente. Siempre usa el botón "Guardar" antes de cerrar o navegar a otra sección.</div>
+  </div>
+
+  <div class="alerta warn" style="margin-bottom:.5rem">
+    <span class="alerta-icono">🗑️</span>
+    <div><strong>Eliminé algo por error.</strong><br>La mayoría de eliminaciones son permanentes. Contacta al desarrollador si necesitas recuperar datos eliminados recientemente.</div>
+  </div>
+
+  <div class="alerta warn">
+    <span class="alerta-icono">📡</span>
+    <div><strong>El portal muestra "Error al cargar" en alguna sección.</strong><br>Puede ser un problema de conexión. Actualiza la página (F5). Si persiste, el servidor puede estar en mantenimiento; espera unos minutos e intenta nuevamente.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 6 — DESARROLLADOR
+══════════════════════════════════════ -->
+<div class="dev-footer" id="dev">
+  <h2>👨‍💻 Desarrollado por</h2>
+
+  <div class="dev-card">
+    <div class="dev-avatar">W</div>
+    <div class="dev-info">
+      <h3>Wilder Tudela Saravia</h3>
+      <p>Desarrollador Full-Stack</p>
+      <p>Diseño, arquitectura e implementación del sistema web institucional</p>
+      <span class="empresa">⚡ Omikron Studios Dev</span>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem; font-size:.85rem; color:rgba(255,255,255,.65); max-width:520px; line-height:1.7;">
+    <p><strong style="color:rgba(255,255,255,.85)">Tecnologías utilizadas:</strong><br>
+    React + Vite (portal web y panel admin) · PHP REST API · MySQL · Bootstrap 5 · JWT Auth · CSRF Protection</p>
+    <p style="margin-top:.75rem;"><strong style="color:rgba(255,255,255,.85)">Proyecto:</strong><br>
+    Sistema web para la I.E. Andrés Avelino Cáceres en el marco del Proyecto FONDEP — Estrategias Creativas e Interculturales para el aprendizaje del castellano como segunda lengua en estudiantes del VRAEM.</p>
+  </div>
+
+  <div class="dev-copy">
+    © 2026 Omikron Studios Dev · Wilder Tudela Saravia · Todos los derechos reservados<br>
+    I.E. Andrés Avelino Cáceres — Sirenachayocc, Kimbiri, La Convención, Cusco, Perú
+  </div>
+</div>
+
+</body>
+</html>

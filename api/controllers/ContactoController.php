@@ -28,6 +28,23 @@ class ContactoController
     public function __construct()
     {
         $this->db = (new Database())->getConnection();
+        $this->migrar();
+    }
+
+    /* Asegura que la columna `codigo` existe en la tabla */
+    private function migrar(): void
+    {
+        try {
+            $cols = $this->db->query("SHOW COLUMNS FROM mensajes_contacto LIKE 'codigo'")->fetchAll();
+            if (empty($cols)) {
+                $this->db->exec("ALTER TABLE mensajes_contacto ADD COLUMN codigo VARCHAR(20) NULL AFTER id");
+                $this->db->exec("UPDATE mensajes_contacto SET codigo = CONCAT('CON-', DATE_FORMAT(created_at,'%y%m%d'), '-', UPPER(SUBSTR(MD5(id),1,4))) WHERE codigo IS NULL");
+                $this->db->exec("ALTER TABLE mensajes_contacto MODIFY COLUMN codigo VARCHAR(20) NOT NULL");
+                $this->db->exec("ALTER TABLE mensajes_contacto ADD UNIQUE KEY idx_codigo (codigo)");
+            }
+        } catch (\Throwable $e) {
+            // Si la tabla no existe todavía, ignorar
+        }
     }
 
     /* ══════════════════════════════════════════════════
@@ -35,10 +52,14 @@ class ContactoController
     ══════════════════════════════════════════════════ */
     public function handlePublic(array $segments): void
     {
-        match ($_SERVER['REQUEST_METHOD']) {
-            'POST'  => $this->store(),
-            default => $this->error('Método no permitido', 405),
-        };
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method === 'POST') {
+            $this->store();
+        } elseif ($method === 'GET' && !empty($_GET['codigo'])) {
+            $this->buscarPorCodigo(trim($_GET['codigo']));
+        } else {
+            $this->error('Método no permitido', 405);
+        }
     }
 
     /* ══════════════════════════════════════════════════
@@ -83,18 +104,36 @@ class ContactoController
         if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL))  { $this->error('El correo no es válido', 422); return; }
         if (!$mensaje || strlen($mensaje) < 10)                     { $this->error('El mensaje debe tener al menos 10 caracteres', 422); return; }
 
+        // Aceptar código generado en el cliente si tiene formato válido y no existe ya
+        $codigoCliente = strtoupper(trim($input['codigo'] ?? ''));
+        if ($codigoCliente && preg_match('/^CON-\d{6}-[A-Z0-9]{4}$/', $codigoCliente)) {
+            $check = $this->db->prepare('SELECT id FROM mensajes_contacto WHERE codigo = :c LIMIT 1');
+            $check->execute([':c' => $codigoCliente]);
+            $codigo = $check->fetch() ? $this->generarCodigo() : $codigoCliente;
+        } else {
+            $codigo = $this->generarCodigo();
+        }
+
+        $ip        = $_SERVER['REMOTE_ADDR']     ?? null;
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+
         $stmt = $this->db->prepare("
-            INSERT INTO mensajes_contacto (nombre, email, rol, mensaje, estado, created_at, updated_at)
-            VALUES (:nombre, :email, :rol, :mensaje, 'pendiente', NOW(), NOW())
+            INSERT INTO mensajes_contacto (codigo, nombre, email, rol, mensaje, estado, ip_address, user_agent, created_at, updated_at)
+            VALUES (:codigo, :nombre, :email, :rol, :mensaje, 'pendiente', :ip, :ua, NOW(), NOW())
         ");
-        $stmt->execute([
+        $ok = $stmt->execute([
+            ':codigo'  => $codigo,
             ':nombre'  => $this->clean($nombre),
             ':email'   => strtolower($email),
             ':rol'     => $this->clean($rol),
             ':mensaje' => $this->clean($mensaje),
+            ':ip'      => $ip,
+            ':ua'      => $userAgent,
         ]);
 
-        $this->success(['message' => '¡Gracias! Tu mensaje ha sido recibido. Te responderemos pronto.'], 201);
+        if (!$ok) { $this->error('Error al registrar el mensaje. Intente nuevamente.', 500); return; }
+
+        $this->success(['message' => '¡Gracias! Tu mensaje ha sido recibido. Te responderemos pronto.', 'codigo' => $codigo], 201);
     }
 
     /* ══════════════════════════════════════════════════
@@ -181,6 +220,51 @@ class ContactoController
 
         $this->db->prepare("DELETE FROM mensajes_contacto WHERE id=:id")->execute([':id' => $id]);
         $this->success(['message' => 'Mensaje eliminado correctamente']);
+    }
+
+    /* ══════════════════════════════════════════════════
+       GET /contacto?codigo=CON-...  (público — consultar estado)
+    ══════════════════════════════════════════════════ */
+    private function buscarPorCodigo(string $codigo): void
+    {
+        $codigo = strtoupper(preg_replace('/[^A-Z0-9\-]/', '', $codigo));
+        if (!$codigo) { $this->error('Código inválido', 422); return; }
+
+        $stmt = $this->db->prepare(
+            'SELECT codigo, mensaje, estado, respuesta, created_at FROM mensajes_contacto WHERE codigo = :c LIMIT 1'
+        );
+        $stmt->execute([':c' => $codigo]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) { $this->error('Código no encontrado. Verifica que sea correcto.', 404); return; }
+
+        $labels = [
+            'pendiente'  => 'Pendiente de revisión',
+            'leido'      => 'En revisión',
+            'respondido' => 'Respondido',
+        ];
+
+        $this->success(['data' => [
+            'codigo'       => $row['codigo'],
+            'mensaje'      => mb_substr($row['mensaje'], 0, 80) . (mb_strlen($row['mensaje']) > 80 ? '…' : ''),
+            'estado'       => $row['estado'],
+            'estado_label' => $labels[$row['estado']] ?? $row['estado'],
+            'respuesta'    => $row['estado'] === 'respondido' ? ($row['respuesta'] ?? null) : null,
+            'fecha'        => date('d/m/Y', strtotime($row['created_at'])),
+        ]]);
+    }
+
+    /* ── Generador de código único ── */
+    private function generarCodigo(): string
+    {
+        $intentos = 0;
+        do {
+            $codigo = 'CON-' . date('ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 4));
+            $check  = $this->db->prepare('SELECT id FROM mensajes_contacto WHERE codigo = :c LIMIT 1');
+            $check->execute([':c' => $codigo]);
+            $intentos++;
+        } while ($check->fetch() && $intentos < 10);
+        return $codigo;
     }
 
     /* ── Helpers ── */

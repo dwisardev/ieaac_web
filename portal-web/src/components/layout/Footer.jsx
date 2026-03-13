@@ -34,7 +34,7 @@ export default function Footer() {
                 <img src={logo} alt="Logo I.E." className="footer-brand-logo" />
                 <div>
                   <div className="footer-brand-name">I.E. Andrés Avelino Cáceres</div>
-                  <div className="footer-brand-sub">Sirenachayocc · Ayacucho · Perú</div>
+                  <div className="footer-brand-sub">Sirenachayocc · Kimbiri · Cusco · Perú</div>
                 </div>
               </div>
               <p className="footer-description">
@@ -91,7 +91,7 @@ export default function Footer() {
               <ul className="footer-contact-list">
                 <li className="ci-location">
                   <i className="bi bi-geo-alt-fill" />
-                  <span>Jr. 28 de julio s/n, C.P. Sirenachayocc, La Mar, Ayacucho</span>
+                  <span>Jr. 28 de julio s/n, C.P. Sirenachayocc, Kimbiri, La Convención, Cusco</span>
                 </li>
                 <li className="ci-phone">
                   <i className="bi bi-telephone-fill" />

@@ -9,7 +9,6 @@ import {
   Spinner,
   Alert,
   Form,
-  Modal,
   Table,
   Badge,
   Tabs,
@@ -21,7 +20,6 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
   X,
   BarChartFill,
   PeopleFill,
@@ -330,97 +328,63 @@ const [momentoInput, setMomentoInput] = useState("");
 
   // Modal de dimensiones
   const renderModalDimension = () => (
-    <Modal show={showModalDimension} onHide={cerrarModalDimension}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar Dimensión" : "Nueva Dimensión"}
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitDimension}>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre de la Dimensión *</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre"
-              value={formDimension.nombre}
-              onChange={handleChangeDimension}
-              placeholder="Ej: Aprendizajes, Desempeño Docente"
-              required
-            />
-          </Form.Group>
+    showModalDimension && (
+      <div className="modal-overlay" onClick={cerrarModalDimension}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-layer-group" />
+              {modoEdicion ? "Editar Dimensión" : "Nueva Dimensión"}
+            </h3>
+            <button className="modal-close" onClick={cerrarModalDimension}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitDimension}>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="form-label">Nombre de la Dimensión *</label>
+                <input className="form-input" type="text" name="nombre" value={formDimension.nombre} onChange={handleChangeDimension} placeholder="Ej: Aprendizajes, Desempeño Docente" required />
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Color *</Form.Label>
-                <Form.Control
-                  type="color"
-                  name="color"
-                  value={formDimension.color}
-                  onChange={handleChangeDimension}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Icono *</Form.Label>
-                <Form.Select
-                  name="icono"
-                  value={formDimension.icono}
-                  onChange={handleChangeDimension}
-                  required
-                >
-                  {iconosDisponibles.map(icon => (
-                    <option key={icon.value} value={icon.value}>
-                      {icon.label}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Color *</label>
+                  <input className="form-input" type="color" name="color" value={formDimension.color} onChange={handleChangeDimension} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Icono *</label>
+                  <select className="form-input" name="icono" value={formDimension.icono} onChange={handleChangeDimension} required>
+                    {iconosDisponibles.map(icon => (
+                      <option key={icon.value} value={icon.value}>{icon.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Orden *</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="orden"
-                  value={formDimension.orden}
-                  onChange={handleChangeDimension}
-                  min="1"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Check
-                  type="checkbox"
-                  name="activo"
-                  label="Activo"
-                  checked={formDimension.activo}
-                  onChange={handleChangeDimension}
-                  className="mt-4"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModalDimension}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Orden *</label>
+                  <input className="form-input" type="number" name="orden" value={formDimension.orden} onChange={handleChangeDimension} min="1" required />
+                </div>
+                <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <input type="checkbox" id="activo_dim" name="activo" checked={formDimension.activo} onChange={handleChangeDimension} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                    <label htmlFor="activo_dim" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Activo</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModalDimension}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
   // ==========================================
 // GESTIÓN DE INDICADORES
@@ -687,185 +651,103 @@ const renderSeccionIndicadores = () => (
 
 // Modal de indicadores
 const renderModalIndicador = () => (
-  <Modal show={showModalIndicador} onHide={cerrarModalIndicador} size="lg">
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {modoEdicion ? "Editar Indicador" : "Nuevo Indicador"}
-      </Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmitIndicador}>
-      <Modal.Body>
-        <Form.Group className="mb-3">
-          <Form.Label>Competencia / Indicador *</Form.Label>
-          <Form.Control
-            type="text"
-            name="competencia"
-            value={formIndicador.competencia}
-            onChange={handleChangeIndicador}
-            placeholder="Ej: Se comunica oralmente en CSL"
-            required
-          />
-        </Form.Group>
-
-        <Row>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Meta (%) *</Form.Label>
-              <Form.Control
-                type="number"
-                name="meta"
-                value={formIndicador.meta}
-                onChange={handleChangeIndicador}
-                min="0"
-                max="100"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Actual (%) *</Form.Label>
-              <Form.Control
-                type="number"
-                name="actual"
-                value={formIndicador.actual}
-                onChange={handleChangeIndicador}
-                min="0"
-                max="100"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Orden</Form.Label>
-              <Form.Control
-                type="number"
-                name="orden"
-                value={formIndicador.orden}
-                onChange={handleChangeIndicador}
-                min="1"
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Evidencias</Form.Label>
-          <div className="input-group mb-2">
-            <Form.Control
-              type="text"
-              value={evidenciaInput}
-              onChange={(e) => setEvidenciaInput(e.target.value)}
-              placeholder="Ej: Registro de evaluación"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  agregarEvidencia();
-                }
-              }}
-            />
-            <Button 
-              variant="outline-primary" 
-              onClick={agregarEvidencia}
-              type="button"
-            >
-              <PlusCircle />
-            </Button>
-          </div>
-          
-          {formIndicador.evidencias.length > 0 && (
-            <ul className="list-group">
-              {formIndicador.evidencias.map((ev, index) => (
-                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                  <span>{ev}</span>
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => eliminarEvidencia(index)}
-                    type="button"
-                  >
-                    <Trash size={14} />
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Momentos de Monitoreo</Form.Label>
-          <div className="input-group mb-2">
-            <Form.Control
-              type="text"
-              value={momentoInput}
-              onChange={(e) => setMomentoInput(e.target.value)}
-              placeholder="Ej: mayo, junio"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  agregarMomento();
-                }
-              }}
-            />
-            <Button 
-              variant="outline-primary" 
-              onClick={agregarMomento}
-              type="button"
-            >
-              <PlusCircle />
-            </Button>
-          </div>
-          
-          {formIndicador.momentos.length > 0 && (
-            <div className="d-flex flex-wrap gap-2">
-              {formIndicador.momentos.map((mes, index) => (
-                <Badge 
-                  key={index} 
-                  bg="light" 
-                  text="dark" 
-                  className="d-flex align-items-center gap-2"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  {mes}
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="p-0 text-danger"
-                    onClick={() => eliminarMomento(index)}
-                    type="button"
-                  >
-                    <X size={16} />
-                  </Button>
-                </Badge>
-              ))}
+  showModalIndicador && (
+    <div className="modal-overlay" onClick={cerrarModalIndicador}>
+      <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-chart-bar" />
+            {modoEdicion ? "Editar Indicador" : "Nuevo Indicador"}
+          </h3>
+          <button className="modal-close" onClick={cerrarModalIndicador}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitIndicador}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Competencia / Indicador *</label>
+              <input className="form-input" type="text" name="competencia" value={formIndicador.competencia} onChange={handleChangeIndicador} placeholder="Ej: Se comunica oralmente en CSL" required />
             </div>
-          )}
-        </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Check
-            type="checkbox"
-            name="activo"
-            label="Indicador activo"
-            checked={formIndicador.activo}
-            onChange={handleChangeIndicador}
-          />
-        </Form.Group>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModalIndicador}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Meta (%) *</label>
+                <input className="form-input" type="number" name="meta" value={formIndicador.meta} onChange={handleChangeIndicador} min="0" max="100" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Actual (%) *</label>
+                <input className="form-input" type="number" name="actual" value={formIndicador.actual} onChange={handleChangeIndicador} min="0" max="100" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Orden</label>
+                <input className="form-input" type="number" name="orden" value={formIndicador.orden} onChange={handleChangeIndicador} min="1" required />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Evidencias</label>
+              <div className="input-group mb-2">
+                <input className="form-input" type="text" value={evidenciaInput} onChange={(e) => setEvidenciaInput(e.target.value)} placeholder="Ej: Registro de evaluación"
+                  onKeyPress={(e) => { if (e.key === 'Enter') { e.preventDefault(); agregarEvidencia(); } }}
+                  style={{ borderRadius: '6px 0 0 6px' }} />
+                <Button variant="outline-primary" onClick={agregarEvidencia} type="button">
+                  <PlusCircle />
+                </Button>
+              </div>
+              {formIndicador.evidencias.length > 0 && (
+                <ul className="list-group">
+                  {formIndicador.evidencias.map((ev, index) => (
+                    <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                      <span>{ev}</span>
+                      <Button variant="outline-danger" size="sm" onClick={() => eliminarEvidencia(index)} type="button">
+                        <Trash size={14} />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Momentos de Monitoreo</label>
+              <div className="input-group mb-2">
+                <input className="form-input" type="text" value={momentoInput} onChange={(e) => setMomentoInput(e.target.value)} placeholder="Ej: mayo, junio"
+                  onKeyPress={(e) => { if (e.key === 'Enter') { e.preventDefault(); agregarMomento(); } }}
+                  style={{ borderRadius: '6px 0 0 6px' }} />
+                <Button variant="outline-primary" onClick={agregarMomento} type="button">
+                  <PlusCircle />
+                </Button>
+              </div>
+              {formIndicador.momentos.length > 0 && (
+                <div className="d-flex flex-wrap gap-2">
+                  {formIndicador.momentos.map((mes, index) => (
+                    <Badge key={index} bg="light" text="dark" className="d-flex align-items-center gap-2" style={{ fontSize: "0.9rem" }}>
+                      {mes}
+                      <Button variant="link" size="sm" className="p-0 text-danger" onClick={() => eliminarMomento(index)} type="button">
+                        <X size={16} />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <input type="checkbox" id="activo_ind" name="activo" checked={formIndicador.activo} onChange={handleChangeIndicador} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+              <label htmlFor="activo_ind" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Indicador activo</label>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModalIndicador}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
   // Loading state
   if (isLoading) {

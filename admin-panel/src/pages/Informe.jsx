@@ -8,8 +8,6 @@ import {
   Button,
   Spinner,
   Alert,
-  Form,
-  Modal,
   Table,
   Badge,
   Tabs,
@@ -20,8 +18,6 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
-  X,
   CheckCircleFill,
   BarChartFill,
   PeopleFill
@@ -270,90 +266,60 @@ const [formResultado, setFormResultado] = useState({
 
   // Modal de metadata
   const renderModalMetadata = () => (
-    <Modal show={showModalMetadata} onHide={cerrarModalMetadata} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Editar Información del Proyecto</Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitMetadata}>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Código del Proyecto *</Form.Label>
-            <Form.Control
-              type="text"
-              name="codigo_proyecto"
-              value={formMetadata.codigo_proyecto}
-              onChange={handleChangeMetadata}
-              placeholder="Ej: CNPIE2025-023880"
-              required
-            />
-          </Form.Group>
+    showModalMetadata && (
+      <div className="modal-overlay" onClick={cerrarModalMetadata}>
+        <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-file-text" />
+              Editar Información del Proyecto
+            </h3>
+            <button className="modal-close" onClick={cerrarModalMetadata}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitMetadata}>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="form-label">Código del Proyecto *</label>
+                <input className="form-input" type="text" name="codigo_proyecto" value={formMetadata.codigo_proyecto} onChange={handleChangeMetadata} placeholder="Ej: CNPIE2025-023880" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Título del Proyecto *</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="titulo"
-              value={formMetadata.titulo}
-              onChange={handleChangeMetadata}
-              placeholder="Descripción completa del proyecto"
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Título del Proyecto *</label>
+                <textarea className="form-input" name="titulo" value={formMetadata.titulo} onChange={handleChangeMetadata} placeholder="Descripción completa del proyecto" rows={3} style={{ resize: 'vertical' }} required />
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Fecha de Inicio *</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="fecha_inicio"
-                  value={formMetadata.fecha_inicio}
-                  onChange={handleChangeMetadata}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Fecha de Fin *</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="fecha_fin"
-                  value={formMetadata.fecha_fin}
-                  onChange={handleChangeMetadata}
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Fecha de Inicio *</label>
+                  <input className="form-input" type="date" name="fecha_inicio" value={formMetadata.fecha_inicio} onChange={handleChangeMetadata} required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Fecha de Fin *</label>
+                  <input className="form-input" type="date" name="fecha_fin" value={formMetadata.fecha_fin} onChange={handleChangeMetadata} required />
+                </div>
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Estado del Proyecto *</Form.Label>
-            <Form.Select
-              name="estado"
-              value={formMetadata.estado}
-              onChange={handleChangeMetadata}
-              required
-            >
-              <option value="en_proceso">En Proceso</option>
-              <option value="completado">Completado</option>
-              <option value="pausado">Pausado</option>
-            </Form.Select>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModalMetadata}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div className="form-group">
+                <label className="form-label">Estado del Proyecto *</label>
+                <select className="form-input" name="estado" value={formMetadata.estado} onChange={handleChangeMetadata} required>
+                  <option value="en_proceso">En Proceso</option>
+                  <option value="completado">Completado</option>
+                  <option value="pausado">Pausado</option>
+                </select>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModalMetadata}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
   // ==========================================
 // GESTIÓN DE RESULTADOS
@@ -553,235 +519,111 @@ const renderTablaResultados = () => (
 
 // Modal de resultados
 const renderModalResultado = () => (
-  <Modal show={showModalResultado} onHide={cerrarModalResultado} size="lg">
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {modoEdicion ? "Editar Resultado" : "Nuevo Resultado"}
-      </Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmitResultado}>
-      <Modal.Body>
-        <Row>
-          <Col md={8}>
-            <Form.Group className="mb-3">
-              <Form.Label>Competencia *</Form.Label>
-              <Form.Control
-                type="text"
-                name="competencia"
-                value={formResultado.competencia}
-                onChange={handleChangeResultado}
-                placeholder="Ej: Se comunica oralmente en CSL"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Tipo *</Form.Label>
-              <Form.Select
-                name="tipo"
-                value={formResultado.tipo}
-                onChange={handleChangeResultado}
-                required
-              >
-                <option value="Aprendizaje">Aprendizaje</option>
-                <option value="Desempeño Docente">Desempeño Docente</option>
-                <option value="Gestión Escolar">Gestión Escolar</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
+  showModalResultado && (
+    <div className="modal-overlay" onClick={cerrarModalResultado}>
+      <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-check-circle" />
+            {modoEdicion ? "Editar Resultado" : "Nuevo Resultado"}
+          </h3>
+          <button className="modal-close" onClick={cerrarModalResultado}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitResultado}>
+          <div className="modal-body">
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Competencia *</label>
+                <input className="form-input" type="text" name="competencia" value={formResultado.competencia} onChange={handleChangeResultado} placeholder="Ej: Se comunica oralmente en CSL" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Tipo *</label>
+                <select className="form-input" name="tipo" value={formResultado.tipo} onChange={handleChangeResultado} required>
+                  <option value="Aprendizaje">Aprendizaje</option>
+                  <option value="Desempeño Docente">Desempeño Docente</option>
+                  <option value="Gestión Escolar">Gestión Escolar</option>
+                </select>
+              </div>
+            </div>
 
-        <Row>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Orden</Form.Label>
-              <Form.Control
-                type="number"
-                name="orden"
-                value={formResultado.orden}
-                onChange={handleChangeResultado}
-                min="1"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Color</Form.Label>
-              <Form.Control
-                type="color"
-                name="color"
-                value={formResultado.color}
-                onChange={handleChangeResultado}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                name="activo"
-                label="Activo"
-                checked={formResultado.activo}
-                onChange={handleChangeResultado}
-                className="mt-4"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Orden</label>
+                <input className="form-input" type="number" name="orden" value={formResultado.orden} onChange={handleChangeResultado} min="1" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Color</label>
+                <input className="form-input" type="color" name="color" value={formResultado.color} onChange={handleChangeResultado} />
+              </div>
+              <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <input type="checkbox" id="activo_res" name="activo" checked={formResultado.activo} onChange={handleChangeResultado} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                  <label htmlFor="activo_res" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Activo</label>
+                </div>
+              </div>
+            </div>
 
-        <hr />
-        <h6 className="fw-bold mb-3">Nivel "Destacado/Esperado"</h6>
-        <Row>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Inicio (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="inicioDestacado"
-                value={formResultado.inicioDestacado}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Meta (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="metaDestacado"
-                value={formResultado.metaDestacado}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Actual (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="actualDestacado"
-                value={formResultado.actualDestacado}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+            <hr />
+            <p style={{ fontWeight: 700, marginBottom: 8 }}>Nivel "Destacado/Esperado"</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Inicio (%)</label>
+                <input className="form-input" type="number" name="inicioDestacado" value={formResultado.inicioDestacado} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Meta (%)</label>
+                <input className="form-input" type="number" name="metaDestacado" value={formResultado.metaDestacado} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Actual (%)</label>
+                <input className="form-input" type="number" name="actualDestacado" value={formResultado.actualDestacado} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+            </div>
 
-        <h6 className="fw-bold mb-3">Nivel "En Proceso" (opcional)</h6>
-        <Row>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Inicio (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="inicioProceso"
-                value={formResultado.inicioProceso}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Meta (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="metaProceso"
-                value={formResultado.metaProceso}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Actual (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="actualProceso"
-                value={formResultado.actualProceso}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+            <p style={{ fontWeight: 700, marginBottom: 8 }}>Nivel "En Proceso" (opcional)</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Inicio (%)</label>
+                <input className="form-input" type="number" name="inicioProceso" value={formResultado.inicioProceso} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Meta (%)</label>
+                <input className="form-input" type="number" name="metaProceso" value={formResultado.metaProceso} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Actual (%)</label>
+                <input className="form-input" type="number" name="actualProceso" value={formResultado.actualProceso} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+            </div>
 
-        <h6 className="fw-bold mb-3">Nivel "En Inicio" (opcional)</h6>
-        <Row>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Inicio (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="inicioInicio"
-                value={formResultado.inicioInicio}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Meta (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="metaInicio"
-                value={formResultado.metaInicio}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Actual (%)</Form.Label>
-              <Form.Control
-                type="number"
-                name="actualInicio"
-                value={formResultado.actualInicio}
-                onChange={handleChangeResultado}
-                min="0"
-                max="100"
-                step="0.1"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModalResultado}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+            <p style={{ fontWeight: 700, marginBottom: 8 }}>Nivel "En Inicio" (opcional)</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Inicio (%)</label>
+                <input className="form-input" type="number" name="inicioInicio" value={formResultado.inicioInicio} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Meta (%)</label>
+                <input className="form-input" type="number" name="metaInicio" value={formResultado.metaInicio} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Actual (%)</label>
+                <input className="form-input" type="number" name="actualInicio" value={formResultado.actualInicio} onChange={handleChangeResultado} min="0" max="100" step="0.1" />
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModalResultado}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
 
 // ==========================================
@@ -954,79 +796,53 @@ const renderTablaFases = () => (
 
 // Modal de fases
 const renderModalFase = () => (
-  <Modal show={showModalFase} onHide={cerrarModalFase}>
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {modoEdicion ? "Editar Fase" : "Nueva Fase"}
-      </Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmitFase}>
-      <Modal.Body>
-        <Form.Group className="mb-3">
-          <Form.Label>Nombre de la Fase *</Form.Label>
-          <Form.Control
-            type="text"
-            name="fase"
-            value={formFase.fase}
-            onChange={handleChangeFase}
-            placeholder="Ej: Fase 1: Planificación colaborativa"
-            required
-          />
-        </Form.Group>
+  showModalFase && (
+    <div className="modal-overlay" onClick={cerrarModalFase}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-tasks" />
+            {modoEdicion ? "Editar Fase" : "Nueva Fase"}
+          </h3>
+          <button className="modal-close" onClick={cerrarModalFase}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitFase}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Nombre de la Fase *</label>
+              <input className="form-input" type="text" name="fase" value={formFase.fase} onChange={handleChangeFase} placeholder="Ej: Fase 1: Planificación colaborativa" required />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Descripción *</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="descripcion"
-            value={formFase.descripcion}
-            onChange={handleChangeFase}
-            placeholder="Descripción de las actividades de esta fase"
-            required
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Descripción *</label>
+              <textarea className="form-input" name="descripcion" value={formFase.descripcion} onChange={handleChangeFase} placeholder="Descripción de las actividades de esta fase" rows={3} style={{ resize: 'vertical' }} required />
+            </div>
 
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Orden *</Form.Label>
-              <Form.Control
-                type="number"
-                name="orden"
-                value={formFase.orden}
-                onChange={handleChangeFase}
-                min="1"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                name="completado"
-                label="Fase Completada"
-                checked={formFase.completado}
-                onChange={handleChangeFase}
-                className="mt-4"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModalFase}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Orden *</label>
+                <input className="form-input" type="number" name="orden" value={formFase.orden} onChange={handleChangeFase} min="1" required />
+              </div>
+              <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <input type="checkbox" id="completado_fase" name="completado" checked={formFase.completado} onChange={handleChangeFase} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                  <label htmlFor="completado_fase" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Fase Completada</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModalFase}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
 
 // ==========================================
@@ -1159,103 +975,58 @@ const renderSeccionLogros = () => (
 
 // Modal de logros
 const renderModalLogros = () => (
-  <Modal show={showModalLogros} onHide={cerrarModalLogros}>
-    <Modal.Header closeButton>
-      <Modal.Title>Editar Logros Destacados</Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmitLogros}>
-      <Modal.Body>
-        <Alert variant="info" className="small">
-          Ingrese los valores que se mostrarán en el resumen del informe final.
-        </Alert>
+  showModalLogros && (
+    <div className="modal-overlay" onClick={cerrarModalLogros}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-chart-bar" />
+            Editar Logros Destacados
+          </h3>
+          <button className="modal-close" onClick={cerrarModalLogros}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitLogros}>
+          <div className="modal-body">
+            <Alert variant="info" className="small">
+              Ingrese los valores que se mostrarán en el resumen del informe final.
+            </Alert>
 
-        <Form.Group className="mb-3">
-          <Form.Label>
-            Mejora en Participación Estudiantil (%)
-          </Form.Label>
-          <Form.Control
-            type="number"
-            name="participacionEstudiantil"
-            value={formLogros.participacionEstudiantil}
-            onChange={handleChangeLogros}
-            min="0"
-            max="100"
-            step="0.1"
-            required
-          />
-          <Form.Text className="text-muted">
-            Ejemplo: 50 para mostrar "+50%"
-          </Form.Text>
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Mejora en Participación Estudiantil (%)</label>
+              <input className="form-input" type="number" name="participacionEstudiantil" value={formLogros.participacionEstudiantil} onChange={handleChangeLogros} min="0" max="100" step="0.1" required />
+              <small className="text-muted">Ejemplo: 50 para mostrar "+50%"</small>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>
-            Docentes Capacitados (%)
-          </Form.Label>
-          <Form.Control
-            type="number"
-            name="docentesCapacitados"
-            value={formLogros.docentesCapacitados}
-            onChange={handleChangeLogros}
-            min="0"
-            max="100"
-            step="0.1"
-            required
-          />
-          <Form.Text className="text-muted">
-            Ejemplo: 100 para mostrar "100%"
-          </Form.Text>
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Docentes Capacitados (%)</label>
+              <input className="form-input" type="number" name="docentesCapacitados" value={formLogros.docentesCapacitados} onChange={handleChangeLogros} min="0" max="100" step="0.1" required />
+              <small className="text-muted">Ejemplo: 100 para mostrar "100%"</small>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>
-            Productos Pedagógicos Generados (cantidad)
-          </Form.Label>
-          <Form.Control
-            type="number"
-            name="productosGenerados"
-            value={formLogros.productosGenerados}
-            onChange={handleChangeLogros}
-            min="0"
-            step="1"
-            required
-          />
-          <Form.Text className="text-muted">
-            Ejemplo: 12 materiales, guías, cartillas, etc.
-          </Form.Text>
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Productos Pedagógicos Generados (cantidad)</label>
+              <input className="form-input" type="number" name="productosGenerados" value={formLogros.productosGenerados} onChange={handleChangeLogros} min="0" step="1" required />
+              <small className="text-muted">Ejemplo: 12 materiales, guías, cartillas, etc.</small>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>
-            Familias Involucradas (%)
-          </Form.Label>
-          <Form.Control
-            type="number"
-            name="familiasInvolucradas"
-            value={formLogros.familiasInvolucradas}
-            onChange={handleChangeLogros}
-            min="0"
-            max="100"
-            step="0.1"
-            required
-          />
-          <Form.Text className="text-muted">
-            Ejemplo: 85 para mostrar "85%"
-          </Form.Text>
-        </Form.Group>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModalLogros}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+            <div className="form-group">
+              <label className="form-label">Familias Involucradas (%)</label>
+              <input className="form-input" type="number" name="familiasInvolucradas" value={formLogros.familiasInvolucradas} onChange={handleChangeLogros} min="0" max="100" step="0.1" required />
+              <small className="text-muted">Ejemplo: 85 para mostrar "85%"</small>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModalLogros}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
 
 

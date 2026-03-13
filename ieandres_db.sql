@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 23-02-2026 a las 21:33:52
+-- Tiempo de generación: 12-03-2026 a las 18:25:23
 -- Versión del servidor: 8.0.45
--- Versión de PHP: 8.4.17
+-- Versión de PHP: 8.4.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -215,7 +215,7 @@ CREATE TABLE `comunicados` (
 
 INSERT INTO `comunicados` (`id`, `titulo`, `contenido`, `archivo_pdf`, `imagen`, `fecha_publicacion`, `tipo`, `destacado`, `activo`, `created_at`, `updated_at`) VALUES
 (1, 'Matrícula 2025 - Proceso Regular', 'Informamos que el proceso de matrícula para el año escolar 2025 se realizará del 15 al 28 de febrero. Requisitos: DNI del estudiante, partida de nacimiento, certificado de estudios del año anterior y tres fotografías tamaño carnet. Atención de lunes a viernes de 8:00 AM a 3:00 PM.', NULL, NULL, '2025-01-15', 'Administrativo', 1, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54'),
-(2, 'Reunión de Padres de Familia', 'Se convoca a todos los padres de familia a la reunión informativa que se realizará el 25 de febrero a las 3:00 PM en el auditorio. Temas: inicio de clases, normas de convivencia y calendario escolar 2025.', NULL, NULL, '2025-01-18', 'General', 1, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54'),
+(2, 'Reunión de Padres de Familia', 'Se convoca a todos los padres de familia a la reunión informativa que se realizará el 25 de febrero a las 3:00 PM en el auditorio. Temas: inicio de clases, normas de convivencia y calendario escolar 2025.', NULL, NULL, '2025-01-18', 'General', 1, 0, '2026-01-24 16:10:54', '2026-03-03 04:42:05'),
 (3, 'Simulacro de Sismo - 15 de Febrero', 'Como parte del plan de gestión de riesgos, se realizará un simulacro de sismo el día 15 de febrero a las 10:00 AM. Solicitamos la participación activa de toda la comunidad educativa.', NULL, NULL, '2025-02-01', 'General', 0, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54');
 
 -- --------------------------------------------------------
@@ -523,7 +523,7 @@ CREATE TABLE `informacion_institucional` (
 --
 
 INSERT INTO `informacion_institucional` (`id`, `nombre`, `codigo_modular`, `director`, `ubicacion`, `telefono`, `email`, `anio_vigencia`, `grados_atendidos`, `nivel_educativo`, `tipo_gestion`, `activo`, `updated_at`) VALUES
-(1, 'I.E. Andrés Avelino Cáceres', '1372374', 'Gerardo Florez Condori', 'Sirenachayocc - La Mar - Ayacucho', '950891414', 'contacto@iecaceres.edu.pe', '2025', '1° a 5° de secundaria', 'Secundaria', 'Pública', 1, '2026-01-24 16:10:54');
+(1, 'I.E. Andrés Avelino Cáceres', '1372374', 'Gerardo Florez Condori', 'Sirenachayocc - Kimbiri - La Convención - Cusco', '950891414', 'contacto@iecaceres.edu.pe', '2025', '1° a 5° de secundaria', 'Secundaria', 'Pública', 1, '2026-01-24 16:10:54');
 
 -- --------------------------------------------------------
 
@@ -594,60 +594,9 @@ CREATE TABLE `login_attempts` (
   `username` varchar(100) NOT NULL,
   `ip` varchar(45) NOT NULL,
   `user_agent` text,
-  `success` tinyint(1) DEFAULT '0',
+  `success` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `login_attempts`
---
-
-INSERT INTO `login_attempts` (`id`, `username`, `ip`, `user_agent`, `success`, `created_at`) VALUES
-(1, 'admin', '158.69.18.249', 'Unknown', 0, '2026-02-16 19:02:29'),
-(2, 'admin', '132.157.128.244', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 0, '2026-02-16 19:03:19'),
-(3, 'admin', '158.69.18.249', 'Unknown', 0, '2026-02-16 19:04:13'),
-(4, 'admin', '132.157.128.244', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 0, '2026-02-16 19:07:12'),
-(5, 'admin', '132.157.128.244', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 0, '2026-02-16 19:17:44'),
-(6, 'admin', '132.157.128.244', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-16 19:18:57'),
-(7, 'admin', '190.239.77.69', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-17 08:43:11'),
-(8, 'admin', '190.239.77.69', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 0, '2026-02-17 08:49:26'),
-(9, 'admin', '190.239.77.69', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-17 08:49:36'),
-(10, 'admin', '132.157.128.97', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-18 15:38:55'),
-(11, 'admin', '132.157.128.97', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-18 15:52:58'),
-(12, 'admin', '132.157.128.97', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-18 16:10:44'),
-(13, 'admin', '190.239.76.168', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-21 07:57:14'),
-(14, 'admin', '190.239.76.168', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 0, '2026-02-21 08:58:27'),
-(15, 'admin', '190.239.76.168', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-21 08:58:39'),
-(16, 'admin', '132.184.129.87', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-21 10:48:11'),
-(17, 'admin', '132.157.130.196', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-02-22 14:50:58'),
-(18, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 0, '2026-02-22 15:56:38'),
-(19, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 0, '2026-02-22 15:56:47'),
-(20, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 15:56:56'),
-(21, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 0, '2026-02-22 15:59:16'),
-(22, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 15:59:23'),
-(23, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 0, '2026-02-22 17:00:32'),
-(24, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 17:00:37'),
-(25, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 18:18:43'),
-(26, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 20:29:48'),
-(27, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 20:40:40'),
-(28, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 21:49:01'),
-(29, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:07:57'),
-(30, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:08:09'),
-(31, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:18:10'),
-(32, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:18:30'),
-(33, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:19:14'),
-(34, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:19:30'),
-(35, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:19:44'),
-(36, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:42:40'),
-(37, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:46:30'),
-(38, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:47:37'),
-(39, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:52:00'),
-(40, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 22:57:43'),
-(41, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 23:01:51'),
-(42, 'admin', '132.157.130.196', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 1, '2026-02-22 23:10:29'),
-(43, 'admin', '77.111.246.55', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/95.0.0.0', 1, '2026-02-23 10:26:09'),
-(44, 'admin', '77.111.246.55', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/95.0.0.0', 1, '2026-02-23 10:26:27'),
-(45, 'admin', '77.111.246.55', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/129.0.0.0', 1, '2026-02-23 10:27:10');
 
 -- --------------------------------------------------------
 
@@ -737,12 +686,20 @@ CREATE TABLE `mensajes_contacto` (
   `email` varchar(150) NOT NULL,
   `rol` enum('estudiante','docente','padre/madre','comunidad','otro') NOT NULL,
   `mensaje` text NOT NULL,
-  `estado` enum('pendiente','leido','respondido','archivado') DEFAULT 'pendiente',
+  `estado` enum('pendiente','leido','respondido') DEFAULT 'pendiente',
+  `respuesta` text,
   `ip_address` varchar(45) DEFAULT NULL,
   `user_agent` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `mensajes_contacto`
+--
+
+INSERT INTO `mensajes_contacto` (`id`, `nombre`, `email`, `rol`, `mensaje`, `estado`, `respuesta`, `ip_address`, `user_agent`, `created_at`, `updated_at`) VALUES
+(2, 'Karla Diáz', 'karla.dias@gmail.com', 'estudiante', 'necesito información de las matriculas', 'respondido', 'dejanos tu numero para contactarnos contigo', NULL, NULL, '2026-03-12 22:54:51', '2026-03-12 22:56:05');
 
 -- --------------------------------------------------------
 
@@ -794,10 +751,12 @@ CREATE TABLE `noticias` (
 --
 
 INSERT INTO `noticias` (`id`, `titulo`, `descripcion`, `contenido`, `imagen`, `categoria`, `autor`, `autor_id`, `fecha`, `destacada`, `activa`, `created_at`, `updated_at`) VALUES
-(1, 'Inicio del Año Escolar 2025', 'Bienvenida oficial al año académico 2025 en la I.E. Andrés Avelino Cáceres', 'Con gran entusiasmo damos la bienvenida a todos los estudiantes, padres de familia y docentes al año escolar 2025. Este año viene cargado de nuevos retos y oportunidades de aprendizaje. Los esperamos el 11 de marzo para iniciar juntos esta nueva aventura educativa.', NULL, 'Institucional', 'Dirección', NULL, '2025-01-20', 1, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54'),
-(2, 'Juramentación de Brigadieres 2025', 'Ceremonia de juramentación de los nuevos brigadieres escolares', 'En una emotiva ceremonia, los estudiantes seleccionados juraron como brigadieres escolares para el año 2025. Estos jóvenes líderes serán el ejemplo de responsabilidad y compromiso en sus respectivas aulas.', NULL, 'Académico', 'Prof. Gerardo', NULL, '2025-01-15', 1, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54'),
-(3, 'Campeonato Deportivo Interescolar', 'Nuestros estudiantes destacan en competencias deportivas', 'El equipo de la institución obtuvo destacados resultados en el campeonato deportivo interescolar, demostrando talento y disciplina en diversas disciplinas como fútbol, vóleibol y atletismo.', NULL, 'Deportes', 'Prof. Fredy', NULL, '2025-01-10', 0, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54'),
-(4, 'Taller de Reforzamiento en Matemática', 'Inician talleres de refuerzo académico para estudiantes', 'Con el objetivo de fortalecer las competencias matemáticas, se han iniciado talleres de reforzamiento los días sábados. Los estudiantes podrán resolver dudas y practicar ejercicios de forma personalizada.', NULL, 'Académico', 'Prof. Gerardo', NULL, '2025-01-08', 0, 1, '2026-01-24 16:10:54', '2026-01-24 16:10:54');
+(1, 'Inicio del Año Escolar 2025', 'Bienvenida oficial al año académico 2025 en la I.E. Andrés Avelino Cáceres', 'Con gran entusiasmo damos la bienvenida a todos los estudiantes, padres de familia y docentes al año escolar 2025. Este año viene cargado de nuevos retos y oportunidades de aprendizaje. Los esperamos el 11 de marzo para iniciar juntos esta nueva aventura educativa.', '75e598083e2b4d2c4415e62022a7c015.jpg', 'Institucional', '', NULL, '2025-01-20', 1, 0, '2026-01-24 16:10:54', '2026-03-03 01:35:41'),
+(2, 'Juramentación de Brigadieres 2025', 'Ceremonia de juramentación de los nuevos brigadieres escolares', 'En una emotiva ceremonia, los estudiantes seleccionados juraron como brigadieres escolares para el año 2025. Estos jóvenes líderes serán el ejemplo de responsabilidad y compromiso en sus respectivas aulas.', NULL, 'Académico', 'Prof. Gerardo', NULL, '2025-01-15', 1, 0, '2026-01-24 16:10:54', '2026-03-03 04:37:33'),
+(3, 'Campeonato Deportivo Interescolar', 'Nuestros estudiantes destacan en competencias deportivas', 'El equipo de la institución obtuvo destacados resultados en el campeonato deportivo interescolar, demostrando talento y disciplina en diversas disciplinas como fútbol, vóleibol y atletismo.', NULL, 'Deportes', 'Prof. Fredy', NULL, '2025-01-10', 1, 1, '2026-01-24 16:10:54', '2026-03-03 04:45:10'),
+(4, 'Taller de Reforzamiento en Matemática', 'Inician talleres de refuerzo académico para estudiantes', 'Con el objetivo de fortalecer las competencias matemáticas, se han iniciado talleres de reforzamiento los días sábados. Los estudiantes podrán resolver dudas y practicar ejercicios de forma personalizada.', NULL, 'Académico', 'Prof. Gerardo', NULL, '2025-01-08', 0, 0, '2026-01-24 16:10:54', '2026-03-03 01:00:22'),
+(6, 'pip', 'rrrr', 'rrrr', 'ff862f69e1e502d3c0a820932ae9759b.png', 'Académico', 'margarita.saravia', 5, '2026-03-03', 0, 0, '2026-03-03 01:36:09', '2026-03-03 01:36:54'),
+(7, 'pipo', 'pipo', 'el dia hoy...', '73bc6c4fd24de4765be4dfca90b3dfd6.jpg', 'Académico', 'margarita.saravia', 5, '2026-03-04', 1, 0, '2026-03-03 04:44:29', '2026-03-03 05:30:02');
 
 -- --------------------------------------------------------
 
@@ -807,16 +766,25 @@ INSERT INTO `noticias` (`id`, `titulo`, `descripcion`, `contenido`, `imagen`, `c
 
 CREATE TABLE `pedidos_libros` (
   `id` int NOT NULL,
+  `codigo` varchar(20) DEFAULT NULL,
   `nombre` varchar(200) NOT NULL,
   `email` varchar(150) NOT NULL,
   `libro` varchar(250) NOT NULL,
   `detalles` text,
-  `estado` enum('pendiente','en_proceso','entregado','cancelado') DEFAULT 'pendiente',
+  `estado` enum('pendiente','leido','respondido') DEFAULT 'pendiente',
+  `respuesta` text,
   `ip_address` varchar(45) DEFAULT NULL,
   `user_agent` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `pedidos_libros`
+--
+
+INSERT INTO `pedidos_libros` (`id`, `codigo`, `nombre`, `email`, `libro`, `detalles`, `estado`, `respuesta`, `ip_address`, `user_agent`, `created_at`, `updated_at`) VALUES
+(5, 'PED-260312-D071', 'Karla Diáz', 'karla.dias@gmail.com', 'Las avez no vuelan', 'edición 3 nombre del autor jose maria jimenez', 'respondido', 'lamentamos informarte que no tenemos disponible el libro', NULL, NULL, '2026-03-12 22:50:55', '2026-03-12 22:51:52');
 
 -- --------------------------------------------------------
 
@@ -954,7 +922,7 @@ CREATE TABLE `proyecto_fondep_metadata` (
 
 CREATE TABLE `rate_limits` (
   `id` int UNSIGNED NOT NULL,
-  `identifier_hash` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `identifier_hash` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `attempts` int UNSIGNED NOT NULL DEFAULT '0',
   `first_attempt` int UNSIGNED NOT NULL,
   `blocked_until` int UNSIGNED DEFAULT NULL,
@@ -981,42 +949,8 @@ CREATE TABLE `refresh_tokens` (
 --
 
 INSERT INTO `refresh_tokens` (`id`, `user_id`, `token_hash`, `expires_at`, `created_at`) VALUES
-(1, 1, '16c08bacb9b79ccbdc431ed78402139b5eeb1a839bf476f2a6f1e19dd08bc122', '2026-02-23 19:18:57', '2026-02-16 19:18:57'),
-(3, 1, 'dae64ddd8ff72e0c4359fcdf14bc1827cdedbb8ddbe7afb82160a5c8ae74215e', '2026-02-24 08:43:22', '2026-02-17 08:43:22'),
-(5, 1, 'aa360288c6f324c83727488ba4da9f65556b028e16690f3e4b524571d9189736', '2026-02-24 08:49:47', '2026-02-17 08:49:47'),
-(7, 1, '8ed82e897fa23693b8b1c20cc6877409e51722aee624e37023909c86471fe934', '2026-02-25 15:39:15', '2026-02-18 15:39:15'),
-(9, 1, 'e963c244486b96e32464b78d9a006d36516d7dc0c833339c46218de55770da07', '2026-02-25 16:10:32', '2026-02-18 16:10:32'),
-(10, 1, '82079c58f0d2a616cc8a3e3497dc45d5faa48faefed9bc93e2c12bb749150334', '2026-02-25 16:10:44', '2026-02-18 16:10:44'),
-(12, 1, 'de2e7cef269a867223b308c0e5e2cbea5c79726b1006fcad9b7083246f6c460a', '2026-02-28 07:57:50', '2026-02-21 07:57:50'),
-(15, 1, '1a6a017f427c8afb1458d0e3b3fef19ed2607700c71a879b919cb93acbbf1570', '2026-02-28 10:44:38', '2026-02-21 10:44:38'),
-(17, 1, '19d0c1f93c9fec6546e1ecb9ade052144c6c8bdd573d93deed621783132b214c', '2026-02-28 10:57:18', '2026-02-21 10:57:18'),
-(19, 1, 'a244a9a6d9657f4e0efdb0db7703a94a74857a867ef6b24cb762b258b82ba2e8', '2026-03-01 14:51:42', '2026-02-22 14:51:42'),
-(20, 1, '4c45ec2c3132d107e577a80219bb61175028d625be0f5c7c62af7b88dd2d0405', '2026-03-01 15:56:56', '2026-02-22 15:56:56'),
-(22, 1, '5ffbfaa63ef5399d748dee2ad33415a0ef82fedf17df8a9e7295b097747c46a9', '2026-03-01 15:59:37', '2026-02-22 15:59:37'),
-(24, 1, 'e651505e60f4de2f8340f4b19e2f4f17708f156ab9d64a0ea8180dc9fa6f320a', '2026-03-01 17:15:47', '2026-02-22 17:15:47'),
-(25, 1, '0e289787357ccb90dc4d9c109548c6d3a5bd06959b87b8340c4563cd626a3ea2', '2026-03-01 18:18:43', '2026-02-22 18:18:43'),
-(27, 1, '66a9f657a588d9f31fdae2fae5509516822f67d17be5d04788cf0de211343b10', '2026-03-01 20:29:49', '2026-02-22 20:29:49'),
-(29, 1, '2955d11937e9153740604927e038264a230bb851942e21c490e6b2f3222c1b4b', '2026-03-01 20:40:41', '2026-02-22 20:40:41'),
-(34, 1, '713d5feab6acd5d3288c486858319b880428ac59e55aea5fc261bf45010d4db4', '2026-03-01 22:02:13', '2026-02-22 22:02:13'),
-(36, 1, 'ffef1bb1685d0967dbbad933f9097a510b2a692008fbc0336c29bbeddff49ef3', '2026-03-01 22:02:19', '2026-02-22 22:02:19'),
-(38, 1, 'bd0e326b7b7fce4a3aa3edd1d97a1945d3462c2fd1e793c6a5075f8adb974b6d', '2026-03-01 22:07:58', '2026-02-22 22:07:58'),
-(41, 1, 'a49f6aafdf76f8d6a6b5144363cc4a88315c36ef61e1d4b724f9cbefa0cfcf92', '2026-03-01 22:08:11', '2026-02-22 22:08:11'),
-(43, 1, '438f4ebb7c5719ca22c7130c8e89ee1285cd513288890b0225239e2dd310738e', '2026-03-01 22:18:11', '2026-02-22 22:18:11'),
-(45, 1, '24c70f4af0abc1061fa83f8c5655300b76fc33563968e9e8dfcfd02aec618b3e', '2026-03-01 22:18:31', '2026-02-22 22:18:31'),
-(47, 1, 'e2e8b4f69112953bd251beab1beade21ce23ee833cfcd1e47c0e17f03812c66c', '2026-03-01 22:19:15', '2026-02-22 22:19:15'),
-(49, 1, 'e1b6a5fb187201afd1f91ed4eb9bf6d7d879a6d18aed2a6abd131bb062d026b7', '2026-03-01 22:19:31', '2026-02-22 22:19:31'),
-(51, 1, '15492fda547333b1ea518285658770c5a308e650760a4fec8c660c4182dac5a2', '2026-03-01 22:19:45', '2026-02-22 22:19:45'),
-(55, 1, 'e0841bf64b9f7cc5f51a33b7fb4265c163888bb48f8c6caa45813eae3a3cc20b', '2026-03-01 22:42:43', '2026-02-22 22:42:43'),
-(57, 1, '9df7ce0fde75f7cd2b3e77f9f1fe5a1109c652ac705396e5c59fd3375597afdd', '2026-03-01 22:46:31', '2026-02-22 22:46:31'),
-(59, 1, '8ec1f6fb5dfa4a868379220a1b5969c1e05be5b63d6eb4ebc9d40dcbc5b11cd9', '2026-03-01 22:47:38', '2026-02-22 22:47:38'),
-(61, 1, 'ca3a64fa2bb73f9fc35ea04d765ddd1e9b1ee2e7fb4654733e5b465317237686', '2026-03-01 22:52:01', '2026-02-22 22:52:01'),
-(63, 1, '8ca97d472ff65f941f593ad813f16e0f98452d61e69f8127e01b83f3d14aad6b', '2026-03-01 22:57:44', '2026-02-22 22:57:44'),
-(65, 1, '39882eb861bf2f109213487adfa51e639b084c09d09cafee0981085277e0b0d7', '2026-03-01 23:01:52', '2026-02-22 23:01:52'),
-(68, 1, '80436a5ddb5c7045365503e36db2f5fd4eff5ed915553ba4cd2210327e098fde', '2026-03-01 23:10:05', '2026-02-22 23:10:05'),
-(70, 1, '2e19ccef81552b9e7770f1878e026aa308219584ce943b85d0f57c11182e451f', '2026-03-01 23:10:30', '2026-02-22 23:10:30'),
-(72, 1, '5d0fecda1a4dacd3f4576f788631b8c0689162a4084967717c5e10290c13d473', '2026-03-02 10:26:10', '2026-02-23 10:26:10'),
-(74, 1, 'b33169726194368ec862c2423e7f9d1e92b4b05184dc2d23872e07992531dd0b', '2026-03-02 10:26:28', '2026-02-23 10:26:28'),
-(76, 1, '9ec7917921452c216adbc8f4c12eeceada7098c93f666fc6b69e4dbed1c46634', '2026-03-02 10:27:12', '2026-02-23 10:27:12');
+(95, 5, 'b737c33a5f591418cc3f068adc705a50bb7756fbc204916e843584cbf3a147c9', '2026-03-18 20:44:03', '2026-03-11 20:44:03'),
+(96, 5, '5632503d23f7c1fd040a5d43aeefe70cfbb63365aeabe35d381a303e3d884fe4', '2026-03-19 17:36:22', '2026-03-12 17:36:22');
 
 -- --------------------------------------------------------
 
@@ -1058,6 +992,7 @@ CREATE TABLE `token_blacklist` (
 
 CREATE TABLE `usuarios` (
   `id` int NOT NULL,
+  `nombre` varchar(255) NOT NULL DEFAULT '',
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -1071,12 +1006,8 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `username`, `email`, `password`, `rol`, `activo`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
-(2, 'gerardo.florez', 'gfc.jma@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
-(3, 'editor', 'editor@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'editor', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
-(4, 'docente', 'docente@iecaceres.edu.pe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'docente', 1, '2026-02-17 00:16:43', '2026-02-17 00:16:43'),
-(5, 'margarita.saravia', 'margarita.saravia@iecaceres.edu.pe', '$2y$10$sN.TZwp/r120N8smgVKHpOZaf2fASO5ihmzv9eERMdTV3djqKzM5O', 'admin', 1, NOW(), NOW());
+INSERT INTO `usuarios` (`id`, `nombre`, `username`, `email`, `password`, `rol`, `activo`, `created_at`, `updated_at`) VALUES
+(5, 'Margarita Saravia', 'margarita.saravia', 'margarita.saravia@iecaceres.edu.pe', '$2y$10$sN.TZwp/r120N8smgVKHpOZaf2fASO5ihmzv9eERMdTV3djqKzM5O', 'admin', 1, '2026-03-03 00:49:59', '2026-03-12 23:17:59');
 
 --
 -- Índices para tablas volcadas
@@ -1300,7 +1231,7 @@ ALTER TABLE `login_attempts`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_username` (`username`),
   ADD KEY `idx_ip` (`ip`),
-  ADD KEY `idx_created` (`created_at`);
+  ADD KEY `idx_created_at` (`created_at`);
 
 --
 -- Indices de la tabla `login_history`
@@ -1353,6 +1284,7 @@ ALTER TABLE `noticias`
 --
 ALTER TABLE `pedidos_libros`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigo` (`codigo`),
   ADD KEY `idx_estado` (`estado`),
   ADD KEY `idx_created_at` (`created_at`);
 
@@ -1480,7 +1412,7 @@ ALTER TABLE `audit_log`
 -- AUTO_INCREMENT de la tabla `banners`
 --
 ALTER TABLE `banners`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `biblioteca_categorias`
@@ -1612,7 +1544,7 @@ ALTER TABLE `informe_resultados`
 -- AUTO_INCREMENT de la tabla `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `login_history`
@@ -1630,7 +1562,7 @@ ALTER TABLE `logros`
 -- AUTO_INCREMENT de la tabla `mensajes_contacto`
 --
 ALTER TABLE `mensajes_contacto`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `miembros`
@@ -1642,13 +1574,13 @@ ALTER TABLE `miembros`
 -- AUTO_INCREMENT de la tabla `noticias`
 --
 ALTER TABLE `noticias`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos_libros`
 --
 ALTER TABLE `pedidos_libros`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `plan_lector_actividades`
@@ -1702,7 +1634,7 @@ ALTER TABLE `rate_limits`
 -- AUTO_INCREMENT de la tabla `refresh_tokens`
 --
 ALTER TABLE `refresh_tokens`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT de la tabla `security_logs`
@@ -1714,13 +1646,13 @@ ALTER TABLE `security_logs`
 -- AUTO_INCREMENT de la tabla `token_blacklist`
 --
 ALTER TABLE `token_blacklist`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas

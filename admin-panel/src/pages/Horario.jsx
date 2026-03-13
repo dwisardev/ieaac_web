@@ -31,7 +31,7 @@ export default function AdminHorario() {
   /* ── Formularios ── */
   const [fGrado,   setFGrado]   = useState({ id: null, nombre: '', nivel: 'Secundaria', orden: 1 });
   const [fDocente, setFDocente] = useState({ id: null, nombre_completo: '', nombre_corto: '', especialidad: '' });
-  const [fBloque,  setFBloque]  = useState({ id: null, hora: '', es_receso: false, orden: 1 });
+  const [fBloque,  setFBloque]  = useState({ id: null, horaInicio: '', horaFin: '', es_receso: false, orden: 1 });
 
   useEffect(() => { cargar(); }, []);
 
@@ -108,19 +108,31 @@ export default function AdminHorario() {
 
   /* ══ BLOQUES ══ */
   const abrirBloque = (b = null) => {
-    setFBloque(b ? { ...b } : { id: null, hora: '', es_receso: false, orden: bloques.length + 1 });
+    if (b) {
+      const partes = b.hora ? b.hora.split(' - ') : ['', ''];
+      setFBloque({ ...b, horaInicio: partes[0] ?? '', horaFin: partes[1] ?? '' });
+    } else {
+      setFBloque({ id: null, horaInicio: '', horaFin: '', es_receso: false, orden: bloques.length + 1 });
+    }
     setShowBloque(true);
   };
 
   const submitBloque = async (e) => {
     e.preventDefault();
+    if (!fBloque.horaInicio || !fBloque.horaFin) {
+      showToast('Selecciona hora de inicio y fin', 'error'); return;
+    }
+    const payload = {
+      ...fBloque,
+      hora: `${fBloque.horaInicio} - ${fBloque.horaFin}`,
+    };
     setGuardando(true);
     try {
       if (fBloque.id) {
-        await actualizarBloque(fBloque.id, fBloque);
+        await actualizarBloque(fBloque.id, payload);
         showToast('Bloque actualizado');
       } else {
-        await crearBloque(fBloque);
+        await crearBloque(payload);
         showToast('Bloque creado');
       }
       setShowBloque(false);
@@ -451,16 +463,28 @@ export default function AdminHorario() {
               <div className="modal-body">
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Hora</label>
-                    <input className="form-input" placeholder="Ej: 08:00 - 08:45"
-                      value={fBloque.hora}
-                      onChange={e => setFBloque(p => ({ ...p, hora: e.target.value }))} />
+                    <label className="form-label">Hora inicio *</label>
+                    <input type="time" className="form-input" required
+                      value={fBloque.horaInicio}
+                      onChange={e => setFBloque(p => ({ ...p, horaInicio: e.target.value }))} />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Orden</label>
-                    <input type="number" min={1} className="form-input" value={fBloque.orden}
-                      onChange={e => setFBloque(p => ({ ...p, orden: +e.target.value }))} />
+                    <label className="form-label">Hora fin *</label>
+                    <input type="time" className="form-input" required
+                      value={fBloque.horaFin}
+                      onChange={e => setFBloque(p => ({ ...p, horaFin: e.target.value }))} />
                   </div>
+                </div>
+                {fBloque.horaInicio && fBloque.horaFin && (
+                  <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: -8, marginBottom: 12 }}>
+                    <i className="fas fa-clock" style={{ marginRight: 5 }} />
+                    Bloque: <strong style={{ color: 'var(--text-primary)' }}>{fBloque.horaInicio} - {fBloque.horaFin}</strong>
+                  </p>
+                )}
+                <div className="form-group">
+                  <label className="form-label">Orden</label>
+                  <input type="number" min={1} className="form-input" value={fBloque.orden}
+                    onChange={e => setFBloque(p => ({ ...p, orden: +e.target.value }))} />
                 </div>
                 <div className="form-group">
                   <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>

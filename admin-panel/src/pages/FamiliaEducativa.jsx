@@ -8,8 +8,6 @@ import {
   Button,
   Spinner,
   Alert,
-  Form,
-  Modal,
   Table,
   Badge,
   Tabs,
@@ -20,12 +18,8 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
-  X,
   PersonBadge,
   TelephoneFill,
-  Calendar3,
-  BriefcaseFill
 } from "react-bootstrap-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -232,79 +226,53 @@ const FamiliaEducativaAdmin = () => {
 
   // Modal de director
   const renderModalDirector = () => (
-    <Modal show={showModal && categoriaActual === "director"} onHide={cerrarModal}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar Director" : "Asignar Director"}
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitDirector}>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre Completo *</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre"
-              value={formMiembro.nombre}
-              onChange={handleChange}
-              placeholder="Ej: Prof. Gerardo Florez Condori"
-              required
-            />
-          </Form.Group>
+    showModal && categoriaActual === "director" && (
+      <div className="modal-overlay" onClick={cerrarModal}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-user-tie" />
+              {modoEdicion ? "Editar Director" : "Asignar Director"}
+            </h3>
+            <button className="modal-close" onClick={cerrarModal}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitDirector}>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="form-label">Nombre Completo *</label>
+                <input className="form-input" type="text" name="nombre" value={formMiembro.nombre} onChange={handleChange} placeholder="Ej: Prof. Gerardo Florez Condori" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Cargo</Form.Label>
-            <Form.Control
-              type="text"
-              name="cargo"
-              value={formMiembro.cargo}
-              onChange={handleChange}
-              placeholder="Director"
-              readOnly
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Cargo</label>
+                <input className="form-input" type="text" name="cargo" value={formMiembro.cargo} onChange={handleChange} placeholder="Director" readOnly />
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Año Escolar</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="anio_escolar"
-                  value={formMiembro.anio_escolar}
-                  onChange={handleChange}
-                  min="2020"
-                  max="2030"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Check
-                  type="checkbox"
-                  name="activo"
-                  label="Activo"
-                  checked={formMiembro.activo}
-                  onChange={handleChange}
-                  className="mt-4"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModal}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Año Escolar</label>
+                  <input className="form-input" type="number" name="anio_escolar" value={formMiembro.anio_escolar} onChange={handleChange} min="2020" max="2030" required />
+                </div>
+                <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <input type="checkbox" id="activo_director" name="activo" checked={formMiembro.activo} onChange={handleChange} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                    <label htmlFor="activo_director" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Activo</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModal}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
   // ==========================================
 // GESTIÓN DE COMITÉS (Genérica para todos)
@@ -551,7 +519,7 @@ const renderModalComite = () => {
   const esDocente = categoriaActual === 'docentes';
   const esAuxiliar = categoriaActual === 'auxiliares';
   const esMunicipio = categoriaActual === 'municipio';
-  
+
   const titulosCategoria = {
     'comite_operativo': 'Comité de Gestión de Condiciones Operativas',
     'comite_pedagogico': 'Comité de Gestión Pedagógica',
@@ -562,41 +530,32 @@ const renderModalComite = () => {
     'auxiliares': 'Auxiliar',
     'municipio': 'Municipio Escolar'
   };
-  
-  return (
-    <Modal 
-      show={showModal && categoriaActual !== "director"} 
-      onHide={cerrarModal}
-      size="lg"
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar" : "Agregar"} - {titulosCategoria[categoriaActual]}
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitMiembro}>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre Completo *</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre"
-              value={formMiembro.nombre}
-              onChange={handleChange}
-              placeholder="Ej: Prof. María López García"
-              required
-            />
-          </Form.Group>
 
-          <Row>
-            <Col md={esDocente || esAuxiliar ? 6 : 12}>
-              <Form.Group className="mb-3">
-                <Form.Label>Cargo / Rol *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="cargo"
-                  value={formMiembro.cargo}
-                  onChange={handleChange}
+  if (!showModal || categoriaActual === "director") return null;
+
+  return (
+    <div className="modal-overlay" onClick={cerrarModal}>
+      <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-users" />
+            {modoEdicion ? "Editar" : "Agregar"} - {titulosCategoria[categoriaActual]}
+          </h3>
+          <button className="modal-close" onClick={cerrarModal}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitMiembro}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Nombre Completo *</label>
+              <input className="form-input" type="text" name="nombre" value={formMiembro.nombre} onChange={handleChange} placeholder="Ej: Prof. María López García" required />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: (esDocente || esAuxiliar) ? '1fr 1fr' : '1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Cargo / Rol *</label>
+                <input className="form-input" type="text" name="cargo" value={formMiembro.cargo} onChange={handleChange}
                   placeholder={
                     esConsejoDirectivo ? "Ej: Presidente" :
                     esMunicipio ? "Ej: Alcaldesa" :
@@ -604,115 +563,63 @@ const renderModalComite = () => {
                     esAuxiliar ? "Ej: Auxiliar de Educación" :
                     "Ej: Coordinador"
                   }
-                  required
-                />
-              </Form.Group>
-            </Col>
-            
-            {esDocente && (
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Especialidad</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="especialidad"
-                    value={formMiembro.especialidad}
-                    onChange={handleChange}
-                    placeholder="Ej: Matemática"
-                  />
-                </Form.Group>
-              </Col>
+                  required />
+              </div>
+              {esDocente && (
+                <div className="form-group">
+                  <label className="form-label">Especialidad</label>
+                  <input className="form-input" type="text" name="especialidad" value={formMiembro.especialidad} onChange={handleChange} placeholder="Ej: Matemática" />
+                </div>
+              )}
+              {esAuxiliar && (
+                <div className="form-group">
+                  <label className="form-label">Rol</label>
+                  <input className="form-input" type="text" name="rol" value={formMiembro.rol} onChange={handleChange} placeholder="Ej: Auxiliar de Educación" />
+                </div>
+              )}
+            </div>
+
+            {(esDocente || esAuxiliar) && (
+              <div className="form-group">
+                <label className="form-label">Condición *</label>
+                <select className="form-input" name="condicion" value={formMiembro.condicion} onChange={handleChange} required>
+                  <option value="Nombrado">Nombrado</option>
+                  <option value="Nombrada">Nombrada</option>
+                  <option value="Contratado">Contratado</option>
+                  <option value="Contratada">Contratada</option>
+                </select>
+              </div>
             )}
-            
-            {esAuxiliar && (
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Rol</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="rol"
-                    value={formMiembro.rol}
-                    onChange={handleChange}
-                    placeholder="Ej: Auxiliar de Educación"
-                  />
-                </Form.Group>
-              </Col>
+
+            {esConsejoDirectivo && (
+              <div className="form-group">
+                <label className="form-label">Celular</label>
+                <input className="form-input" type="tel" name="celular" value={formMiembro.celular} onChange={handleChange} placeholder="Ej: 987654321" />
+              </div>
             )}
-          </Row>
 
-          {(esDocente || esAuxiliar) && (
-            <Form.Group className="mb-3">
-              <Form.Label>Condición *</Form.Label>
-              <Form.Select
-                name="condicion"
-                value={formMiembro.condicion}
-                onChange={handleChange}
-                required
-              >
-                <option value="Nombrado">Nombrado</option>
-                <option value="Nombrada">Nombrada</option>
-                <option value="Contratado">Contratado</option>
-                <option value="Contratada">Contratada</option>
-              </Form.Select>
-            </Form.Group>
-          )}
-
-          {esConsejoDirectivo && (
-            <Form.Group className="mb-3">
-              <Form.Label>
-                <TelephoneFill className="me-1" />
-                Celular
-              </Form.Label>
-              <Form.Control
-                type="tel"
-                name="celular"
-                value={formMiembro.celular}
-                onChange={handleChange}
-                placeholder="Ej: 987654321"
-              />
-            </Form.Group>
-          )}
-
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Orden</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="orden"
-                  value={formMiembro.orden}
-                  onChange={handleChange}
-                  min="1"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Check
-                  type="checkbox"
-                  name="activo"
-                  label="Activo"
-                  checked={formMiembro.activo}
-                  onChange={handleChange}
-                  className="mt-4"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModal}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Orden</label>
+                <input className="form-input" type="number" name="orden" value={formMiembro.orden} onChange={handleChange} min="1" required />
+              </div>
+              <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <input type="checkbox" id="activo_comite" name="activo" checked={formMiembro.activo} onChange={handleChange} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                  <label htmlFor="activo_comite" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Activo</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModal}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
@@ -754,7 +661,8 @@ const renderModalComite = () => {
         {/* Selector de año */}
         <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
           <label className="fw-bold">Año Escolar:</label>
-          <Form.Select
+          <select
+            className="form-input"
             value={anioEscolar}
             onChange={(e) => setAnioEscolar(parseInt(e.target.value))}
             style={{ width: "150px" }}
@@ -762,7 +670,7 @@ const renderModalComite = () => {
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026">2026</option>
-          </Form.Select>
+          </select>
         </div>
       </div>
 

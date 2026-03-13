@@ -72,8 +72,39 @@ const NAV = [
       { to:'/mensajes',                icon:'fa-inbox',             label:'Mensajes'            },
       { to:'/usuarios',                icon:'fa-user-gear',         label:'Usuarios',           adminOnly:true },
       { to:'/perfil',                  icon:'fa-circle-user',       label:'Mi Perfil'           },
+      { to:'/manual',                  icon:'fa-circle-question',   label:'Manual de Usuario'   },
     ],
   },
+];
+
+/* ── Índice de búsqueda — páginas + acciones rápidas ── */
+const SEARCH_ITEMS = [
+  // Páginas del menú (con su sección como categoría)
+  ...NAV.flatMap(g => g.items.map(item => ({ ...item, category: g.section }))),
+
+  // Acciones rápidas
+  { to:'/noticias',            icon:'fa-pen-to-square',   label:'Nueva noticia',               category:'Acciones rápidas' },
+  { to:'/comunicados',         icon:'fa-pen-to-square',   label:'Nuevo comunicado',             category:'Acciones rápidas' },
+  { to:'/eventos',             icon:'fa-pen-to-square',   label:'Nuevo evento',                 category:'Acciones rápidas' },
+  { to:'/banners',             icon:'fa-pen-to-square',   label:'Nuevo banner',                 category:'Acciones rápidas' },
+  { to:'/docentes',            icon:'fa-user-plus',       label:'Agregar docente',              category:'Acciones rápidas' },
+  { to:'/directorio',          icon:'fa-user-plus',       label:'Agregar contacto',             category:'Acciones rápidas' },
+  { to:'/biblioteca',          icon:'fa-book-medical',    label:'Agregar libro',                category:'Acciones rápidas' },
+  { to:'/documentos-gestion',  icon:'fa-file-circle-plus','label':'Subir documento',           category:'Acciones rápidas' },
+  { to:'/horarios',            icon:'fa-calendar-plus',   label:'Agregar horario',              category:'Acciones rápidas' },
+  { to:'/logros',              icon:'fa-star',            label:'Registrar logro',              category:'Acciones rápidas' },
+  { to:'/plan-lector',         icon:'fa-pen-to-square',   label:'Actualizar plan lector',       category:'Acciones rápidas' },
+  { to:'/usuarios',            icon:'fa-user-plus',       label:'Crear usuario',                category:'Acciones rápidas' },
+  { to:'/perfil',              icon:'fa-key',             label:'Cambiar contraseña',           category:'Acciones rápidas' },
+
+  // Mensajes / Pedidos
+  { to:'/mensajes',            icon:'fa-envelope',        label:'Ver mensajes de contacto',     category:'Mensajes'         },
+  { to:'/mensajes',            icon:'fa-book',            label:'Ver pedidos de libros',        category:'Mensajes'         },
+
+  // Configuración / Ayuda
+  { to:'/configuracion',       icon:'fa-sliders',         label:'Configuración del sistema',    category:'Configuración'    },
+  { to:'/configuracion',       icon:'fa-globe',           label:'Datos del colegio',            category:'Configuración'    },
+  { to:'/manual',              icon:'fa-circle-question', label:'Ayuda / Manual de usuario',    category:'Configuración'    },
 ];
 
 /* Clave de página para data-page (theming por color) */
@@ -98,6 +129,8 @@ const getPageKey = (pathname) => {
     '/mensajes':               'mensajes',
     '/usuarios':               'usuarios',
     '/perfil':                 'perfil',
+    '/configuracion':          'configuracion',
+    '/manual':                 'manual',
   };
   return map[pathname] || 'dashboard';
 };
@@ -123,6 +156,8 @@ const PAGE_TITLES = {
   '/mensajes':               'Mensajes',
   '/usuarios':               'Usuarios',
   '/perfil':                 'Mi Perfil',
+  '/configuracion':          'Configuración',
+  '/manual':                 'Manual de Usuario',
 };
 
 /* ── NavItem ── */
@@ -321,16 +356,26 @@ export default function DashboardLayout() {
   const [collapsed,     setCollapsed]     = useState(false);
   const [showLogout,    setShowLogout]    = useState(false);
   const [userMenuOpen,  setUserMenuOpen]  = useState(false);
-  const userMenuRef = useRef(null);
+  const [notifOpen,     setNotifOpen]     = useState(false);
+  const [searchQ,       setSearchQ]       = useState('');
+  const [searchFocused, setSearchFocused] = useState(false);
+  const userMenuRef  = useRef(null);
+  const notifRef     = useRef(null);
+
+  const searchResults = searchQ.trim()
+    ? SEARCH_ITEMS.filter(p => p.label.toLowerCase().includes(searchQ.toLowerCase())).slice(0, 10)
+    : [];
 
   /* ✅ useAutoLogout — UNA sola vez */
   useAutoLogout();
 
-  /* Cerrar dropdown al click afuera */
+  /* Cerrar dropdowns al click afuera */
   useEffect(() => {
     const h = e => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target))
         setUserMenuOpen(false);
+      if (notifRef.current && !notifRef.current.contains(e.target))
+        setNotifOpen(false);
     };
     document.addEventListener('mousedown', h);
     return () => document.removeEventListener('mousedown', h);
@@ -369,22 +414,130 @@ export default function DashboardLayout() {
 
           <span className="topbar-title">{pageTitle}</span>
 
-          <div className="topbar-search">
+          <div className="topbar-search" style={{ position:'relative' }}>
             <i className="fas fa-magnifying-glass" />
-            <input placeholder="Buscar..." />
+            <input
+              placeholder="Buscar..."
+              value={searchQ}
+              onChange={e => setSearchQ(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && searchResults.length > 0) {
+                  navigate(searchResults[0].to);
+                  setSearchQ(''); setSearchFocused(false);
+                }
+                if (e.key === 'Escape') { setSearchQ(''); setSearchFocused(false); }
+              }}
+            />
+            {searchQ && searchFocused && (
+              <div style={{
+                position:'absolute', top:'calc(100% + 6px)', left:0, right:0,
+                background:'var(--bg-surface)', border:'1px solid var(--border)',
+                borderRadius:8, boxShadow:'var(--shadow-lg)', zIndex:200,
+                overflow:'hidden', minWidth:280,
+              }}>
+                {searchResults.length === 0 ? (
+                  <div style={{ padding:'20px 14px', textAlign:'center', fontSize:12, color:'var(--text-muted)' }}>
+                    <i className="fas fa-magnifying-glass" style={{ display:'block', fontSize:18, marginBottom:6, color:'var(--text-disabled)' }} />
+                    Sin resultados para "{searchQ}"
+                  </div>
+                ) : (() => {
+                  /* agrupar por categoría */
+                  const groups = searchResults.reduce((acc, p) => {
+                    const cat = p.category || 'Páginas';
+                    if (!acc[cat]) acc[cat] = [];
+                    acc[cat].push(p);
+                    return acc;
+                  }, {});
+                  const q = searchQ.toLowerCase();
+                  const highlight = (text) => {
+                    const idx = text.toLowerCase().indexOf(q);
+                    if (idx < 0) return text;
+                    return (
+                      <>
+                        {text.slice(0, idx)}
+                        <strong style={{ color:'var(--accent)' }}>{text.slice(idx, idx + q.length)}</strong>
+                        {text.slice(idx + q.length)}
+                      </>
+                    );
+                  };
+                  return Object.entries(groups).map(([cat, items]) => (
+                    <div key={cat}>
+                      <div style={{
+                        padding:'6px 12px 3px', fontSize:10, fontWeight:700,
+                        textTransform:'uppercase', letterSpacing:'.08em',
+                        color:'var(--text-disabled)', borderTop:'1px solid var(--border-subtle)',
+                      }}>{cat}</div>
+                      {items.map((p, i) => (
+                        <button key={`${p.to}-${i}`}
+                          onMouseDown={() => { navigate(p.to); setSearchQ(''); setSearchFocused(false); }}
+                          style={{
+                            display:'flex', alignItems:'center', gap:10,
+                            width:'100%', padding:'8px 12px', border:'none',
+                            background:'none', cursor:'pointer', textAlign:'left',
+                            color:'var(--text-secondary)', fontSize:13, transition:'background .15s',
+                          }}
+                          onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-hover)'}
+                          onMouseLeave={e => e.currentTarget.style.background = 'none'}
+                        >
+                          <i className={`fas ${p.icon}`} style={{ width:14, textAlign:'center', fontSize:11, color:'var(--accent)', flexShrink:0 }} />
+                          <span style={{ flex:1 }}>{highlight(p.label)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ));
+                })()}
+              </div>
+            )}
           </div>
 
           <div className="topbar-actions">
-            <button className="icon-btn" title="Notificaciones">
-              <i className="fas fa-bell" />
-              <span className="dot" />
-            </button>
+
+            {/* Notificaciones */}
+            <div style={{ position:'relative' }} ref={notifRef}>
+              <button className="icon-btn" title="Notificaciones"
+                onClick={() => setNotifOpen(o => !o)}
+                style={{ borderColor: notifOpen ? 'var(--accent)' : undefined }}>
+                <i className="fas fa-bell" />
+                <span className="dot" />
+              </button>
+              {notifOpen && (
+                <div style={{
+                  position:'absolute', top:'calc(100% + 8px)', right:0,
+                  background:'var(--bg-surface)', border:'1px solid var(--border)',
+                  borderRadius:10, width:300, boxShadow:'var(--shadow-lg)', zIndex:300, overflow:'hidden',
+                }}>
+                  <div style={{ padding:'12px 16px', borderBottom:'1px solid var(--border-subtle)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                    <span style={{ fontSize:13, fontWeight:700, color:'var(--text-primary)' }}>Notificaciones</span>
+                    <button onClick={() => setNotifOpen(false)} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text-muted)', fontSize:12 }}>
+                      <i className="fas fa-xmark" />
+                    </button>
+                  </div>
+                  <div style={{ padding:'32px 16px', textAlign:'center' }}>
+                    <i className="fas fa-bell-slash" style={{ fontSize:28, color:'var(--text-disabled)', marginBottom:10, display:'block' }} />
+                    <p style={{ fontSize:13, color:'var(--text-muted)', margin:0 }}>No hay notificaciones nuevas</p>
+                    <p style={{ fontSize:11, color:'var(--text-disabled)', margin:'4px 0 0' }}>Las alertas del sistema aparecerán aquí</p>
+                  </div>
+                  <div style={{ padding:'8px 16px', borderTop:'1px solid var(--border-subtle)', display:'flex', justifyContent:'flex-end', gap:8 }}>
+                    <button onClick={() => { navigate('/mensajes'); setNotifOpen(false); }}
+                      style={{ background:'none', border:'none', cursor:'pointer', fontSize:12, color:'var(--accent)' }}>
+                      Ver mensajes <i className="fas fa-arrow-right" style={{ fontSize:10 }} />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Avatar + dropdown */}
             <div style={{ position:'relative' }} ref={userMenuRef}>
               <div
                 className="topbar-avatar"
-                style={{ background: AVATAR_BG[user?.rol] || AVATAR_BG.usuario, cursor:'pointer' }}
+                style={{
+                  background: AVATAR_BG[user?.rol] || AVATAR_BG.usuario,
+                  cursor:'pointer',
+                  boxShadow: '0 0 0 2px var(--bg-surface), 0 0 0 4px rgba(47,129,247,.35)',
+                }}
                 onClick={() => setUserMenuOpen(o => !o)}
                 title={user?.username}
               >

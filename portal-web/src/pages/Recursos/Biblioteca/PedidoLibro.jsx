@@ -96,6 +96,14 @@ function ConsultarPedido({ codigoInicial }) {
             <span className="pl-resultado-label">Fecha:</span>
             <span className="pl-resultado-valor">{resultado.fecha}</span>
           </div>
+          {resultado.respuesta && (
+            <div className="pl-resultado-respuesta">
+              <div className="pl-resultado-respuesta-titulo">
+                <i className="bi bi-reply-fill" /> Respuesta del equipo
+              </div>
+              <p className="pl-resultado-respuesta-texto">{resultado.respuesta}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

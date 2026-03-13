@@ -117,7 +117,7 @@ try {
         'noticias', 'eventos', 'comunicados', 'docentes', 'informacion',
         'banners', 'directorio', 'biblioteca', 'documentos', 'horarios',
         'logros', 'miembros', 'informe', 'plan-lector', 'portafolio', 'monitoreo',
-        'cronograma', 'estrategias', 'pedidos', 'contacto',
+        'cronograma', 'estrategias', 'pedidos', 'contacto', 'metadata',
     ];
     if (in_array($seg0, $publicResources)) {
         // noticias usa el controller propio
@@ -315,6 +315,13 @@ try {
         if ($resource === 'contacto') {
             require_once __DIR__ . '/controllers/ContactoController.php';
             (new ContactoController())->handle(array_slice($segments, 1), $auth['data']);
+            exit();
+        }
+
+        // admin/config — información institucional y metadatos FONDEP
+        if ($resource === 'config') {
+            require_once __DIR__ . '/controllers/ConfigController.php';
+            (new ConfigController())->handle($segments, $auth['data']);
             exit();
         }
 

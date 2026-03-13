@@ -9,7 +9,6 @@ import {
   Spinner,
   Alert,
   Form,
-  Modal,
   Table,
   Badge,
   Tabs,
@@ -21,8 +20,6 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
-  X,
   GearFill,
   FileEarmarkPdf,
   FileEarmarkWord,
@@ -33,7 +30,8 @@ import {
   Search,
   Eye,
   Download,
-  Tag
+  Tag,
+  X
 } from "react-bootstrap-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -314,106 +312,61 @@ const AdminDocumentosGestion = () => {
 
   // Modal de info institucional
   const renderModalInfo = () => (
-    <Modal show={showModalInfo} onHide={cerrarModalInfo} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Información Institucional</Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitInfo}>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre de la I.E. *</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre"
-              value={formInfo.nombre}
-              onChange={handleChangeInfo}
-              placeholder="Ej: I.E. Andrés Avelino Cáceres"
-              required
-            />
-          </Form.Group>
+    showModalInfo && (
+      <div className="modal-overlay" onClick={cerrarModalInfo}>
+        <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-building" />
+              Información Institucional
+            </h3>
+            <button className="modal-close" onClick={cerrarModalInfo}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitInfo}>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="form-label">Nombre de la I.E. *</label>
+                <input className="form-input" type="text" name="nombre" value={formInfo.nombre} onChange={handleChangeInfo} placeholder="Ej: I.E. Andrés Avelino Cáceres" required />
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Código Modular *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="codigo_modular"
-                  value={formInfo.codigo_modular}
-                  onChange={handleChangeInfo}
-                  placeholder="Ej: 1372374"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Año de Vigencia *</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="anio_vigencia"
-                  value={formInfo.anio_vigencia}
-                  onChange={handleChangeInfo}
-                  min="2020"
-                  max="2030"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Código Modular *</label>
+                  <input className="form-input" type="text" name="codigo_modular" value={formInfo.codigo_modular} onChange={handleChangeInfo} placeholder="Ej: 1372374" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Año de Vigencia *</label>
+                  <input className="form-input" type="number" name="anio_vigencia" value={formInfo.anio_vigencia} onChange={handleChangeInfo} min="2020" max="2030" required />
+                </div>
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Director(a) *</Form.Label>
-            <Form.Control
-              type="text"
-              name="director"
-              value={formInfo.director}
-              onChange={handleChangeInfo}
-              placeholder="Ej: Gerardo Florez Condori"
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Director(a) *</label>
+                <input className="form-input" type="text" name="director" value={formInfo.director} onChange={handleChangeInfo} placeholder="Ej: Gerardo Florez Condori" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Ubicación *</Form.Label>
-            <Form.Control
-              type="text"
-              name="ubicacion"
-              value={formInfo.ubicacion}
-              onChange={handleChangeInfo}
-              placeholder="Ej: Sirenachayocc, Cusco"
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Ubicación *</label>
+                <input className="form-input" type="text" name="ubicacion" value={formInfo.ubicacion} onChange={handleChangeInfo} placeholder="Ej: Sirenachayocc, Cusco" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Grados Atendidos *</Form.Label>
-            <Form.Control
-              type="text"
-              name="grados_atendidos"
-              value={formInfo.grados_atendidos}
-              onChange={handleChangeInfo}
-              placeholder="Ej: 1° a 5° de secundaria"
-              required
-            />
-          </Form.Group>
-
-          <Alert variant="info" className="small">
-            <strong>Nota:</strong> Esta información aparecerá en la página pública de documentos de gestión.
-          </Alert>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModalInfo}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div className="form-group">
+                <label className="form-label">Grados Atendidos *</label>
+                <input className="form-input" type="text" name="grados_atendidos" value={formInfo.grados_atendidos} onChange={handleChangeInfo} placeholder="Ej: 1° a 5° de secundaria" required />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModalInfo}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
 // AdminDocumentosGestion.jsx - PARTE 3
 // Continúa desde PARTE 2...
@@ -819,320 +772,210 @@ const AdminDocumentosGestion = () => {
 
   // Modal de documentos
   const renderModalDoc = () => (
-    <Modal show={showModalDoc} onHide={cerrarModalDoc} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar Documento" : "Nuevo Documento"}
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitDoc}>
-        <Modal.Body style={{ maxHeight: "70vh", overflowY: "auto" }}>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Código *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="codigo"
-                  value={formDoc.codigo}
-                  onChange={handleChangeDoc}
-                  placeholder="Ej: pei, pat, pci"
-                  required
-                />
-                <Form.Text className="text-muted">
-                  Código corto identificador (único)
-                </Form.Text>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Año de Vigencia *</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="anio_vigencia"
-                  value={formDoc.anio_vigencia}
-                  onChange={handleChangeDoc}
-                  min="2020"
-                  max="2030"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre del Documento *</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre"
-              value={formDoc.nombre}
-              onChange={handleChangeDoc}
-              placeholder="Ej: Proyecto Educativo Institucional (PEI)"
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Descripción *</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="descripcion"
-              value={formDoc.descripcion}
-              onChange={handleChangeDoc}
-              placeholder="Breve descripción del documento"
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Archivo {!modoEdicion && '*'}</Form.Label>
-            <Form.Control
-              type="file"
-              name="archivo"
-              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-              onChange={handleChangeDoc}
-              required={!modoEdicion}
-            />
-            <Form.Text className="text-muted">
-              {modoEdicion 
-                ? "Seleccione un archivo solo si desea reemplazar el actual"
-                : "Formatos soportados: PDF, Word (.doc, .docx), Excel (.xls, .xlsx), PowerPoint (.ppt, .pptx)"}
-            </Form.Text>
-          </Form.Group>
-
-          {archivoSeleccionado && (
-            <Alert variant="success" className="small d-flex align-items-center">
-              {getIconoArchivo(formDoc.tipo_archivo)}
-              <span className="ms-2">
-                <strong>Archivo seleccionado:</strong> {archivoSeleccionado.name}
-                <br />
-                <Badge bg="info">{formDoc.tipo_archivo}</Badge>
-                <Badge bg="secondary" className="ms-1">
-                  {(archivoSeleccionado.size / 1024 / 1024).toFixed(2)} MB
-                </Badge>
-              </span>
-            </Alert>
-          )}
-
-          {modoEdicion && formDoc.archivo && !archivoSeleccionado && (
-            <Alert variant="info" className="small d-flex align-items-center">
-              {getIconoArchivo(formDoc.tipo_archivo)}
-              <span className="ms-2">
-                <strong>Archivo actual:</strong> {formDoc.archivo}
-                <br />
-                <Badge bg="info">{formDoc.tipo_archivo}</Badge>
-                {formDoc.tamanio && <Badge bg="secondary" className="ms-1">{formDoc.tamanio}</Badge>}
-              </span>
-            </Alert>
-          )}
-
-          <Form.Group className="mb-3">
-            <Form.Label>Etiquetas</Form.Label>
-            <InputGroup className="mb-2">
-              <Form.Control
-                type="text"
-                value={etiquetaInput}
-                onChange={(e) => setEtiquetaInput(e.target.value)}
-                placeholder="Ej: normativo, estratégico"
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    agregarEtiqueta();
-                  }
-                }}
-              />
-              <Button 
-                variant="outline-primary" 
-                onClick={agregarEtiqueta}
-                type="button"
-              >
-                <PlusCircle />
-              </Button>
-            </InputGroup>
-            
-            {formDoc.etiquetas.length > 0 && (
-              <div className="d-flex flex-wrap gap-2">
-                {formDoc.etiquetas.map((etiqueta, index) => (
-                  <Badge 
-                    key={index} 
-                    bg="info" 
-                    className="d-flex align-items-center gap-1"
-                  >
-                    <Tag size={12} />
-                    {etiqueta}
-                    <Button
-                      variant="link"
-                      size="sm"
-                      className="p-0 text-white"
-                      onClick={() => eliminarEtiqueta(index)}
-                      type="button"
-                      style={{ marginLeft: '4px' }}
-                    >
-                      <X size={14} />
-                    </Button>
-                  </Badge>
-                ))}
+    showModalDoc && (
+      <div className="modal-overlay" onClick={cerrarModalDoc}>
+        <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-file-alt" />
+              {modoEdicion ? "Editar Documento" : "Nuevo Documento"}
+            </h3>
+            <button className="modal-close" onClick={cerrarModalDoc}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitDoc}>
+            <div className="modal-body">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Código *</label>
+                  <input className="form-input" type="text" name="codigo" value={formDoc.codigo} onChange={handleChangeDoc} placeholder="Ej: pei, pat, pci" required />
+                  <small className="text-muted">Código corto identificador (único)</small>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Año de Vigencia *</label>
+                  <input className="form-input" type="number" name="anio_vigencia" value={formDoc.anio_vigencia} onChange={handleChangeDoc} min="2020" max="2030" required />
+                </div>
               </div>
-            )}
-          </Form.Group>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Color *</Form.Label>
-                <Form.Control
-                  type="color"
-                  name="color"
-                  value={formDoc.color}
-                  onChange={handleChangeDoc}
-                />
-                <Form.Text className="text-muted">
-                  Color del icono en la card
-                </Form.Text>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Icono *</Form.Label>
-                <Form.Select
-                  name="icono"
-                  value={formDoc.icono}
-                  onChange={handleChangeDoc}
-                  required
-                >
-                  {iconosDisponibles.map(icon => (
-                    <option key={icon.value} value={icon.value}>
-                      {icon.label}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
+              <div className="form-group">
+                <label className="form-label">Nombre del Documento *</label>
+                <input className="form-input" type="text" name="nombre" value={formDoc.nombre} onChange={handleChangeDoc} placeholder="Ej: Proyecto Educativo Institucional (PEI)" required />
+              </div>
 
-          <Alert variant="warning" className="small">
-            <strong>Nota sobre visualización:</strong> Los documentos PDF se pueden visualizar directamente. 
-            Word, Excel y PowerPoint se descargarán automáticamente.
-          </Alert>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModalDoc}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div className="form-group">
+                <label className="form-label">Descripción *</label>
+                <textarea className="form-input" name="descripcion" value={formDoc.descripcion} onChange={handleChangeDoc} placeholder="Breve descripción del documento" rows={3} style={{ resize: 'vertical' }} required />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Archivo {!modoEdicion && '*'}</label>
+                <input className="form-input" type="file" name="archivo" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onChange={handleChangeDoc} required={!modoEdicion} style={{ cursor: 'pointer' }} />
+                <small className="text-muted">
+                  {modoEdicion ? "Seleccione un archivo solo si desea reemplazar el actual" : "Formatos soportados: PDF, Word (.doc, .docx), Excel (.xls, .xlsx), PowerPoint (.ppt, .pptx)"}
+                </small>
+              </div>
+
+              {archivoSeleccionado && (
+                <Alert variant="success" className="small d-flex align-items-center">
+                  {getIconoArchivo(formDoc.tipo_archivo)}
+                  <span className="ms-2">
+                    <strong>Archivo seleccionado:</strong> {archivoSeleccionado.name}
+                    <br />
+                    <Badge bg="info">{formDoc.tipo_archivo}</Badge>
+                    <Badge bg="secondary" className="ms-1">{(archivoSeleccionado.size / 1024 / 1024).toFixed(2)} MB</Badge>
+                  </span>
+                </Alert>
+              )}
+
+              {modoEdicion && formDoc.archivo && !archivoSeleccionado && (
+                <Alert variant="info" className="small d-flex align-items-center">
+                  {getIconoArchivo(formDoc.tipo_archivo)}
+                  <span className="ms-2">
+                    <strong>Archivo actual:</strong> {formDoc.archivo}
+                    <br />
+                    <Badge bg="info">{formDoc.tipo_archivo}</Badge>
+                    {formDoc.tamanio && <Badge bg="secondary" className="ms-1">{formDoc.tamanio}</Badge>}
+                  </span>
+                </Alert>
+              )}
+
+              <div className="form-group">
+                <label className="form-label">Etiquetas</label>
+                <InputGroup className="mb-2">
+                  <Form.Control
+                    type="text"
+                    value={etiquetaInput}
+                    onChange={(e) => setEtiquetaInput(e.target.value)}
+                    placeholder="Ej: normativo, estratégico"
+                    onKeyPress={(e) => { if (e.key === 'Enter') { e.preventDefault(); agregarEtiqueta(); } }}
+                  />
+                  <Button variant="outline-primary" onClick={agregarEtiqueta} type="button">
+                    <PlusCircle />
+                  </Button>
+                </InputGroup>
+                {formDoc.etiquetas.length > 0 && (
+                  <div className="d-flex flex-wrap gap-2">
+                    {formDoc.etiquetas.map((etiqueta, index) => (
+                      <Badge key={index} bg="info" className="d-flex align-items-center gap-1">
+                        <Tag size={12} />
+                        {etiqueta}
+                        <Button variant="link" size="sm" className="p-0 text-white" onClick={() => eliminarEtiqueta(index)} type="button" style={{ marginLeft: '4px' }}>
+                          <X size={14} />
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Color *</label>
+                  <input className="form-input" type="color" name="color" value={formDoc.color} onChange={handleChangeDoc} />
+                  <small className="text-muted">Color del icono en la card</small>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Icono *</label>
+                  <select className="form-input" name="icono" value={formDoc.icono} onChange={handleChangeDoc} required>
+                    {iconosDisponibles.map(icon => (
+                      <option key={icon.value} value={icon.value}>{icon.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <Alert variant="warning" className="small">
+                <strong>Nota sobre visualización:</strong> Los documentos PDF se pueden visualizar directamente. Word, Excel y PowerPoint se descargarán automáticamente.
+              </Alert>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModalDoc}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
 
   // Modal para visualizar documento
   const renderModalVista = () => (
-    <Modal
-      show={showModalVista}
-      onHide={() => setShowModalVista(false)}
-      centered
-      size="xl"
-      backdrop="static"
-    >
-      <Modal.Header closeButton>
-        <Modal.Title className="d-flex align-items-center gap-2">
-          {documentoVista && getIconoArchivo(documentoVista.tipo_archivo)}
-          {documentoVista?.nombre || "Documento"}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="bg-light p-3">
-        {documentoVista ? (
-          <>
-            {/* Información del documento */}
-            <Card className="mb-3">
-              <Card.Body>
-                <Row>
-                  <Col md={8}>
-                    <h6 className="fw-bold">{documentoVista.nombre}</h6>
-                    <p className="text-muted small mb-2">{documentoVista.descripcion}</p>
-                    {documentoVista.etiquetas && documentoVista.etiquetas.length > 0 && (
-                      <div className="d-flex flex-wrap gap-1">
-                        {documentoVista.etiquetas.map((tag, idx) => (
-                          <Badge key={idx} bg="info" className="small">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </Col>
-                  <Col md={4} className="text-end">
-                    <Badge bg="secondary">{documentoVista.codigo}</Badge>
-                    <br />
-                    <Badge bg="success" className="mt-1">{documentoVista.anio_vigencia}</Badge>
-                    {documentoVista.tamanio && (
-                      <>
+    showModalVista && (
+      <div className="modal-overlay" onClick={() => setShowModalVista(false)}>
+        <div className="modal modal-lg" onClick={e => e.stopPropagation()} style={{ width: '90vw', maxWidth: 1000 }}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              {documentoVista && getIconoArchivo(documentoVista.tipo_archivo)}
+              {documentoVista?.nombre || "Documento"}
+            </h3>
+            <button className="modal-close" onClick={() => setShowModalVista(false)}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <div className="modal-body" style={{ background: 'var(--bg-muted)' }}>
+            {documentoVista ? (
+              <>
+                <Card className="mb-3">
+                  <Card.Body>
+                    <Row>
+                      <Col md={8}>
+                        <h6 className="fw-bold">{documentoVista.nombre}</h6>
+                        <p className="text-muted small mb-2">{documentoVista.descripcion}</p>
+                        {documentoVista.etiquetas && documentoVista.etiquetas.length > 0 && (
+                          <div className="d-flex flex-wrap gap-1">
+                            {documentoVista.etiquetas.map((tag, idx) => (
+                              <Badge key={idx} bg="info" className="small">{tag}</Badge>
+                            ))}
+                          </div>
+                        )}
+                      </Col>
+                      <Col md={4} className="text-end">
+                        <Badge bg="secondary">{documentoVista.codigo}</Badge>
                         <br />
-                        <Badge bg="light" text="dark" className="mt-1">{documentoVista.tamanio}</Badge>
-                      </>
-                    )}
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
+                        <Badge bg="success" className="mt-1">{documentoVista.anio_vigencia}</Badge>
+                        {documentoVista.tamanio && (
+                          <><br /><Badge bg="light" text="dark" className="mt-1">{documentoVista.tamanio}</Badge></>
+                        )}
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
 
-            {/* Visualización del documento */}
-            {documentoVista.tipo_archivo === 'PDF' ? (
-              <div style={{ height: '600px' }}>
-                <iframe
-                  src={documentoVista.archivo}
-                  title="Documento PDF"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 'none', borderRadius: '8px' }}
-                />
-              </div>
+                {documentoVista.tipo_archivo === 'PDF' ? (
+                  <div style={{ height: '600px' }}>
+                    <iframe src={documentoVista.archivo} title="Documento PDF" width="100%" height="100%" style={{ border: 'none', borderRadius: '8px' }} />
+                  </div>
+                ) : (
+                  <Alert variant="info" className="text-center">
+                    <div className="mb-3">
+                      {getIconoArchivo(documentoVista.tipo_archivo)}
+                      <h5 className="mt-2">Documento {documentoVista.tipo_archivo}</h5>
+                    </div>
+                    <p className="mb-3">Este tipo de documento no se puede visualizar directamente en el navegador.</p>
+                    <Button variant="primary" as="a" href={documentoVista.archivo} download size="lg">
+                      <Download className="me-2" />
+                      Descargar Documento
+                    </Button>
+                  </Alert>
+                )}
+              </>
             ) : (
-              <Alert variant="info" className="text-center">
-                <div className="mb-3">
-                  {getIconoArchivo(documentoVista.tipo_archivo)}
-                  <h5 className="mt-2">Documento {documentoVista.tipo_archivo}</h5>
-                </div>
-                <p className="mb-3">
-                  Este tipo de documento no se puede visualizar directamente en el navegador.
-                </p>
-                <Button
-                  variant="primary"
-                  as="a"
-                  href={documentoVista.archivo}
-                  download
-                  size="lg"
-                >
-                  <Download className="me-2" />
-                  Descargar Documento
-                </Button>
-              </Alert>
+              <Alert variant="warning">No se pudo cargar el documento.</Alert>
             )}
-          </>
-        ) : (
-          <Alert variant="warning">No se pudo cargar el documento.</Alert>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="primary"
-          as="a"
-          href={documentoVista?.archivo}
-          download
-          disabled={!documentoVista}
-        >
-          <Download className="me-1" />
-          Descargar
-        </Button>
-        <Button variant="secondary" onClick={() => setShowModalVista(false)}>
-          Cerrar
-        </Button>
-      </Modal.Footer>
-    </Modal>
+          </div>
+          <div className="modal-footer">
+            <Button variant="primary" as="a" href={documentoVista?.archivo} download disabled={!documentoVista}>
+              <Download className="me-1" />
+              Descargar
+            </Button>
+            <button type="button" className="btn btn-ghost" onClick={() => setShowModalVista(false)}>Cerrar</button>
+          </div>
+        </div>
+      </div>
+    )
   );
 
   // Loading state

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import authService from '../services/auth';
+import api from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -7,13 +8,28 @@ export function AuthProvider({ children }) {
   const [user,    setUser]    = useState(() => authService.getCurrentUser());
   const [loading, setLoading] = useState(true);
 
-  /* Verificar token al montar */
+  /* Verificar token al montar y cargar nombre fresco desde la API */
   useEffect(() => {
     const stored = authService.getCurrentUser();
     if (stored && authService.isAuthenticated()) {
       setUser(stored);
+      // Fetch fresh profile to get nombre actualizado
+      if (stored.id) {
+        api.get(`/admin/usuarios/${stored.id}`)
+          .then(res => {
+            const fresh = res.data?.data || res.data || {};
+            if (fresh.nombre || fresh.email) {
+              const updated = { ...stored, nombre: fresh.nombre || stored.nombre, email: fresh.email || stored.email };
+              const storage = localStorage.getItem('user') ? localStorage : sessionStorage;
+              storage.setItem('user', JSON.stringify(updated));
+              setUser(updated);
+            }
+          })
+          .catch(() => {})
+          .finally(() => setLoading(false));
+        return;
+      }
     } else if (stored) {
-      // Token expirado → limpiar
       authService.logout();
       setUser(null);
     }

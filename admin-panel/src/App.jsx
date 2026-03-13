@@ -24,6 +24,8 @@ import PlanLector        from './pages/PlanLector'
 import PortafolioActividades from './pages/PortafolioActividades'
 import SistemaMonitoreo  from './pages/SistemaMonitoreo'
 import Mensajes          from './pages/Mensajes'
+import Configuracion     from './pages/Configuracion'
+import Manual            from './pages/Manual'
 
 // Layout
 import DashboardLayout from './components/Layout/DashboardLayout'
@@ -80,8 +82,10 @@ function App() {
           <Route path="mensajes" element={<Mensajes />} />
 
           {/* Administración */}
-          <Route path="usuarios" element={<Usuarios />} />
-          <Route path="perfil"   element={<Perfil />} />
+          <Route path="usuarios"       element={<Usuarios />} />
+          <Route path="configuracion"  element={<Configuracion />} />
+          <Route path="manual"         element={<Manual />} />
+          <Route path="perfil"         element={<Perfil />} />
         </Route>
 
         {/* ── 404 → login ── */}

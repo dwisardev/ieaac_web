@@ -8,8 +8,6 @@ import {
   Button,
   Spinner,
   Alert,
-  Form,
-  Modal,
   Table,
   Badge,
   Tabs,
@@ -20,8 +18,6 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
-  X,
   Image as ImageIcon,
   PlayFill
 } from "react-bootstrap-icons";
@@ -415,258 +411,147 @@ const PortafolioActividadesAdmin = () => {
   );
     
   const renderModal = () => (
-  <Modal show={showModal} onHide={cerrarModal} size="lg">
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {modoEdicion ? "Editar Actividad" : "Nueva Actividad"}
-      </Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmit}>
-      <Modal.Body style={{ maxHeight: "70vh", overflowY: "auto" }}>
-        <Form.Group className="mb-3">
-          <Form.Label>Título de la Actividad *</Form.Label>
-          <Form.Control
-            type="text"
-            name="titulo"
-            value={formActividad.titulo}
-            onChange={handleChange}
-            placeholder="Ej: Taller de expresión oral"
-            required
-          />
-        </Form.Group>
+  showModal && (
+    <div className="modal-overlay" onClick={cerrarModal}>
+      <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-book-open" />
+            {modoEdicion ? "Editar Actividad" : "Nueva Actividad"}
+          </h3>
+          <button className="modal-close" onClick={cerrarModal}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Título de la Actividad *</label>
+              <input className="form-input" type="text" name="titulo" value={formActividad.titulo} onChange={handleChange} placeholder="Ej: Taller de expresión oral" required />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Descripción *</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="descripcion"
-            value={formActividad.descripcion}
-            onChange={handleChange}
-            placeholder="Describe la actividad realizada"
-            required
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Descripción *</label>
+              <textarea className="form-input" name="descripcion" value={formActividad.descripcion} onChange={handleChange} placeholder="Describe la actividad realizada" rows={3} style={{ resize: 'vertical' }} required />
+            </div>
 
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Rubro *</Form.Label>
-              <Form.Select
-                name="rubro"
-                value={formActividad.rubro}
-                onChange={handleChange}
-                required
-              >
-                {rubrosDisponibles.map(rubro => (
-                  <option key={rubro} value={rubro}>
-                    {rubro}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Categoría *</Form.Label>
-              <Form.Select
-                name="categoria"
-                value={formActividad.categoria}
-                onChange={handleChange}
-                required
-              >
-                {categoriasDisponibles.map(cat => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Rubro *</label>
+                <select className="form-input" name="rubro" value={formActividad.rubro} onChange={handleChange} required>
+                  {rubrosDisponibles.map(rubro => (
+                    <option key={rubro} value={rubro}>{rubro}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Categoría *</label>
+                <select className="form-input" name="categoria" value={formActividad.categoria} onChange={handleChange} required>
+                  {categoriasDisponibles.map(cat => (
+                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Fecha de Realización *</Form.Label>
-              <Form.Control
-                type="date"
-                name="fecha_realizacion"
-                value={formActividad.fecha_realizacion}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Orden</Form.Label>
-              <Form.Control
-                type="number"
-                name="orden"
-                value={formActividad.orden}
-                onChange={handleChange}
-                min="1"
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Fecha de Realización *</label>
+                <input className="form-input" type="date" name="fecha_realizacion" value={formActividad.fecha_realizacion} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Orden</label>
+                <input className="form-input" type="number" name="orden" value={formActividad.orden} onChange={handleChange} min="1" required />
+              </div>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Responsables *</Form.Label>
-          <Form.Control
-            type="text"
-            name="responsables"
-            value={formActividad.responsables}
-            onChange={handleChange}
-            placeholder="Ej: Docentes de Comunicación, Tutores"
-            required
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Responsables *</label>
+              <input className="form-input" type="text" name="responsables" value={formActividad.responsables} onChange={handleChange} placeholder="Ej: Docentes de Comunicación, Tutores" required />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Participantes</Form.Label>
-          <div className="input-group mb-2">
-            <Form.Control
-              type="text"
-              value={participanteInput}
-              onChange={(e) => setParticipanteInput(e.target.value)}
-              placeholder="Ej: Estudiantes de 1° a 5°"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  agregarParticipante();
-                }
-              }}
-            />
-            <Button 
-              variant="outline-primary" 
-              onClick={agregarParticipante}
-              type="button"
-            >
-              <PlusCircle />
-            </Button>
-          </div>
-          
-          {formActividad.participantes.length > 0 && (
-            <ul className="list-group">
-              {formActividad.participantes.map((participante, index) => (
-                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                  <span>{participante}</span>
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => eliminarParticipante(index)}
-                    type="button"
-                  >
-                    <Trash size={14} />
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Participantes</label>
+              <div className="input-group mb-2">
+                <input className="form-input" type="text" value={participanteInput} onChange={(e) => setParticipanteInput(e.target.value)} placeholder="Ej: Estudiantes de 1° a 5°"
+                  onKeyPress={(e) => { if (e.key === 'Enter') { e.preventDefault(); agregarParticipante(); } }}
+                  style={{ borderRadius: '6px 0 0 6px' }} />
+                <Button variant="outline-primary" onClick={agregarParticipante} type="button">
+                  <PlusCircle />
+                </Button>
+              </div>
+              {formActividad.participantes.length > 0 && (
+                <ul className="list-group">
+                  {formActividad.participantes.map((participante, index) => (
+                    <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                      <span>{participante}</span>
+                      <Button variant="outline-danger" size="sm" onClick={() => eliminarParticipante(index)} type="button">
+                        <Trash size={14} />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Resultados Obtenidos</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={2}
-            name="resultados"
-            value={formActividad.resultados}
-            onChange={handleChange}
-            placeholder="Describe los resultados de la actividad"
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Resultados Obtenidos</label>
+              <textarea className="form-input" name="resultados" value={formActividad.resultados} onChange={handleChange} placeholder="Describe los resultados de la actividad" rows={2} style={{ resize: 'vertical' }} />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Lecciones Aprendidas</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={2}
-            name="lecciones_aprendidas"
-            value={formActividad.lecciones_aprendidas}
-            onChange={handleChange}
-            placeholder="¿Qué aprendizajes se obtuvieron?"
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Lecciones Aprendidas</label>
+              <textarea className="form-input" name="lecciones_aprendidas" value={formActividad.lecciones_aprendidas} onChange={handleChange} placeholder="¿Qué aprendizajes se obtuvieron?" rows={2} style={{ resize: 'vertical' }} />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Evidencias (Fotos/Videos)</Form.Label>
-          <Form.Control
-            type="file"
-            multiple
-            accept="image/*,video/*"
-            onChange={handleChange}
-          />
-          <Form.Text className="text-muted">
-            Puede seleccionar múltiples archivos (imágenes o videos)
-          </Form.Text>
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Evidencias (Fotos/Videos)</label>
+              <input className="form-input" type="file" multiple accept="image/*,video/*" onChange={handleChange} style={{ cursor: 'pointer' }} />
+              <small className="text-muted">Puede seleccionar múltiples archivos (imágenes o videos)</small>
+            </div>
 
-        {archivosSeleccionados.length > 0 && (
-          <Alert variant="success" className="small">
-            <ImageIcon className="me-1" />
-            {archivosSeleccionados.length} archivo(s) seleccionado(s)
-          </Alert>
-        )}
+            {archivosSeleccionados.length > 0 && (
+              <Alert variant="success" className="small">
+                <ImageIcon className="me-1" />
+                {archivosSeleccionados.length} archivo(s) seleccionado(s)
+              </Alert>
+            )}
 
-        {modoEdicion && formActividad.archivos && formActividad.archivos.length > 0 && (
-          <div className="mb-3">
-            <small className="text-muted d-block mb-2">Evidencias actuales:</small>
-            <div className="d-flex flex-wrap gap-2">
-              {formActividad.archivos.map((archivo, index) => (
-                <Badge key={index} bg="info">
-                  {archivo.tipo === 'foto' ? <ImageIcon size={14} /> : <PlayFill size={14} />}
-                  {' '}{archivo.descripcion || `Archivo ${index + 1}`}
-                </Badge>
-              ))}
+            {modoEdicion && formActividad.archivos && formActividad.archivos.length > 0 && (
+              <div className="mb-3">
+                <small className="text-muted d-block mb-2">Evidencias actuales:</small>
+                <div className="d-flex flex-wrap gap-2">
+                  {formActividad.archivos.map((archivo, index) => (
+                    <Badge key={index} bg="info">
+                      {archivo.tipo === 'foto' ? <ImageIcon size={14} /> : <PlayFill size={14} />}
+                      {' '}{archivo.descripcion || `Archivo ${index + 1}`}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input type="checkbox" id="destacado" name="destacado" checked={formActividad.destacado} onChange={handleChange} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                <label htmlFor="destacado" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Actividad Destacada</label>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input type="checkbox" id="activo_port" name="activo" checked={formActividad.activo} onChange={handleChange} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                <label htmlFor="activo_port" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Actividad Activa</label>
+              </div>
             </div>
           </div>
-        )}
-
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                name="destacado"
-                label="Actividad Destacada"
-                checked={formActividad.destacado}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                name="activo"
-                label="Actividad Activa"
-                checked={formActividad.activo}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Alert variant="info" className="small">
-          <strong>Nota:</strong> Las actividades destacadas aparecerán primero en la vista pública.
-        </Alert>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModal}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModal}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
   // Loading state
   if (isLoading) {

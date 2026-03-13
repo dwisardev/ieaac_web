@@ -21,3 +21,200 @@
 @media (max-width: 768px) {
   .contact-card { margin-bottom: 1.5rem; }
 }
+
+/* ── Código de seguimiento (antes del form) ── */
+.ct-codigo-previo {
+  background: #f0f4ff;
+  border: 1.5px dashed #1a3a6e;
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+}
+.ct-codigo-previo-label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #1a3a6e;
+  margin-bottom: .4rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.ct-codigo-previo-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+.ct-codigo-previo-valor {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a3a6e;
+  letter-spacing: .08em;
+}
+.ct-codigo-previo-copiar {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .3rem .75rem;
+  background: #1a3a6e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.ct-codigo-previo-copiar:hover { background: #c8952a; }
+.ct-codigo-previo-nota {
+  font-size: .78rem;
+  color: #5a6a8a;
+  margin: .4rem 0 0;
+}
+
+/* ── Banner de éxito ── */
+.ct-exito-banner {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  background: #e8f9f0;
+  border: 1.5px solid #86efac;
+  border-radius: 10px;
+  padding: .85rem 1.1rem;
+  font-size: .93rem;
+  color: #15803d;
+}
+.ct-exito-banner i { font-size: 1.3rem; flex-shrink: 0; }
+.ct-exito-banner > div { flex: 1; }
+.ct-exito-codigo {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #15803d;
+}
+.ct-exito-cerrar {
+  background: none;
+  border: none;
+  color: #15803d;
+  cursor: pointer;
+  font-size: .9rem;
+  padding: .2rem .4rem;
+  border-radius: 4px;
+  transition: background .15s;
+}
+.ct-exito-cerrar:hover { background: rgba(0,0,0,.07); }
+
+/* ── Consulta card ── */
+.ct-consulta-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(26,58,110,.1);
+  box-shadow: 0 8px 32px rgba(26,58,110,.06);
+  padding: 1.75rem 1.5rem;
+}
+.ct-consulta-titulo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a3a6e;
+  margin: 0 0 .3rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.ct-consulta-sub { color: #666; font-size: .875rem; margin: 0 0 1.1rem; }
+
+.ct-consulta-row { display: flex; gap: .75rem; flex-wrap: wrap; }
+.ct-consulta-input {
+  flex: 1;
+  min-width: 180px;
+  padding: .65rem .9rem;
+  border: 1.5px solid #dee2e6;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color .2s;
+}
+.ct-consulta-input:focus { border-color: #1a3a6e; box-shadow: 0 0 0 .2rem rgba(26,58,110,.1); }
+
+.ct-consulta-btn {
+  padding: .65rem 1.25rem;
+  background: #1a3a6e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.ct-consulta-btn:hover:not(:disabled) { background: #c8952a; }
+.ct-consulta-btn:disabled             { opacity: .6; cursor: not-allowed; }
+
+.ct-consulta-error {
+  color: #dc2626;
+  font-size: .85rem;
+  margin-top: .6rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+/* ── Resultado ── */
+.ct-resultado {
+  margin-top: 1rem;
+  border-radius: 12px;
+  border: 1.5px solid;
+  padding: 1rem 1.25rem;
+}
+.ct-resultado-estado {
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .75rem;
+}
+.ct-resultado-detalle { display: flex; gap: .5rem; font-size: .875rem; margin-bottom: .3rem; }
+.ct-resultado-label   { font-weight: 600; color: #374151; min-width: 80px; }
+.ct-resultado-valor   { color: #4b5563; }
+
+.ct-resultado-respuesta {
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+.ct-resultado-respuesta-titulo {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #166534;
+  margin-bottom: .35rem;
+}
+.ct-resultado-respuesta-texto {
+  font-size: .9rem;
+  color: #1e3a2a;
+  background: rgba(255,255,255,.6);
+  border-radius: 8px;
+  padding: .6rem .85rem;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Spinner ── */
+@keyframes ct-spin { to { transform: rotate(360deg); } }
+.ct-spin { display: inline-block; animation: ct-spin .75s linear infinite; }
+
+@media (max-width: 576px) {
+  .ct-consulta-card { padding: 1.25rem 1rem; }
+  .ct-consulta-row  { flex-direction: column; }
+  .ct-codigo-previo-row { flex-direction: column; align-items: flex-start; }
+}

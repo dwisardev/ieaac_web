@@ -124,6 +124,21 @@ function MensajeModal({ item, tipo, onClose, onUpdated }) {
             </div>
           </div>
 
+          {/* Código de seguimiento */}
+          {item.codigo && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16,
+              background: 'var(--bg-surface)', border: '1px dashed var(--border)',
+              borderRadius: 8, padding: '8px 12px',
+            }}>
+              <i className="fas fa-qrcode" style={{ color: 'var(--text-muted)', fontSize: 12 }} />
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Código:</span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 13, fontWeight: 700, color: 'var(--accent)', letterSpacing: '.05em' }}>
+                {item.codigo}
+              </span>
+            </div>
+          )}
+
           {/* Contenido del pedido/mensaje */}
           <div style={{ marginBottom: 20 }}>
             <div style={{
@@ -282,6 +297,7 @@ function TablaItems({ items, tipo, onVer, onMarcarLeido, onEliminar, loadingId }
         <tr>
           <th style={{ width: 100 }}>Estado</th>
           <th>Remitente</th>
+          <th style={{ width: 140 }}>Código</th>
           <th>{isPedido ? 'Libro solicitado' : 'Mensaje'}</th>
           <th>Fecha</th>
           <th style={{ textAlign: 'right' }}>Acciones</th>
@@ -313,11 +329,27 @@ function TablaItems({ items, tipo, onVer, onMarcarLeido, onEliminar, loadingId }
               )}
             </td>
 
+            {/* Código */}
+            <td>
+              {item.codigo ? (
+                <span style={{
+                  fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 700,
+                  color: 'var(--accent)', letterSpacing: '.04em',
+                  background: 'var(--accent-soft)', padding: '2px 7px',
+                  borderRadius: 4, display: 'inline-block',
+                }}>
+                  {item.codigo}
+                </span>
+              ) : (
+                <span style={{ fontSize: 11, color: 'var(--text-disabled)' }}>—</span>
+              )}
+            </td>
+
             {/* Contenido */}
             <td>
               <div style={{
                 fontSize: 13, color: 'var(--text-secondary)',
-                maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
               }}>
                 {isPedido ? (
                   <><i className="fas fa-book" style={{ fontSize: 10, marginRight: 5, color: 'var(--accent)' }} />{item.libro}</>

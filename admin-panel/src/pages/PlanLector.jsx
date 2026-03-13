@@ -8,8 +8,6 @@ import {
   Button,
   Spinner,
   Alert,
-  Form,
-  Modal,
   Table,
   Badge,
   Tabs,
@@ -20,8 +18,6 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
-  X,
   GearFill,
   CheckCircle,
   CalendarCheck,
@@ -34,6 +30,8 @@ import "aos/dist/aos.css";
 import {
   obtenerPlanLectorCompleto,
   actualizarConfiguracion,
+  eliminarConfiguracion,
+  desactivarConfiguracion,
   crearMeta,
   actualizarMeta,
   eliminarMeta,
@@ -183,17 +181,40 @@ const gradosDisponibles = [
     e.preventDefault();
     try {
       setError(null);
-
       await actualizarConfiguracion(formConfig);
-      setSuccess("Configuración actualizada correctamente");
-
+      setSuccess(modoEdicion ? "Configuración actualizada correctamente" : "Configuración creada correctamente");
       cerrarModalConfig();
       await cargarDatos();
-
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       console.error("Error al guardar configuración:", err);
       setError("Error al guardar la configuración. Intente nuevamente.");
+    }
+  };
+
+  const handleEliminarConfig = async () => {
+    if (!window.confirm(`¿Eliminar la configuración del año ${anioEscolar}? Esta acción no se puede deshacer.`)) return;
+    try {
+      setError(null);
+      await eliminarConfiguracion(anioEscolar);
+      setSuccess("Configuración eliminada");
+      await cargarDatos();
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError("Error al eliminar la configuración.");
+    }
+  };
+
+  const handleDesactivarConfig = async () => {
+    if (!window.confirm(`¿Desactivar la configuración del año ${anioEscolar}? Dejará de aparecer en el portal.`)) return;
+    try {
+      setError(null);
+      await desactivarConfiguracion(anioEscolar);
+      setSuccess("Configuración desactivada");
+      await cargarDatos();
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError("Error al desactivar la configuración.");
     }
   };
 
@@ -205,14 +226,24 @@ const gradosDisponibles = [
           <GearFill className="me-2" />
           Configuración General del Plan Lector
         </h5>
-        <Button
-          variant="light"
-          size="sm"
-          onClick={abrirModalConfig}
-        >
-          <Pencil className="me-1" />
-          Editar
-        </Button>
+        <div style={{ display: 'flex', gap: 6 }}>
+          <Button variant="light" size="sm" onClick={abrirModalConfig}>
+            <Pencil className="me-1" />
+            {configuracion ? 'Editar' : 'Nueva Configuración'}
+          </Button>
+          {configuracion && (
+            <>
+              <Button variant="warning" size="sm" onClick={handleDesactivarConfig}>
+                <i className="fas fa-ban me-1" style={{ marginRight: 4 }} />
+                Desactivar
+              </Button>
+              <Button variant="danger" size="sm" onClick={handleEliminarConfig}>
+                <Trash className="me-1" />
+                Eliminar
+              </Button>
+            </>
+          )}
+        </div>
       </Card.Header>
       <Card.Body>
         {configuracion ? (
@@ -250,94 +281,56 @@ const gradosDisponibles = [
 
   // Modal de configuración
   const renderModalConfig = () => (
-    <Modal show={showModalConfig} onHide={cerrarModalConfig} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Configuración del Plan Lector</Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitConfig}>
-        <Modal.Body>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Año Escolar *</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="anio_escolar"
-                  value={formConfig.anio_escolar}
-                  onChange={handleChangeConfig}
-                  min="2020"
-                  max="2030"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Código Modular *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="codigo_modular"
-                  value={formConfig.codigo_modular}
-                  onChange={handleChangeConfig}
-                  placeholder="Ej: 1372374"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+    showModalConfig && (
+      <div className="modal-overlay" onClick={cerrarModalConfig}>
+        <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-gear" />
+              Configuración del Plan Lector
+            </h3>
+            <button className="modal-close" onClick={cerrarModalConfig}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitConfig}>
+            <div className="modal-body">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Año Escolar *</label>
+                  <input className="form-input" type="number" name="anio_escolar" value={formConfig.anio_escolar} onChange={handleChangeConfig} min="2020" max="2030" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Código Modular *</label>
+                  <input className="form-input" type="text" name="codigo_modular" value={formConfig.codigo_modular} onChange={handleChangeConfig} placeholder="Ej: 1372374" required />
+                </div>
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Director *</Form.Label>
-            <Form.Control
-              type="text"
-              name="director"
-              value={formConfig.director}
-              onChange={handleChangeConfig}
-              placeholder="Ej: Gerardo Florez Condori"
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Director *</label>
+                <input className="form-input" type="text" name="director" value={formConfig.director} onChange={handleChangeConfig} placeholder="Ej: Gerardo Florez Condori" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Lema del Plan Lector *</Form.Label>
-            <Form.Control
-              type="text"
-              name="lema"
-              value={formConfig.lema}
-              onChange={handleChangeConfig}
-              placeholder="Ej: Descubre mundos y amplía tu mente"
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Lema del Plan Lector *</label>
+                <input className="form-input" type="text" name="lema" value={formConfig.lema} onChange={handleChangeConfig} placeholder="Ej: Descubre mundos y amplía tu mente" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="descripcion"
-              value={formConfig.descripcion}
-              onChange={handleChangeConfig}
-              placeholder="Descripción general del Plan Lector"
-            />
-          </Form.Group>
-
-          <Alert variant="info" className="small">
-            <strong>Nota:</strong> Esta información aparecerá en la vista pública del Plan Lector.
-          </Alert>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModalConfig}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div className="form-group">
+                <label className="form-label">Descripción</label>
+                <textarea className="form-input" name="descripcion" value={formConfig.descripcion} onChange={handleChangeConfig} placeholder="Descripción general del Plan Lector" rows={3} style={{ resize: 'vertical' }} />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModalConfig}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
 
   // ==========================================
@@ -484,13 +477,13 @@ const gradosDisponibles = [
 
         {/* Vista previa */}
         {metas.length > 0 && (
-          <div className="mt-4 p-3 bg-light rounded">
-            <h6 className="fw-bold mb-3">Vista Previa:</h6>
-            <ul className="list-unstyled">
+          <div className="mt-4 p-3 rounded" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
+            <h6 style={{ fontWeight: 700, marginBottom: 12, color: 'var(--text-secondary)', fontSize: 12, textTransform: 'uppercase', letterSpacing: '.05em' }}>Vista Previa:</h6>
+            <ul className="list-unstyled mb-0">
               {metas.sort((a, b) => a.orden - b.orden).map(meta => (
                 <li key={meta.id} className="d-flex align-items-start mb-2">
-                  <CheckCircle size={18} className="text-success me-2 mt-1 flex-shrink-0" />
-                  <span>{meta.meta}</span>
+                  <CheckCircle size={18} className="me-2 mt-1 flex-shrink-0" style={{ color: 'var(--success)', flexShrink: 0 }} />
+                  <span style={{ color: 'var(--text-primary)' }}>{meta.meta}</span>
                 </li>
               ))}
             </ul>
@@ -502,72 +495,46 @@ const gradosDisponibles = [
 
   // Modal de metas
   const renderModalMeta = () => (
-    <Modal show={showModalMeta} onHide={cerrarModalMeta}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar Meta" : "Nueva Meta"}
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmitMeta}>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Descripción de la Meta *</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="meta"
-              value={formMeta.meta}
-              onChange={handleChangeMeta}
-              placeholder="Ej: Lograr que el 90% de los estudiantes consoliden el hábito de la lectura"
-              required
-            />
-          </Form.Group>
+    showModalMeta && (
+      <div className="modal-overlay" onClick={cerrarModalMeta}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-bullseye" />
+              {modoEdicion ? "Editar Meta" : "Nueva Meta"}
+            </h3>
+            <button className="modal-close" onClick={cerrarModalMeta}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmitMeta}>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="form-label">Descripción de la Meta *</label>
+                <textarea className="form-input" name="meta" value={formMeta.meta} onChange={handleChangeMeta} placeholder="Ej: Lograr que el 90% de los estudiantes consoliden el hábito de la lectura" rows={3} style={{ resize: 'vertical' }} required />
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Orden *</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="orden"
-                  value={formMeta.orden}
-                  onChange={handleChangeMeta}
-                  min="1"
-                  required
-                />
-                <Form.Text className="text-muted">
-                  Define el orden de aparición
-                </Form.Text>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Año</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="anio"
-                  value={formMeta.anio}
-                  onChange={handleChangeMeta}
-                  min="2020"
-                  max="2030"
-                  readOnly
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModalMeta}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Orden *</label>
+                  <input className="form-input" type="number" name="orden" value={formMeta.orden} onChange={handleChangeMeta} min="1" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Año</label>
+                  <input className="form-input" type="number" name="anio" value={formMeta.anio} onChange={handleChangeMeta} min="2020" max="2030" readOnly />
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModalMeta}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
   // ==========================================
 // GESTIÓN DE CRONOGRAMA
@@ -794,116 +761,74 @@ const renderSeccionCronograma = () => (
 
 // Modal de cronograma
 const renderModalCronograma = () => (
-  <Modal show={showModalCronograma} onHide={cerrarModalCronograma} size="lg">
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {modoEdicion ? "Editar Actividad" : "Nueva Actividad"}
-      </Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmitCronograma}>
-      <Modal.Body>
-        <Row>
-          <Col md={8}>
-            <Form.Group className="mb-3">
-              <Form.Label>Mes *</Form.Label>
-              <Form.Control
-                type="text"
-                name="mes"
-                value={formCronograma.mes}
-                onChange={handleChangeCronograma}
-                placeholder="Ej: Marzo, Abril, Agosto-Diciembre"
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={4}>
-            <Form.Group className="mb-3">
-              <Form.Label>Orden *</Form.Label>
-              <Form.Control
-                type="number"
-                name="orden_mes"
-                value={formCronograma.orden_mes}
-                onChange={handleChangeCronograma}
-                min="1"
-                max="12"
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+  showModalCronograma && (
+    <div className="modal-overlay" onClick={cerrarModalCronograma}>
+      <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-calendar-check" />
+            {modoEdicion ? "Editar Actividad" : "Nueva Actividad"}
+          </h3>
+          <button className="modal-close" onClick={cerrarModalCronograma}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitCronograma}>
+          <div className="modal-body">
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Mes *</label>
+                <input className="form-input" type="text" name="mes" value={formCronograma.mes} onChange={handleChangeCronograma} placeholder="Ej: Marzo, Abril, Agosto-Diciembre" required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Orden *</label>
+                <input className="form-input" type="number" name="orden_mes" value={formCronograma.orden_mes} onChange={handleChangeCronograma} min="1" max="12" required />
+              </div>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Responsable *</Form.Label>
-          <Form.Control
-            type="text"
-            name="responsable"
-            value={formCronograma.responsable}
-            onChange={handleChangeCronograma}
-            placeholder="Ej: Docente de área, ETIPL y Dirección"
-            required
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Responsable *</label>
+              <input className="form-input" type="text" name="responsable" value={formCronograma.responsable} onChange={handleChangeCronograma} placeholder="Ej: Docente de área, ETIPL y Dirección" required />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Actividades *</Form.Label>
-          <div className="input-group mb-2">
-            <Form.Control
-              type="text"
-              value={actividadInput}
-              onChange={(e) => setActividadInput(e.target.value)}
-              placeholder="Escriba una actividad y presione Agregar"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  agregarActividad();
-                }
-              }}
-            />
-            <Button 
-              variant="outline-primary" 
-              onClick={agregarActividad}
-              type="button"
-            >
-              <PlusCircle className="me-1" />
-              Agregar
-            </Button>
+            <div className="form-group">
+              <label className="form-label">Actividades *</label>
+              <div className="input-group mb-2">
+                <input className="form-input" type="text" value={actividadInput} onChange={(e) => setActividadInput(e.target.value)} placeholder="Escriba una actividad y presione Agregar"
+                  onKeyPress={(e) => { if (e.key === 'Enter') { e.preventDefault(); agregarActividad(); } }}
+                  style={{ borderRadius: '6px 0 0 6px' }} />
+                <Button variant="outline-primary" onClick={agregarActividad} type="button">
+                  <PlusCircle className="me-1" />
+                  Agregar
+                </Button>
+              </div>
+              {formCronograma.actividades.length > 0 && (
+                <ul className="list-group">
+                  {formCronograma.actividades.map((act, index) => (
+                    <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                      <span>{act}</span>
+                      <Button variant="outline-danger" size="sm" onClick={() => eliminarActividad(index)} type="button">
+                        <Trash size={14} />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {formCronograma.actividades.length === 0 && (
+                <small className="text-muted">No hay actividades agregadas</small>
+              )}
+            </div>
           </div>
-          
-          {formCronograma.actividades.length > 0 && (
-            <ul className="list-group">
-              {formCronograma.actividades.map((act, index) => (
-                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                  <span>{act}</span>
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => eliminarActividad(index)}
-                    type="button"
-                  >
-                    <Trash size={14} />
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
-          
-          {formCronograma.actividades.length === 0 && (
-            <small className="text-muted">No hay actividades agregadas</small>
-          )}
-        </Form.Group>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModalCronograma}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModalCronograma}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
 // ==========================================
 // GESTIÓN DE LIBROS
@@ -1034,10 +959,16 @@ const renderSeccionLibros = () => (
         <FileEarmarkPdf className="me-2" />
         Obras Literarias por Grado
       </h5>
+      <Button variant="light" size="sm" onClick={() => abrirModalLibro()}>
+        <PlusCircle className="me-1" />
+        Nuevo Libro
+      </Button>
     </Card.Header>
     <Card.Body>
       {librosPorGrado.length === 0 ? (
-        <Alert variant="info">No hay libros registrados</Alert>
+        <Alert variant="info">
+          No hay libros registrados. Haz clic en "Nuevo Libro" para agregar el primero.
+        </Alert>
       ) : (
         librosPorGrado.map((grado, idx) => (
           <div key={grado.grado_id || idx} className="mb-4">
@@ -1122,112 +1053,76 @@ const renderSeccionLibros = () => (
 
 // Modal de libros
 const renderModalLibro = () => (
-  <Modal show={showModalLibro} onHide={cerrarModalLibro} size="lg">
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {modoEdicion ? "Editar Libro" : "Nuevo Libro"}
-      </Modal.Title>
-    </Modal.Header>
-    <Form onSubmit={handleSubmitLibro}>
-      <Modal.Body>
-        <Form.Group className="mb-3">
-          <Form.Label>Título del Libro *</Form.Label>
-          <Form.Control
-            type="text"
-            name="titulo"
-            value={formLibro.titulo}
-            onChange={handleChangeLibro}
-            placeholder="Ej: Los ríos profundos"
-            required
-          />
-        </Form.Group>
+  showModalLibro && (
+    <div className="modal-overlay" onClick={cerrarModalLibro}>
+      <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">
+            <i className="fas fa-book" />
+            {modoEdicion ? "Editar Libro" : "Nuevo Libro"}
+          </h3>
+          <button className="modal-close" onClick={cerrarModalLibro}>
+            <i className="fas fa-xmark" />
+          </button>
+        </div>
+        <form onSubmit={handleSubmitLibro}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Título del Libro *</label>
+              <input className="form-input" type="text" name="titulo" value={formLibro.titulo} onChange={handleChangeLibro} placeholder="Ej: Los ríos profundos" required />
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Autor *</Form.Label>
-          <Form.Control
-            type="text"
-            name="autor"
-            value={formLibro.autor}
-            onChange={handleChangeLibro}
-            placeholder="Ej: José María Arguedas"
-            required
-          />
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Autor *</label>
+              <input className="form-input" type="text" name="autor" value={formLibro.autor} onChange={handleChangeLibro} placeholder="Ej: José María Arguedas" required />
+            </div>
 
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Grado *</Form.Label>
-              <Form.Select
-                name="grado_id"
-                value={formLibro.grado_id}
-                onChange={handleChangeLibro}
-                required
-              >
-                {gradosDisponibles.map(grado => (
-                  <option key={grado.id} value={grado.id}>
-                    {grado.nombre}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Orden</Form.Label>
-              <Form.Control
-                type="number"
-                name="orden"
-                value={formLibro.orden}
-                onChange={handleChangeLibro}
-                min="1"
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Grado *</label>
+                <select className="form-input" name="grado_id" value={formLibro.grado_id} onChange={handleChangeLibro} required>
+                  {gradosDisponibles.map(grado => (
+                    <option key={grado.id} value={grado.id}>{grado.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Orden</label>
+                <input className="form-input" type="number" name="orden" value={formLibro.orden} onChange={handleChangeLibro} min="1" required />
+              </div>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Archivo PDF {!modoEdicion && '*'}</Form.Label>
-          <Form.Control
-            type="file"
-            name="archivo"
-            accept=".pdf"
-            onChange={handleChangeLibro}
-            required={!modoEdicion}
-          />
-          <Form.Text className="text-muted">
-            {modoEdicion 
-              ? "Seleccione un archivo solo si desea reemplazar el actual"
-              : "Seleccione el archivo PDF del libro"}
-          </Form.Text>
-        </Form.Group>
+            <div className="form-group">
+              <label className="form-label">Archivo PDF {!modoEdicion && '*'}</label>
+              <input className="form-input" type="file" name="archivo" accept=".pdf" onChange={handleChangeLibro} required={!modoEdicion} style={{ cursor: 'pointer' }} />
+              <small className="text-muted">
+                {modoEdicion ? "Seleccione un archivo solo si desea reemplazar el actual" : "Seleccione el archivo PDF del libro"}
+              </small>
+            </div>
 
-        {archivoSeleccionado && (
-          <Alert variant="success" className="small">
-            <FileEarmarkPdf className="me-1" />
-            Archivo seleccionado: {archivoSeleccionado.name}
-          </Alert>
-        )}
+            {archivoSeleccionado && (
+              <Alert variant="success" className="small">
+                <FileEarmarkPdf className="me-1" />
+                Archivo seleccionado: {archivoSeleccionado.name}
+              </Alert>
+            )}
 
-        {modoEdicion && formLibro.archivo && !archivoSeleccionado && (
-          <Alert variant="info" className="small">
-            Archivo actual: {formLibro.archivo}
-          </Alert>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={cerrarModalLibro}>
-          <X className="me-1" />
-          Cancelar
-        </Button>
-        <Button variant="primary" type="submit">
-          <Save className="me-1" />
-          Guardar
-        </Button>
-      </Modal.Footer>
-    </Form>
-  </Modal>
+            {modoEdicion && formLibro.archivo && !archivoSeleccionado && (
+              <Alert variant="info" className="small">
+                Archivo actual: {formLibro.archivo}
+              </Alert>
+            )}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-ghost" onClick={cerrarModalLibro}>Cancelar</button>
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-floppy-disk" /> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 );
   // Loading state
   if (isLoading) {
@@ -1266,7 +1161,8 @@ const renderModalLibro = () => (
         {/* Selector de año */}
         <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
           <label className="fw-bold">Año Escolar:</label>
-          <Form.Select
+          <select
+            className="form-input"
             value={anioEscolar}
             onChange={(e) => setAnioEscolar(parseInt(e.target.value))}
             style={{ width: "150px" }}
@@ -1274,7 +1170,7 @@ const renderModalLibro = () => (
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026">2026</option>
-          </Form.Select>
+          </select>
         </div>
       </div>
 

@@ -1,14 +1,10 @@
-  import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
-  Row,
-  Col,
   Card,
   Button,
   Spinner,
   Alert,
-  Form,
-  Modal,
   Table,
   Badge
 } from "react-bootstrap";
@@ -17,19 +13,32 @@ import {
   PlusCircle,
   Pencil,
   Trash,
-  Save,
-  X,
-  PersonBadge,
   TelephoneFill,
   EnvelopeFill,
-  HouseFill,
-  CalendarEvent
 } from "react-bootstrap-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 // Importar servicio
 import { directorioService } from "../services/directorioService";
+
+const AREAS_CURRICULARES = [
+  'Comunicación',
+  'Inglés',
+  'Arte y Cultura',
+  'Matemática',
+  'Ciencia y Tecnología',
+  'Ciencias Sociales',
+  'Desarrollo Personal, Ciudadanía y Cívica',
+  'Educación para el Trabajo',
+  'Educación Física',
+  'Educación Religiosa',
+  'Dirección',
+  'Subdirección',
+  'Auxiliar de Educación',
+  'Administrativo',
+  'Otro',
+];
 
 const AdminDirectorio = () => {
   // Estados generales
@@ -308,184 +317,91 @@ const AdminDirectorio = () => {
 
   // Modal de personal
   const renderModal = () => (
-    <Modal show={showModal} onHide={cerrarModal} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {modoEdicion ? "Editar Personal" : "Nuevo Personal"}
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleSubmit}>
-        <Modal.Body>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <PersonBadge className="me-1" />
-                  Nombres *
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="nombres"
-                  value={formPersonal.nombres}
-                  onChange={handleChange}
-                  placeholder="Ej: Gerardo"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <PersonBadge className="me-1" />
-                  Apellidos *
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="apellidos"
-                  value={formPersonal.apellidos}
-                  onChange={handleChange}
-                  placeholder="Ej: Florez Condori"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+    showModal && (
+      <div className="modal-overlay" onClick={cerrarModal}>
+        <div className="modal modal-lg" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h3 className="modal-title">
+              <i className="fas fa-id-card" />
+              {modoEdicion ? "Editar Personal" : "Nuevo Personal"}
+            </h3>
+            <button className="modal-close" onClick={cerrarModal}>
+              <i className="fas fa-xmark" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="modal-body">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Nombres *</label>
+                  <input className="form-input" type="text" name="nombres" value={formPersonal.nombres} onChange={handleChange} placeholder="Ej: Gerardo" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Apellidos *</label>
+                  <input className="form-input" type="text" name="apellidos" value={formPersonal.apellidos} onChange={handleChange} placeholder="Ej: Florez Condori" required />
+                </div>
+              </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Área / Especialidad *</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="area"
-                  value={formPersonal.area}
-                  onChange={handleChange}
-                  placeholder="Ej: Matemática, Comunicación"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Cargo *</Form.Label>
-                <Form.Select
-                  name="cargo"
-                  value={formPersonal.cargo}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="Director">Director</option>
-                  <option value="Subdirector">Subdirector</option>
-                  <option value="Docente">Docente</option>
-                  <option value="Auxiliar Ed.">Auxiliar Ed.</option>
-                  <option value="Administrativo">Administrativo</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Área / Especialidad *</label>
+                  <select className="form-input" name="area" value={formPersonal.area} onChange={handleChange} required>
+                    <option value="">— Seleccionar área —</option>
+                    {AREAS_CURRICULARES.map(a => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Cargo *</label>
+                  <select className="form-input" name="cargo" value={formPersonal.cargo} onChange={handleChange} required>
+                    <option value="Director">Director</option>
+                    <option value="Subdirector">Subdirector</option>
+                    <option value="Docente">Docente</option>
+                    <option value="Auxiliar Ed.">Auxiliar Ed.</option>
+                    <option value="Administrativo">Administrativo</option>
+                  </select>
+                </div>
+              </div>
 
-          <Row>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <CalendarEvent className="me-1" />
-                  Fecha de Nacimiento *
-                </Form.Label>
-                <Form.Control
-                  type="date"
-                  name="fecha_nacimiento"
-                  value={formPersonal.fecha_nacimiento}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>
-                  <TelephoneFill className="me-1" />
-                  Celular *
-                </Form.Label>
-                <Form.Control
-                  type="tel"
-                  name="celular"
-                  value={formPersonal.celular}
-                  onChange={handleChange}
-                  placeholder="Ej: 950891414"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>Orden</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="orden"
-                  value={formPersonal.orden}
-                  onChange={handleChange}
-                  min="1"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Fecha de Nacimiento *</label>
+                  <input className="form-input" type="date" name="fecha_nacimiento" value={formPersonal.fecha_nacimiento} onChange={handleChange} required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Celular *</label>
+                  <input className="form-input" type="tel" name="celular" value={formPersonal.celular} onChange={handleChange} placeholder="Ej: 950891414" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Orden</label>
+                  <input className="form-input" type="number" name="orden" value={formPersonal.orden} onChange={handleChange} min="1" required />
+                </div>
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>
-              <EnvelopeFill className="me-1" />
-              Correo Electrónico *
-            </Form.Label>
-            <Form.Control
-              type="email"
-              name="correo"
-              value={formPersonal.correo}
-              onChange={handleChange}
-              placeholder="ejemplo@gmail.com"
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Correo Electrónico *</label>
+                <input className="form-input" type="email" name="correo" value={formPersonal.correo} onChange={handleChange} placeholder="ejemplo@gmail.com" required />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label>
-              <HouseFill className="me-1" />
-              Dirección Domiciliaria
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="direccion"
-              value={formPersonal.direccion}
-              onChange={handleChange}
-              placeholder="Ej: C.P. Sirenachayoc"
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label className="form-label">Dirección Domiciliaria</label>
+                <input className="form-input" type="text" name="direccion" value={formPersonal.direccion} onChange={handleChange} placeholder="Ej: C.P. Sirenachayoc" />
+              </div>
 
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              name="activo"
-              label="Activo (aparecerá en el directorio público)"
-              checked={formPersonal.activo}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Alert variant="info" className="small">
-            <strong>Nota:</strong> Los campos marcados con * son obligatorios.
-          </Alert>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cerrarModal}>
-            <X className="me-1" />
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            <Save className="me-1" />
-            Guardar
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input type="checkbox" id="activo" name="activo" checked={formPersonal.activo} onChange={handleChange} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)' }} />
+                <label htmlFor="activo" style={{ fontSize: 13, color: 'var(--text-primary)', cursor: 'pointer', userSelect: 'none' }}>Activo (aparecerá en el directorio público)</label>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-ghost" onClick={cerrarModal}>Cancelar</button>
+              <button type="submit" className="btn btn-primary">
+                <i className="fas fa-floppy-disk" /> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   );
 
   // Loading state

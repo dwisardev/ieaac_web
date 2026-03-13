@@ -113,7 +113,7 @@ class ComunicadosController
     ══════════════════════════════════════════════════ */
     private function adminList(): void
     {
-        $conditions = [];
+        $conditions = ['activo = 1'];
         $params     = [];
 
         if (!empty($_GET['q'])) {
@@ -127,7 +127,7 @@ class ComunicadosController
             $params[':tipo'] = $_GET['tipo'];
         }
 
-        $where = $conditions ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        $where = 'WHERE ' . implode(' AND ', $conditions);
 
         $stmt = $this->db->prepare("
             SELECT id, titulo, contenido, archivo_pdf, imagen,

@@ -53,7 +53,7 @@ class DocentesController {
     /* ── Admin: todos ── */
     private function listarAdmin(): void {
         $q = $_GET['q'] ?? null;
-        $where = ['1=1'];
+        $where = ['activo = 1'];
         $params = [];
 
         if ($q) {

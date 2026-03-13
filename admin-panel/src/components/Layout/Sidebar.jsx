@@ -36,10 +36,12 @@ const menuItems = [
   { id: 'familia',       path: '/familia-educativa', icon: 'fa-users',          label: 'Familia Educativa',  roles: ['admin','editor'] },
 
   { section: 'Administración', requiresAdmin: true },
-  { id: 'usuarios',      path: '/usuarios',      icon: 'fa-user-shield',        label: 'Usuarios',           roles: ['admin'] },
+  { id: 'usuarios',      path: '/usuarios',      icon: 'fa-user-shield', label: 'Usuarios',      roles: ['admin'] },
+  { id: 'configuracion', path: '/configuracion', icon: 'fa-sliders',     label: 'Configuración', roles: ['admin'] },
 
   { section: 'Cuenta' },
-  { id: 'perfil',        path: '/perfil',        icon: 'fa-user-circle',        label: 'Mi Perfil',          roles: ['admin','editor','docente'] },
+  { id: 'manual',        path: '/manual',         icon: 'fa-circle-question',    label: 'Manual de Usuario',  roles: ['admin','editor','docente'] },
+  { id: 'perfil',        path: '/perfil',         icon: 'fa-user-circle',        label: 'Mi Perfil',          roles: ['admin','editor','docente'] },
 ];
 
 const Sidebar = ({ collapsed, setCollapsed }) => {

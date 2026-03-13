@@ -19,6 +19,7 @@ import "./assets/css/global/utilities.css";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import Layout        from "./components/layout/Layout";
 import Loader        from "./components/ui/Loader";
+import WelcomeModal  from "./components/ui/WelcomeModal";
 
 // ── Páginas activas ──
 import Home from "./pages/home/Home";
@@ -102,6 +103,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      <WelcomeModal />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -153,6 +155,7 @@ export default function App() {
           <Route path="/EstrategiasProyecto" element={<EstrategiasProyecto />} />
           <Route path="/PortafolioActividades" element={<PortafolioActividades />} />
           <Route path="/Comunicados"       element={<Comunicados />} />
+          <Route path="/ResenaHistorica"   element={<ResenaHistorica />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

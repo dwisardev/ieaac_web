@@ -1,0 +1,236 @@
+/* ── WelcomeModal.css ── */
+
+/* Overlay */
+.wm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 12, 35, 0.88);
+  backdrop-filter: blur(4px);
+  animation: wm-fadeIn 0.55s ease both;
+}
+.wm-overlay--out {
+  animation: wm-fadeOut 0.45s ease both;
+}
+
+/* Fireworks canvas */
+.wm-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Card */
+.wm-card {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(160deg, #0b1e4a 0%, #071535 100%);
+  border: 1px solid rgba(200, 149, 42, 0.4);
+  border-radius: 20px;
+  padding: 2.5rem 2.2rem 2rem;
+  max-width: 460px;
+  width: 92%;
+  text-align: center;
+  box-shadow:
+    0 0 0 1px rgba(200,149,42,.15),
+    0 24px 64px rgba(0,0,0,.65),
+    0 0 80px rgba(200,149,42,.08);
+  animation: wm-slideUp 0.55s cubic-bezier(.23,1.1,.62,1) both;
+}
+.wm-card--out {
+  animation: wm-slideDown 0.45s ease both;
+}
+
+/* Close button */
+.wm-close {
+  position: absolute;
+  top: .85rem;
+  right: .85rem;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  color: #aac3e8;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.wm-close:hover {
+  background: rgba(200,149,42,.25);
+  color: #ffd787;
+}
+
+/* Logo */
+.wm-logo-wrap {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, #c8952a, #f5c96a, #c8952a);
+  box-shadow: 0 0 24px rgba(200,149,42,.45);
+  animation: wm-pulse 2.5s ease-in-out infinite;
+}
+.wm-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0b1e4a;
+}
+
+/* Text */
+.wm-sub {
+  color: #aac3e8;
+  font-size: .85rem;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: 0 0 .3rem;
+}
+.wm-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.35rem, 4vw, 1.7rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 .5rem;
+  line-height: 1.25;
+  text-shadow: 0 2px 12px rgba(0,0,0,.5);
+}
+.wm-place {
+  color: #c8952a;
+  font-size: .85rem;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 .6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+}
+.wm-slogan {
+  color: #7fa5d4;
+  font-size: .82rem;
+  font-style: italic;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 1.4rem;
+  opacity: .85;
+}
+
+/* Audio button */
+.wm-audio {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  background: rgba(200, 149, 42, 0.12);
+  border: 1px solid rgba(200, 149, 42, 0.35);
+  color: #c8952a;
+  border-radius: 50px;
+  padding: .4rem 1.1rem;
+  font-size: .8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+  margin-bottom: 1.1rem;
+}
+.wm-audio:hover {
+  background: rgba(200, 149, 42, 0.25);
+  box-shadow: 0 0 14px rgba(200,149,42,.3);
+}
+.wm-audio--active {
+  background: rgba(200, 149, 42, 0.22);
+  color: #f5c96a;
+  animation: wm-audioGlow 1s ease-in-out infinite alternate;
+}
+@keyframes wm-audioGlow {
+  from { box-shadow: 0 0 6px rgba(200,149,42,.3); }
+  to   { box-shadow: 0 0 20px rgba(200,149,42,.6); }
+}
+
+/* Progress bar */
+.wm-progress-wrap {
+  height: 4px;
+  background: rgba(255,255,255,.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: .5rem;
+}
+.wm-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #c8952a, #f5c96a);
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+.wm-timer {
+  font-size: .75rem;
+  color: rgba(255,255,255,.35);
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 1.4rem;
+}
+
+/* Enter button */
+.wm-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  background: linear-gradient(135deg, #1a3a6e, #2255a4);
+  color: #fff;
+  border: 1px solid rgba(200,149,42,.4);
+  border-radius: 50px;
+  padding: .72rem 2rem;
+  font-size: .9rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, background .2s;
+  box-shadow: 0 4px 18px rgba(26,58,110,.4);
+}
+.wm-enter:hover {
+  background: linear-gradient(135deg, #2255a4, #c8952a);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(200,149,42,.35);
+}
+
+/* ── Animations ── */
+@keyframes wm-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes wm-fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes wm-slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+@keyframes wm-slideDown {
+  from { opacity: 1; transform: translateY(0)    scale(1);   }
+  to   { opacity: 0; transform: translateY(30px) scale(.96); }
+}
+@keyframes wm-pulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(200,149,42,.45); }
+  50%       { box-shadow: 0 0 40px rgba(200,149,42,.7);  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .wm-card {
+    padding: 2rem 1.4rem 1.6rem;
+    border-radius: 16px;
+  }
+  .wm-logo-wrap {
+    width: 72px;
+    height: 72px;
+  }
+}
