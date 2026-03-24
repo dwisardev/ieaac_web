@@ -8,48 +8,21 @@ import api from './api';
 const normalizeList = (res) =>
   Array.isArray(res.data) ? res.data : res.data?.data || [];
 
-const normalizeOne = (res) =>
-  res.data?.data || res.data || null;
-
-/** GET /api/horarios/grados */
-export const obtenerGrados = async () => {
-  const res = await api.get('/horarios/grados');
-  return normalizeList(res);
-};
-
-/** GET /api/horarios/docentes */
-export const obtenerDocentes = async () => {
-  const res = await api.get('/horarios/docentes');
-  return normalizeList(res);
-};
-
-/** GET /api/horarios?tipo=estudiante — todos los horarios de estudiantes */
-export const obtenerTodosHorariosEstudiantes = async (anio = new Date().getFullYear()) => {
-  const res = await api.get('/horarios', { params: { tipo: 'estudiante', anio } });
-  return normalizeList(res);
-};
-
-/** GET /api/horarios?tipo=docente — todos los horarios de docentes */
-export const obtenerTodosHorariosDocentes = async (anio = new Date().getFullYear()) => {
-  const res = await api.get('/horarios', { params: { tipo: 'docente', anio } });
-  return normalizeList(res);
-};
-
 export const horariosService = {
 
-  /** GET /api/horarios/grados — lista de grados */
+  /** GET /api/horarios/grados */
   getGrados: async () => {
     const res = await api.get('/horarios/grados');
     return normalizeList(res);
   },
 
-  /** GET /api/horarios/docentes — lista de docentes */
+  /** GET /api/horarios/docentes */
   getDocentes: async () => {
     const res = await api.get('/horarios/docentes');
     return normalizeList(res);
   },
 
-  /** GET /api/horarios/bloques — bloques horarios */
+  /** GET /api/horarios/bloques */
   getBloques: async () => {
     const res = await api.get('/horarios/bloques');
     return normalizeList(res);

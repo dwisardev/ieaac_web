@@ -185,12 +185,13 @@ export default function AdminComunicados() {
 
   const handleEliminar = async () => {
     if (!confirm) return;
-    try {
-      await comunicadosService.delete(confirm.id);
-      toast('Comunicado eliminado');
-      cargar();
-    } catch { toast('Error al eliminar', 'error'); }
+    const deletedId = confirm.id;
     setConfirm(null);
+    try {
+      await comunicadosService.delete(deletedId);
+      setComunicados(prev => prev.filter(c => c.id !== deletedId));
+      toast('Comunicado eliminado');
+    } catch { toast('Error al eliminar', 'error'); }
   };
 
   /* Estadísticas */
@@ -437,7 +438,7 @@ function ComunicadoCard({ c, onEdit, onDelete }) {
         </p>
 
         {/* Fecha */}
-        <div style={{ fontSize:12, color:'var(--text-muted)', marginBottom:12 }}>
+        <div style={{ fontSize:12, color:'var(--text-secondary)', marginBottom:12 }}>
           <i className="fas fa-calendar-day" style={{ marginRight:5 }} />{fecha}
         </div>
 

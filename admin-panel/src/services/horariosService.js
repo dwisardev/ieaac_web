@@ -11,6 +11,28 @@ const normalizeList = (res) =>
 const normalizeOne = (res) =>
   res.data?.data || res.data || null;
 
+/* ── ASIGNATURAS ── */
+export const obtenerAsignaturas = async () => {
+  const res = await api.get('/horarios/asignaturas');
+  return normalizeList(res);
+};
+
+/* ── ASIGNATURAS CRUD ── */
+export const crearAsignatura = async (data) => {
+  const res = await api.post('/admin/horarios/asignaturas', data);
+  return normalizeOne(res);
+};
+
+export const actualizarAsignatura = async (id, data) => {
+  const res = await api.put(`/admin/horarios/asignaturas/${id}`, data);
+  return normalizeOne(res);
+};
+
+export const eliminarAsignatura = async (id) => {
+  const res = await api.delete(`/admin/horarios/asignaturas/${id}`);
+  return res.data;
+};
+
 /* ── GRADOS ── */
 export const obtenerGrados = async () => {
   const res = await api.get('/horarios/grados');

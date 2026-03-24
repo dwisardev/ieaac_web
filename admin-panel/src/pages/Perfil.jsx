@@ -201,7 +201,7 @@ export default function Perfil() {
 
         {/* Acción rápida */}
         <button
-          className="btn btn-ghost btn-sm"
+          className="btn btn-primary btn-sm"
           onClick={() => setTab('seguridad')}
           style={{ position:'relative', zIndex:1 }}
         >

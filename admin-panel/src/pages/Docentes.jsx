@@ -102,8 +102,8 @@ export default function Docentes() {
     if (!confirm('¿Eliminar este docente del listado activo?')) return;
     try {
       await docentesService.delete(id);
+      setDocentes(prev => prev.filter(d => d.id !== id));
       setSuccess('Docente desactivado correctamente');
-      cargarDocentes();
     } catch {
       setError('Error al eliminar');
     }
@@ -191,15 +191,13 @@ export default function Docentes() {
                     </div>
                   )}
                   {doc.email && (
-                    <p className="text-muted small mb-1 text-center">
+                    <p className="mb-1 text-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                       <i className="fas fa-envelope me-1"></i>
-                      <span className="text-truncate d-inline-block" style={{ maxWidth: 160 }} title={doc.email}>
-                        {doc.email}
-                      </span>
+                      <span title={doc.email}>{doc.email}</span>
                     </p>
                   )}
                   {doc.telefono && (
-                    <p className="text-muted small mb-0 text-center">
+                    <p className="mb-0 text-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                       <i className="fas fa-phone me-1"></i>{doc.telefono}
                     </p>
                   )}

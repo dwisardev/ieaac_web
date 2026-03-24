@@ -26,12 +26,13 @@ class HorariosController
         $sub    = $segments[1] ?? null;
 
         match (true) {
-            $method === 'GET' && $sub === 'grados'   => $this->publicGrados(),
-            $method === 'GET' && $sub === 'docentes'  => $this->publicDocentes(),
-            $method === 'GET' && $sub === 'bloques'   => $this->publicBloques(),
-            $method === 'GET' && $sub === 'estudiante' => $this->publicHorarioEstudiante(),
-            $method === 'GET' && $sub === 'docente'    => $this->publicHorarioDocente(),
-            $method === 'GET'                          => $this->publicResumen(),
+            $method === 'GET' && $sub === 'grados'       => $this->publicGrados(),
+            $method === 'GET' && $sub === 'docentes'     => $this->publicDocentes(),
+            $method === 'GET' && $sub === 'bloques'      => $this->publicBloques(),
+            $method === 'GET' && $sub === 'asignaturas'  => $this->publicAsignaturas(),
+            $method === 'GET' && $sub === 'estudiante'   => $this->publicHorarioEstudiante(),
+            $method === 'GET' && $sub === 'docente'      => $this->publicHorarioDocente(),
+            $method === 'GET'                            => $this->publicResumen(),
             default => $this->error('Ruta no encontrada', 404),
         };
     }
@@ -58,7 +59,12 @@ class HorariosController
             $method === 'PUT'    && $sub === 'grados' && $id !== null  => $this->updateGrado($id),
             $method === 'DELETE' && $sub === 'grados' && $id !== null  => $this->destroyGrado($id),
             // Docentes (horario)
-            $method === 'GET'    && $sub === 'docentes' && $id === null => $this->adminDocentes(),
+            $method === 'GET'    && $sub === 'docentes'    && $id === null => $this->adminDocentes(),
+            // Asignaturas
+            $method === 'GET'    && $sub === 'asignaturas'                          => $this->publicAsignaturas(),
+            $method === 'POST'   && $sub === 'asignaturas'                          => $this->storeAsignatura(),
+            $method === 'PUT'    && $sub === 'asignaturas' && $id !== null           => $this->updateAsignatura($id),
+            $method === 'DELETE' && $sub === 'asignaturas' && $id !== null           => $this->destroyAsignatura($id),
             // Bloques
             $method === 'GET'    && $sub === 'bloques'                  => $this->publicBloques(),
             $method === 'POST'   && $sub === 'bloques'                  => $this->storeBloque(),
@@ -150,6 +156,60 @@ class HorariosController
         $this->success(['data' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
     }
 
+    /* ══ ASIGNATURAS ══ */
+    private function publicAsignaturas(): void
+    {
+        $stmt = $this->db->prepare("
+            SELECT id, nombre, codigo, area_curricular, color FROM asignaturas WHERE activo = 1 ORDER BY nombre ASC
+        ");
+        $stmt->execute();
+        $this->success(['data' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
+    }
+
+    /* ══ ASIGNATURAS CRUD ══ */
+    private function storeAsignatura(): void
+    {
+        $data = $this->parseBody();
+        if (empty(trim($data['nombre'] ?? ''))) {
+            $this->error('El nombre es requerido', 422); return;
+        }
+        $stmt = $this->db->prepare("
+            INSERT INTO asignaturas (nombre, codigo, area_curricular, color, activo)
+            VALUES (:nombre, :codigo, :area, :color, 1)
+        ");
+        $stmt->execute([
+            ':nombre' => $this->clean($data['nombre']),
+            ':codigo' => $this->clean($data['codigo']          ?? ''),
+            ':area'   => $this->clean($data['area_curricular'] ?? ''),
+            ':color'  => $this->clean($data['color']           ?? '#6B7280'),
+        ]);
+        $this->success(['message' => 'Asignatura creada', 'id' => (int)$this->db->lastInsertId()], 201);
+    }
+
+    private function updateAsignatura(int $id): void
+    {
+        $data = $this->parseBody();
+        $stmt = $this->db->prepare("
+            UPDATE asignaturas
+            SET nombre = :nombre, codigo = :codigo, area_curricular = :area, color = :color
+            WHERE id = :id
+        ");
+        $stmt->execute([
+            ':nombre' => $this->clean($data['nombre']          ?? ''),
+            ':codigo' => $this->clean($data['codigo']          ?? ''),
+            ':area'   => $this->clean($data['area_curricular'] ?? ''),
+            ':color'  => $this->clean($data['color']           ?? '#6B7280'),
+            ':id'     => $id,
+        ]);
+        $this->success(['message' => 'Asignatura actualizada']);
+    }
+
+    private function destroyAsignatura(int $id): void
+    {
+        $this->db->prepare("UPDATE asignaturas SET activo = 0 WHERE id = :id")->execute([':id' => $id]);
+        $this->success(['message' => 'Asignatura eliminada']);
+    }
+
     /* ══ BLOQUES ══ */
     private function publicBloques(): void
     {
@@ -213,7 +273,8 @@ class HorariosController
         }
 
         $stmt = $this->db->prepare("
-            SELECT he.id, he.dia_semana, he.es_receso,
+            SELECT he.id, he.bloque_id, he.dia_semana, he.es_receso,
+                   he.asignatura_id, he.docente_id,
                    hb.hora, hb.orden AS bloque_orden,
                    a.nombre AS asignatura, a.color AS asignatura_color,
                    d.nombre_corto AS docente
@@ -285,7 +346,8 @@ class HorariosController
         }
 
         $stmt = $this->db->prepare("
-            SELECT hd.id, hd.dia_semana, hd.es_receso,
+            SELECT hd.id, hd.bloque_id, hd.dia_semana, hd.es_receso,
+                   hd.asignatura_id, hd.grado_id,
                    hb.hora, hb.orden AS bloque_orden,
                    a.nombre AS asignatura, a.color AS asignatura_color,
                    g.nombre AS grado

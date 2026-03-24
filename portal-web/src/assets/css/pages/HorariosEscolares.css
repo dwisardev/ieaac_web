@@ -5,79 +5,105 @@
   padding: 2rem 1rem;
 }
 
-/* Schedule grid */
+/* ── Grilla ── */
 .horario-grid {
   display: grid;
-  border-radius: 14px;
+  grid-template-columns: 90px repeat(5, 1fr);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(26,58,110,.08);
-  border: 1px solid rgba(26,58,110,.08);
+  border: 1px solid rgba(26,58,110,.10);
   background: #fff;
-  overflow-x: auto;
+  min-width: 600px;
 }
 
-.horario-header {
+/* Fila encabezado */
+.horario-header,
+.horario-row {
   display: contents;
 }
 
 .hora-cell {
   background: #1a3a6e;
   color: #fff;
-  padding: .75rem .5rem;
-  font-size: .78rem;
+  padding: .7rem .5rem;
+  font-size: .72rem;
   font-weight: 700;
   text-align: center;
-  border-right: 1px solid rgba(255,255,255,.1);
-  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  white-space: nowrap;
+}
+
+.receso-hora {
+  background: #b8860b;
 }
 
 .dia-cell {
-  background: #f0f4ff;
+  background: #eef2ff;
   color: #1a3a6e;
-  padding: .75rem .5rem;
-  font-size: .82rem;
+  padding: .7rem .4rem;
+  font-size: .75rem;
   font-weight: 700;
   text-align: center;
-  border-right: 1px solid rgba(26,58,110,.08);
-  border-bottom: 1px solid rgba(26,58,110,.08);
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: .05em;
+  border-left: 1px solid rgba(26,58,110,.08);
+  border-bottom: 1px solid rgba(26,58,110,.08);
 }
 
-.horario-row { display: contents; }
-
+/* Celdas de clase */
 .bloque {
-  padding: .6rem .5rem;
-  border-right: 1px solid rgba(26,58,110,.06);
+  padding: .55rem .5rem;
+  border-left: 3px solid transparent;
   border-bottom: 1px solid rgba(26,58,110,.06);
-  font-size: .78rem;
-  text-align: center;
-  min-width: 110px;
-  min-height: 52px;
+  font-size: .75rem;
+  min-height: 54px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 2px;
   background: #fff;
-  transition: background .2s ease;
+  transition: filter .15s;
 }
-.bloque:hover { background: #f0f4ff; }
+.bloque:hover { filter: brightness(.97); }
 
-.receso {
-  background: #fff9e6 !important;
-  color: #856404;
+.bloque-vacio {
+  border-left-color: transparent !important;
+  background: #fafafa;
+}
+
+.bloque-asignatura {
   font-weight: 600;
-  font-size: .8rem;
+  line-height: 1.25;
+  color: #1e293b;
+}
+
+/* Recreo */
+.bloque.receso {
+  background: #fff8e1 !important;
+  border-left-color: #f59e0b !important;
+  color: #92400e;
+  font-weight: 700;
+  font-size: .73rem;
+  letter-spacing: .08em;
+  justify-content: center;
+  align-items: center;
 }
 
 .profesor {
-  font-size: .68rem;
-  color: #9e9e9e;
-  display: block;
+  font-size: .65rem;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
   .horarios-escolares-container { padding: 1rem .25rem; }
-  .horario-grid { font-size: .72rem; }
+  .horario-grid { font-size: .68rem; min-width: 480px; }
+  .hora-cell { font-size: .65rem; }
 }
